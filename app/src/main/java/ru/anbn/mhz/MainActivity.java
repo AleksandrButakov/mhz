@@ -24,13 +24,61 @@ public class MainActivity extends AppCompatActivity {
         final Spinner spinner_station = findViewById(R.id.spinner_station);
 
 
-        String[] s1 = {"Свердловская железная дорога"};
+        String[] sRoad = {
+                "Свердловская железная дорога",
+                "Красноярская железная дорога",
+                "Западно-Сибирская железная дорога",
+                "Московская железная дорога",
+                "Дальневосточная железная дорога"
+        };
 
-        // адаптер для spinner1 со списком оборудования
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.
-                R.layout.simple_spinner_item, s1);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_road.setAdapter(adapter);
+        String[] sRegion = {
+                "Пермский регион",
+                "Свердловский регион",
+                "Нижнетагильский регион",
+                "Сургутский регион",
+                "Тюменский регион"
+        };
+
+        String[] sStation = {
+                "Демьянка",
+                "Салым",
+                "Пыть-Ях",
+                "Усть-Юган",
+                "Сургут",
+                "Ульт-Ягун",
+                "Лангепас",
+                "Мегион",
+                "Нижневартовск-2",
+                "Нижневартовск-1",
+                "Когалым",
+                "Ноябрьск-1",
+                "Ноябрьск-2",
+                "Ханымей",
+                "Пурпе",
+                "Пуровск",
+                "Сывдарма",
+                "Коротчаево",
+                "Н.Уренгой"
+        };
+
+        // адаптер для spinner_road со списком дорог
+        final ArrayAdapter<String> adapter_road = new ArrayAdapter<String>(this, android.
+                R.layout.simple_spinner_item, sRoad);
+        adapter_road.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_road.setAdapter(adapter_road);
+
+        // адаптер для spinner_region со списком регионов
+        final ArrayAdapter<String> adapter_region = new ArrayAdapter<String>(this, android.
+                R.layout.simple_spinner_item, sRegion);
+        adapter_region.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_region.setAdapter(adapter_region);
+
+        // адаптер для spinner_station со списком станций
+        final ArrayAdapter<String> adapter_station = new ArrayAdapter<String>(this, android.
+                R.layout.simple_spinner_item, sStation);
+        adapter_station.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_station.setAdapter(adapter_station);
 
     }
 

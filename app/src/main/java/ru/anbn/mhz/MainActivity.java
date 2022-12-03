@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -86,11 +85,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     // нарисуем меню
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         return true;
     }
 
@@ -100,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         // строка поиска
-        if (id == R.id.manual) {
+        if (id == R.id.action_search) {
             Intent intent = new Intent(this, WebViewActivity.class);
             startActivity(intent);
         }

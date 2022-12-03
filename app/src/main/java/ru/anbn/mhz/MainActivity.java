@@ -29,11 +29,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         String[] sRoad = {
-                "Свердловская железная дорога",
-                "Красноярская железная дорога",
-                "Западно-Сибирская железная дорога",
-                "Московская железная дорога",
-                "Дальневосточная железная дорога"
+                "СВЖД",
+                "ДВЖД",
+                "ЗСЖД",
+                "МСЖД",
+                "СКЖД"
         };
 
         String[] sRegion = {
@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        /*
         // политика конфиденциальности
         if (id == R.id.privacy) {
             url = "https://AleksandrButakov.github.io/Pinout/PolicyPrivacy/";
@@ -126,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, WebViewActivity.class);
             startActivity(intent);
         }
+         */
 
         return true;
     }

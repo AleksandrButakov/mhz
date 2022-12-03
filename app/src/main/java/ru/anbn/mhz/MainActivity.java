@@ -3,7 +3,11 @@ package ru.anbn.mhz;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -82,5 +86,48 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    // нарисуем меню
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    // обработчик нажатия позиций меню
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        // строка поиска
+        if (id == R.id.manual) {
+            Intent intent = new Intent(this, WebViewActivity.class);
+            startActivity(intent);
+        }
+
+        // политика конфиденциальности
+        if (id == R.id.privacy) {
+            url = "https://AleksandrButakov.github.io/Pinout/PolicyPrivacy/";
+            Intent intent = new Intent(this, WebViewActivity.class);
+            startActivity(intent);
+        }
+
+        // оценить приложение
+        if (id == R.id.estimate) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.anbn.pinout"));
+            startActivity(intent);
+
+        }
+
+        // о программе
+        if (id == R.id.about) {
+            url = "https://AleksandrButakov.github.io/Pinout/About/";
+            Intent intent = new Intent(this, WebViewActivity.class);
+            startActivity(intent);
+        }
+
+        return true;
+    }
 
 }

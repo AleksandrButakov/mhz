@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        readerCsvFile();
+        //readerCsvFile();
     }
 
     // нарисуем меню
@@ -78,24 +78,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void readerCsvFile() {
-        String csvFile = "TableFrequince.txt";
+
+        String csvFile = "app/src/main/res/assets/TableFrequince.txt";
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ",";
 
         try {
-            br = new BufferedReader(new FileReader(csvFile));
-            while (true) {
-                try {
-                    if (!((line = br.readLine()) != null)) break;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-                // используем запятую в качестве разделителя
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+
+                // use comma as separator
                 String[] country = line.split(cvsSplitBy);
 
-                System.out.println("Country [code= " + country[4] + " , name=" + country[5] + "]");
+                System.out.println("Country [code= " + country[4]
+                        + " , name=" + country[5] + "]");
 
             }
 
@@ -112,6 +110,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+        System.out.println("Done");
+
+
+
 
     }
 

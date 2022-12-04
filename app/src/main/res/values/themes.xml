@@ -2,7 +2,7 @@
 
     <style name="Theme.MHz" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:statusBarColor">@color/colorBlack</item>
-        <item name="colorPrimary">#393939</item>
+        <item name="colorPrimary">#252525</item>
         <item name="colorOnPrimary">@color/colorWhite</item>
     </style>
 

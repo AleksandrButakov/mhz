@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         // строка поиска
         if (id == R.id.manual) {
+            Variables.setUrl("https://AleksandrButakov.github.io/Pinout/PolicyPrivacy/");
             Intent intent = new Intent(this, WebViewActivity.class);
             startActivity(intent);
         }

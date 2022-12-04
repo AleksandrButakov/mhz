@@ -1,8 +1,5 @@
 package ru.anbn.mhz;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +8,13 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
+        readerCsvFile();
     }
 
     // нарисуем меню
@@ -69,6 +74,45 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+
+    public void readerCsvFile() {
+        String csvFile = "TableFrequince.txt";
+        BufferedReader br = null;
+        String line = "";
+        String cvsSplitBy = ",";
+
+        try {
+            br = new BufferedReader(new FileReader(csvFile));
+            while (true) {
+                try {
+                    if (!((line = br.readLine()) != null)) break;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // используем запятую в качестве разделителя
+                String[] country = line.split(cvsSplitBy);
+
+                System.out.println("Country [code= " + country[4] + " , name=" + country[5] + "]");
+
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 
 

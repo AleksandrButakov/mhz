@@ -1,29 +1,4 @@
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimaryDark">@color/colorOrange</item>
-        <item name="searchViewStyle">@style/AppSearchViewStyle</item>
-    </style>
-
-    <style name="AppSearchViewStyle" parent="Widget.AppCompat.SearchView">
-        <item name="android:textCursorDrawable">@drawable/white_cursor</item>
-        <item name="queryBackground">@android:color/transparent</item>
-        <item name="searchIcon">@drawable/icon_toolbar_search</item>
-        <!--
-        <item name="closeIcon">@drawable/icon_toolbar_clear</item>
-        <item name="queryHint">@string/search_hint</item>
-        -->
-        <item name="android:imeActionId">6</item>
-    </style>
-</resources>
-
-
-
-
-
-
-
-<!--
-<resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -32,8 +7,10 @@
         <item name="android:actionBarSize">45dp</item>
     </style>
 
+    <!--
+    Тема для поля SearchView
+    -->
     <style name="AppThemeSearchView">
         <item name="android:textColorPrimary">@color/colorBlack</item>
     </style>
 </resources>
--->

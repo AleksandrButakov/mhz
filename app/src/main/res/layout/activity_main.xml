@@ -42,19 +42,20 @@
 
 
     <!--
+
     <Spinner
         android:id="@+id/spinner_road"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="14dp"
         android:background="@drawable/spinner_shape"
         android:elevation="2dp"
         android:popupBackground="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchStation"
         tools:ignore="MissingConstraints" />
 
     <Spinner
@@ -86,5 +87,23 @@
         app:layout_constraintTop_toBottomOf="@+id/spinner_region"
         tools:ignore="MissingConstraints" />
         -->
+
+    <SearchView
+        android:id="@+id/searchStation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="14dp"
+        android:background="@drawable/search_shape"
+        android:clickable="true"
+        android:elevation="8dp"
+        android:theme="@style/AppSearchViewStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showAsAction="collapseActionView|ifRoom" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,41 @@
     android:background="@drawable/picture_background"
     tools:context=".MainActivity">
 
+
+    <SearchView
+        android:id="@+id/searchView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/search_shape"
+        android:elevation="8dp"
+
+        android:queryHint="Название станции"
+        android:theme="@style/AppThemeSearchView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showAsAction="collapseActionView|ifRoom" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView1">
+
+    </ListView>
+
+
+    <!--
     <Spinner
         android:id="@+id/spinner_road"
         android:layout_width="0dp"
@@ -50,5 +85,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner_region"
         tools:ignore="MissingConstraints" />
+        -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

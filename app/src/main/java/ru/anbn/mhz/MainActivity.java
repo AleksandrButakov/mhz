@@ -13,6 +13,8 @@ import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static String url;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

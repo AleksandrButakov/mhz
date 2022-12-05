@@ -5,15 +5,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     // массив для дальнейшего заполнения найденными позициями
     public ArrayList listCardArray = new ArrayList();
 
+    private final static String FILE_NAME = "content.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        //readerCsvFile();
     }
 
     // нарисуем меню
@@ -76,46 +78,86 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void onClickButton(View v) throws IOException {
 
-    public void readerCsvFile() {
+        /*
+        String sPath = "app/src/main/assets/MyFile.txt";
+        FileReader fr = new FileReader(sPath);
+        Scanner scan = new Scanner(fr);
+        TextView textView = (TextView) findViewById(R.id.textView);
+        textView.setText(scan.nextLine());
+        int i = 1;
+        while (scan.hasNextLine()) {
+            System.out.println(i + " : " + scan.nextLine());
+            i++;
+        }
+        fr.close();
+        */
+    }
 
-        String csvFile = "app/src/main/res/assets/TableFrequince.txt";
-        BufferedReader br = null;
-        String line = "";
-        String cvsSplitBy = ",";
+    public void onClickButton1(View view) {
 
+    }
+
+    public void onClickButton2(View view) {
+
+    }
+
+    // сохранение файла
+    public void saveText(View view){
+
+        FileOutputStream fos = null;
         try {
+            EditText editText1 = findViewById(R.id.editText1);
+            String text = editText1.getText().toString();
 
-            br = new BufferedReader(new FileReader(csvFile));
-            while ((line = br.readLine()) != null) {
+            fos = openFileOutput(FILE_NAME, MODE_APPEND);
+            fos.write(text.getBytes());
+            Toast.makeText(this, "Файл сохранен", Toast.LENGTH_SHORT).show();
+        }
+        catch(IOException ex) {
 
-                // use comma as separator
-                String[] country = line.split(cvsSplitBy);
-
-                System.out.println("Country [code= " + country[4]
-                        + " , name=" + country[5] + "]");
-
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        finally{
+            try{
+                if(fos!=null)
+                    fos.close();
             }
+            catch(IOException ex){
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
+    }
 
-        System.out.println("Done");
+    // открытие файла
+    public void openText(View view){
 
+        FileInputStream fin = null;
+        EditText editText2 = findViewById(R.id.editText2);
+        try {
+            fin = openFileInput(FILE_NAME);
+            byte[] bytes = new byte[fin.available()];
+            fin.read(bytes);
+            String text = new String (bytes);
+            editText2.setText(text);
+        }
+        catch(IOException ex) {
 
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        finally{
 
+            try{
+                if(fin!=null)
+                    fin.close();
+            }
+            catch(IOException ex){
 
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 

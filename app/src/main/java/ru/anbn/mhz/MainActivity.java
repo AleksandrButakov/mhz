@@ -96,15 +96,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickButton1(View view) {
-
+        saveText();
     }
 
     public void onClickButton2(View view) {
-
+        openText();
     }
 
     // сохранение файла
-    public void saveText(View view){
+    public void saveText(){
 
         FileOutputStream fos = null;
         try {
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // открытие файла
-    public void openText(View view){
+    public void openText(){
 
         FileInputStream fin = null;
         EditText editText2 = findViewById(R.id.editText2);

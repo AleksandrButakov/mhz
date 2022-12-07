@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (file.exists()) {
-            Toast.makeText("File not deleted!").show();
+            Toast.makeText(this, "File not deleted!", Toast.LENGTH_LONG).show();
         }
 
         EditText editText1 = findViewById(R.id.editText1);
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         // Выводим сообщение об успешной загрузке
         Toast.makeText(this, "File uploaded successfully!",
                 Toast.LENGTH_SHORT).show();
-
+        // !!!!!!!!!!!!!
         pauseWhenLoading();
 
 //        try {
@@ -259,10 +259,21 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        pauseWhenLoading();
+
 
         // удаляем загруженный файл из папки download
         deleteFile(file);
+
+        // ожидаем удаления файла
+        count = 3;
+        while (file.exists() && count > 0) {
+            pauseWhenLoading();
+            count--;
+        }
+
+        if (file.exists()) {
+            Toast.makeText(this, "File not deleted!", Toast.LENGTH_LONG).show();
+        }
 
     }
 

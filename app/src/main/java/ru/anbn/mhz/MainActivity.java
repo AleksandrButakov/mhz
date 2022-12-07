@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -78,28 +76,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void onClickButton(View v) throws IOException {
-
-        /*
-        String sPath = "app/src/main/assets/MyFile.txt";
-        FileReader fr = new FileReader(sPath);
-        Scanner scan = new Scanner(fr);
-        TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setText(scan.nextLine());
-        int i = 1;
-        while (scan.hasNextLine()) {
-            System.out.println(i + " : " + scan.nextLine());
-            i++;
-        }
-        fr.close();
-        */
-    }
-
     public void onClickButton1(View view) {
         saveText();
     }
 
-    public void onClickButton2(View view) {
+    public void onClickButton2(View view) throws IOException {
         openText();
     }
 
@@ -160,26 +141,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // скопируем файл из сети
+    // https://drive.google.com/file/d/1u9-qgZsTMSruygixHCJZvLbtlG2QWWmS/view?usp=sharing
 
-    // очистка содержимого в ListView
-    public void ListViewClear() {
-        // получаем экземпляр элемента ListView
-        ListView listView = findViewById(R.id.listView);
-        // очистим listArray для дальнейшей очистки массива
-        listCardArray.clear();
-        // используем адаптер данных
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, listCardArray);
-        listView.setAdapter(adapter);
-    }
 
-    // вывод результатов поиска в ListView
-    public void SearchResultsDisplay() {
-        // получаем экземпляр элемента ListView
-        ListView listView = findViewById(R.id.listView);
-        // используем адаптер данных
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, listCardArray);
-        listView.setAdapter(adapter);
-    }
+
+
+
 }

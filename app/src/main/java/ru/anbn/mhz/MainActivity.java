@@ -18,10 +18,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -189,14 +192,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
         try {
             String text = "13131313";
+            File myFile = new File(Environment.getExternalStorageDirectory().toString() + "/Download/" + "123.txt");
             /*
              * Создается объект файла, при этом путь к файлу находиться методом класcа Environment
              * Обращение идёт, как и было сказано выше к внешнему накопителю
              */
-            File myFile = new File(Environment.getExternalStorageDirectory().toString() + "/Download/" + "123.txt");
             myFile.createNewFile();                                         // Создается файл, если он не был создан
             FileOutputStream outputStream = new FileOutputStream(myFile);   // После чего создаем поток для записи
             outputStream.write(text.getBytes());                            // и производим непосредственно запись
@@ -211,8 +213,41 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
-
+        /*
+         * Аналогично создается объект файла
+         */
+        try {
+            File myFile = new File(Environment.getExternalStorageDirectory().toString() + "/Download/" + "123.txt");
+            FileInputStream inputStream = new FileInputStream(myFile);
+            /*
+             * Буфферезируем данные из выходного потока файла
+             */
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            /*
+             * Класс для создания строк из последовательностей символов
+             */
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+            try {
+                /*
+                 * Производим построчное считывание данных из файла в конструктор строки,
+                 * Псоле того, как данные закончились, производим вывод текста в TextView
+                 */
+                /*
+                while ((line = bufferedReader.readLine()) != null){
+                    stringBuilder.append(line);
+                }
+                 */
+                line = bufferedReader.readLine();
+                stringBuilder.append(line);
+                editText1.setText(stringBuilder);
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
 
         // установим таймер перед удалением файла

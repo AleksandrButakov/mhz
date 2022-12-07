@@ -1,5 +1,8 @@
 package ru.anbn.mhz;
 
+import static android.os.Environment.getExternalStorageDirectory;
+import static java.lang.Thread.sleep;
+
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +20,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -25,6 +29,13 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList listCardArray = new ArrayList();
 
     private static String FILE_NAME = "content.txt";
+
+    // путь к файлу на google drive
+    private String link = "https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1u9-qgZsTMSruygixHCJZvLbtlG2QWWmS";
+    // путь к файлу на external drive
+    private String filePath = getExternalStorageDirectory().getAbsolutePath() + "/Download/mhz_data.txt";
+
+    private File file = new File(filePath);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickButton1(View view) {
-        saveText();
+        button1();
     }
 
     public void onClickButton2(View view) throws IOException {
@@ -90,17 +101,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // сохранение файла
-    public void saveText() {
+    public void button1() {
 
-        /*
-        EditText editText1 = findViewById(R.id.editText1);
-        editText1.setText(Environment.getExternalStorageDirectory().getAbsolutePath());
-        */
+        EditText editText2 = findViewById(R.id.editText2);
 
-        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/mhz_data.txt";
-        File file = new File(filePath);
+        // удаляем загруженный файл из папки download
         if (file.exists()) {
             file.delete();
+            editText2.setText("true");
+        } else {
+            editText2.setText("false");
         }
 
 
@@ -159,56 +169,69 @@ public class MainActivity extends AppCompatActivity {
     // скопируем файл из сети
     // https://drive.google.com/file/d/1u9-qgZsTMSruygixHCJZvLbtlG2QWWmS/view?usp=sharing
     private void saveFile() {
+        EditText editText1 = findViewById(R.id.editText1);
+        EditText editText2 = findViewById(R.id.editText2);
 
-        // путь к файлу на google drive
-        String link = "https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1u9-qgZsTMSruygixHCJZvLbtlG2QWWmS";
-        // путь к файлу на external drive
-        String filePath = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/mhz_data.txt";
-
+        // загружаем файл с google disk
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(link));
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         request.setTitle("Download...");
         request.setDescription("File is download...");
 
-        File file = new File(filePath);
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE | DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setDestinationUri(Uri.fromFile(file));
         DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         manager.enqueue(request);
-
-
+        // Выводим сообщение об успешной загрузке
         Toast.makeText(this, "File uploaded successfully!", Toast.LENGTH_SHORT).show();
+
+
+
+
+
+        try {
+            String text = "13131313";
+            /*
+             * Создается объект файла, при этом путь к файлу находиться методом класcа Environment
+             * Обращение идёт, как и было сказано выше к внешнему накопителю
+             */
+            File myFile = new File(Environment.getExternalStorageDirectory().toString() + "/Download/" + "123.txt");
+            myFile.createNewFile();                                         // Создается файл, если он не был создан
+            FileOutputStream outputStream = new FileOutputStream(myFile);   // После чего создаем поток для записи
+            outputStream.write(text.getBytes());                            // и производим непосредственно запись
+            outputStream.close();
+            /*
+             * Вызов сообщения Toast не относится к теме.
+             * Просто для удобства визуального контроля исполнения метода в приложении
+             */
+            //Toast.makeText(this, R.string.write\_done, Toast.LENGTH\_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+        // установим таймер перед удалением файла
+        try {
+            sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         // удаляем загруженный файл из папки download
         if (file.exists()) {
             file.delete();
+            editText2.setText("true");
+        } else {
+            editText2.setText("false");
         }
 
-/*
-        // открытие файла
-        FileInputStream fin = null;
-        EditText editText2 = findViewById(R.id.editText2);
-        try {
-            fin = openFileInput(filePath + ".txt");
-            byte[] bytes = new byte[fin.available()];
-            fin.read(bytes);
-            String text = new String(bytes);
-            editText2.setText(text);
-        } catch (IOException ex) {
 
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-        } finally {
 
-            try {
-                if (fin != null)
-                    fin.close();
-            } catch (IOException ex) {
-
-                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-        */
 
 
     }

@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +21,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -34,11 +32,15 @@ public class MainActivity extends AppCompatActivity {
     private static String FILE_NAME = "content.txt";
 
     // путь к файлу на google drive
-    private String link = "https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1u9-qgZsTMSruygixHCJZvLbtlG2QWWmS";
+    private String linkDiskFile = "https://drive.google.com/uc?export=download&confirm=" +
+            "no_antivirus&id=1u9-qgZsTMSruygixHCJZvLbtlG2QWWmS";
     // путь к файлу на external drive
-    private String filePath = getExternalStorageDirectory().getAbsolutePath() + "/Download/mhz_data.txt";
+    private String filePath = getExternalStorageDirectory().getAbsolutePath() +
+            "/Download/mhz_data.txt";
 
     private File file = new File(filePath);
+    // счетчик для числа переходов
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,25 +99,22 @@ public class MainActivity extends AppCompatActivity {
         button1();
     }
 
-    public void onClickButton2(View view) throws IOException {
-        // openText();
-        saveFile();
+    public void onClickButton2(View view) throws InterruptedException {
+        fileSynchronization();
 
     }
 
-    // сохранение файла
-    public void button1() {
 
+    public void button1() {
         EditText editText2 = findViewById(R.id.editText2);
 
-        // удаляем загруженный файл из папки download
+        //  при наличии файла /Download/mhz_data.txt удаляем его
         if (file.exists()) {
             file.delete();
             editText2.setText("true");
         } else {
             editText2.setText("false");
         }
-
 
         /*
         FileOutputStream fos = null;
@@ -169,77 +168,88 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // скопируем файл из сети
-    // https://drive.google.com/file/d/1u9-qgZsTMSruygixHCJZvLbtlG2QWWmS/view?usp=sharing
-    private void saveFile() {
+    /* алгоритм работы метода актуализации данных следующий:
+       сохраняем файл с google disk в папку download
+       там его последовательно считывая записываем в служебную директорию программы
+       для дальнейшего использования. После считывания удаляем скачанный файл
+       /Download/mhz_data.txt из External хранилища
+     */
+
+    private void fileSynchronization() throws InterruptedException {
+        // удаляем загруженный файл из папки download
+        deleteFile(file);
+
+        // ожидаем удаления файла
+        count = 3;
+        while (file.exists() && count > 0) {
+            pauseWhenLoading();
+            count--;
+        }
+
+        if (file.exists()) {
+            Toast.makeText("File not deleted!").show();
+        }
+
         EditText editText1 = findViewById(R.id.editText1);
         EditText editText2 = findViewById(R.id.editText2);
 
         // загружаем файл с google disk
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(link));
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(linkDiskFile));
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE |
+                DownloadManager.Request.NETWORK_WIFI);
         request.setTitle("Download...");
         request.setDescription("File is download...");
 
         request.allowScanningByMediaScanner();
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE | DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE |
+                DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setDestinationUri(Uri.fromFile(file));
         DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         manager.enqueue(request);
+
         // Выводим сообщение об успешной загрузке
-        Toast.makeText(this, "File uploaded successfully!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "File uploaded successfully!",
+                Toast.LENGTH_SHORT).show();
+
+        pauseWhenLoading();
+
+//        try {
+//            String text = "13131313";
+//            File myFile = new File(Environment.getExternalStorageDirectory().toString() + "/Download/" + "123.txt");
+//            /*
+//             * Создается объект файла, при этом путь к файлу находиться методом класcа Environment
+//             * Обращение идёт, как и было сказано выше к внешнему накопителю
+//             */
+//            myFile.createNewFile();                                         // Создается файл, если он не был создан
+//            FileOutputStream outputStream = new FileOutputStream(myFile);   // После чего создаем поток для записи
+//            outputStream.write(text.getBytes());                            // и производим непосредственно запись
+//            outputStream.close();
+//            /*
+//             * Вызов сообщения Toast не относится к теме.
+//             * Просто для удобства визуального контроля исполнения метода в приложении
+//             */
+//            //Toast.makeText(this, R.string.write\_done, Toast.LENGTH\_SHORT).show();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
 
-
-
+        // READER EXTERNAL DOWNLOAD
         try {
-            String text = "13131313";
-            File myFile = new File(Environment.getExternalStorageDirectory().toString() + "/Download/" + "123.txt");
-            /*
-             * Создается объект файла, при этом путь к файлу находиться методом класcа Environment
-             * Обращение идёт, как и было сказано выше к внешнему накопителю
-             */
-            myFile.createNewFile();                                         // Создается файл, если он не был создан
-            FileOutputStream outputStream = new FileOutputStream(myFile);   // После чего создаем поток для записи
-            outputStream.write(text.getBytes());                            // и производим непосредственно запись
-            outputStream.close();
-            /*
-             * Вызов сообщения Toast не относится к теме.
-             * Просто для удобства визуального контроля исполнения метода в приложении
-             */
-            //Toast.makeText(this, R.string.write\_done, Toast.LENGTH\_SHORT).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        /*
-         * Аналогично создается объект файла
-         */
-        try {
-            File myFile = new File(Environment.getExternalStorageDirectory().toString() + "/Download/" + "123.txt");
-            FileInputStream inputStream = new FileInputStream(myFile);
-            /*
-             * Буфферезируем данные из выходного потока файла
-             */
+            // построчно читаем файл /Download/mhz_data.txt
+            FileInputStream inputStream = new FileInputStream(file);
+            // буфферезируем данные из выходного потока файла
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            /*
-             * Класс для создания строк из последовательностей символов
-             */
+            // Класс для создания строк из последовательностей символов
             StringBuilder stringBuilder = new StringBuilder();
             String line;
             try {
-                /*
-                 * Производим построчное считывание данных из файла в конструктор строки,
-                 * Псоле того, как данные закончились, производим вывод текста в TextView
-                 */
-                /*
-                while ((line = bufferedReader.readLine()) != null){
+                // Производим построчное считывание данных из файла в конструктор строки,
+                // Псоле того, как данные закончились, производим вывод текста в TextView
+                while ((line = bufferedReader.readLine()) != null) {
                     stringBuilder.append(line);
                 }
-                 */
-                line = bufferedReader.readLine();
-                stringBuilder.append(line);
+
                 editText1.setText(stringBuilder);
                 inputStream.close();
             } catch (IOException e) {
@@ -249,26 +259,24 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-        // установим таймер перед удалением файла
-        try {
-            sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        pauseWhenLoading();
 
         // удаляем загруженный файл из папки download
-        if (file.exists()) {
-            file.delete();
-            editText2.setText("true");
-        } else {
-            editText2.setText("false");
-        }
-
-
-
-
+        deleteFile(file);
 
     }
+
+    // при наличии файла /Download/mhz_data.txt удаляем его
+    public static void deleteFile(File file) {
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
+    // наличие паузы при загрузке и считывании файла
+    public static void pauseWhenLoading() throws InterruptedException {
+        sleep(4000);
+    }
+
 
 }

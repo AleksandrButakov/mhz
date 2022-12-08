@@ -34,11 +34,12 @@ public class MainActivity extends AppCompatActivity {
     private static final String FILE_PATH_LOCAL = "content.txt";
 
     // путь к файлу на google drive
-    private static final String FILE_PATH_GOOGLE_DISK = "https://drive.google.com/uc?export=download&confirm=" +
-            "no_antivirus&id=1u9-qgZsTMSruygixHCJZvLbtlG2QWWmS";
+    private static final String FILE_PATH_GOOGLE_DISK =
+            "https://drive.google.com/uc?export=download&confirm=no_antivirus&id=" +
+                    "1lrK0nrZGsxdawt5DidHASyfiJ5QtwST4";
     // путь к файлу на external drive
-    private static final String FILE_PATH_EXTERNAL = getExternalStorageDirectory().getAbsolutePath() +
-            "/Download/mhz_data.txt";
+    private static final String FILE_PATH_EXTERNAL = getExternalStorageDirectory().
+            getAbsolutePath() + "/Download/mhz_data.txt";
 
     private File filePathExternal = new File(FILE_PATH_EXTERNAL);
     private File filePathLocal = new File(FILE_PATH_LOCAL);
@@ -110,15 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void button1() {
-        EditText editText2 = findViewById(R.id.editText2);
 
-        // при наличии файла /Download/mhz_data.txt удаляем его
-        if (filePathExternal.exists()) {
-            filePathExternal.delete();
-            editText2.setText("true");
-        } else {
-            editText2.setText("false");
-        }
 
     }
 
@@ -134,13 +127,14 @@ public class MainActivity extends AppCompatActivity {
         // при наличии файла /Download/mhz_data.txt удаляем его
         deleteFile(filePathExternal);
 
-        // ожидаем удаления файла
-        count = 3;
+        // ожидаем удаления файла (установим таймер 60 сек)
+        count = 30;
         while (filePathExternal.exists() && count > 0) {
             pauseWhenLoading();
             count--;
         }
 
+        // если по истичении таймера 90 сек файл все еще существует выдаем ошибку
         if (filePathExternal.exists()) {
             Toast.makeText(this, "File not deleted!", Toast.LENGTH_LONG).show();
         }

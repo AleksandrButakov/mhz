@@ -29,16 +29,16 @@ public class MainActivity extends AppCompatActivity {
     // массив для дальнейшего заполнения найденными позициями
     public ArrayList listCardArray = new ArrayList();
 
-    private static String FILE_NAME = "content.txt";
+    private static final String LOCAL_FILE_NAME = "content.txt";
 
     // путь к файлу на google drive
-    private String linkDiskFile = "https://drive.google.com/uc?export=download&confirm=" +
+    private static final String LINK_DISK_FILE = "https://drive.google.com/uc?export=download&confirm=" +
             "no_antivirus&id=1u9-qgZsTMSruygixHCJZvLbtlG2QWWmS";
     // путь к файлу на external drive
-    private String filePath = getExternalStorageDirectory().getAbsolutePath() +
+    private static final String FILE_PATH_EXTERNAL = getExternalStorageDirectory().getAbsolutePath() +
             "/Download/mhz_data.txt";
 
-    private File file = new File(filePath);
+    private File filePathExternal = new File(FILE_PATH_EXTERNAL);
     // счетчик для числа переходов
     private int count;
 
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             editText2.setText("false");
         }
 
-        /*
+        /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         FileOutputStream fos = null;
         try {
             EditText editText1 = findViewById(R.id.editText1);
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     // открытие файла
     public void openText() {
-        FILE_NAME = "https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1u9-qgZsTMSruygixHCJZvLbtlG2QWWmS";
+        String FILE_NAME = "https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1u9-qgZsTMSruygixHCJZvLbtlG2QWWmS";
         FileInputStream fin = null;
         EditText editText2 = findViewById(R.id.editText2);
         try {
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
         EditText editText2 = findViewById(R.id.editText2);
 
         // загружаем файл с google disk
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(linkDiskFile));
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(LINK_DISK_FILE));
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE |
                 DownloadManager.Request.NETWORK_WIFI);
         request.setTitle("Download...");
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE |
                 DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationUri(Uri.fromFile(file));
+        request.setDestinationUri(Uri.fromFile(filePathExternal));
         DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         manager.enqueue(request);
 
@@ -233,11 +233,15 @@ public class MainActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
 
+        // удалим внутренний файл context.txt при его наличии
+
+        deleteFile(filePathExternal);
 
         // READER EXTERNAL DOWNLOAD
         try {
             // построчно читаем файл /Download/mhz_data.txt
-            FileInputStream inputStream = new FileInputStream(file);
+            FileInputStream inputStream = new FileInputStream(filePathExternal);
+
             // буфферезируем данные из выходного потока файла
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             // Класс для создания строк из последовательностей символов
@@ -260,18 +264,44 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        /*
+        // записываем как внутренний файл приложения
+        FileOutputStream fos = null;
+        try {
+            EditText editText1 = findViewById(R.id.editText1);
+            String text = editText1.getText().toString();
+
+            fos = openFileOutput(FILE_NAME, MODE_APPEND);
+            fos.write(text.getBytes());
+            Toast.makeText(this, "Файл сохранен", Toast.LENGTH_SHORT).show();
+        } catch (IOException ex) {
+
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        } finally {
+            try {
+                if (fos != null)
+                    fos.close();
+            } catch (IOException ex) {
+
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+         */
+
 
         // удаляем загруженный файл из папки download
-        deleteFile(file);
+        deleteFile(filePathExternal);
 
         // ожидаем удаления файла
         count = 3;
-        while (file.exists() && count > 0) {
+        while (filePathExternal.exists() && count > 0) {
             pauseWhenLoading();
             count--;
         }
 
-        if (file.exists()) {
+        if (filePathExternal.exists()) {
             Toast.makeText(this, "File not deleted!", Toast.LENGTH_LONG).show();
         }
 

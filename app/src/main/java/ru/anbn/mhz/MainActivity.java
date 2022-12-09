@@ -106,13 +106,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickButton2(View view) throws InterruptedException {
         fileSynchronization();
-
     }
 
 
     public void button1() {
-
-
     }
 
 
@@ -128,15 +125,16 @@ public class MainActivity extends AppCompatActivity {
         deleteFile(filePathExternal);
 
         // ожидаем удаления файла (установим таймер 60 сек)
-        count = 30;
+        count = 60;
         while (filePathExternal.exists() && count > 0) {
             pauseWhenLoading();
             count--;
         }
 
-        // если по истичении таймера 90 сек файл все еще существует выдаем ошибку
+        // если по истичении таймера 60 сек файл все еще существует выдаем ошибку
         if (filePathExternal.exists()) {
-            Toast.makeText(this, "File not deleted!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "01 File /Download/mhz_data.txt not deleted!",
+                    Toast.LENGTH_LONG).show();
         }
 
         EditText editText1 = findViewById(R.id.editText1);
@@ -157,22 +155,35 @@ public class MainActivity extends AppCompatActivity {
         manager.enqueue(request);
 
         // Выводим сообщение об успешной загрузке
-        Toast.makeText(this, "File uploaded successfully!",
+        Toast.makeText(this, "02 File uploaded successfully!",
                 Toast.LENGTH_SHORT).show();
 
 
-        // ожидаем загрузку файла mhz.txt
-        count = 10;
+        // ожидаем загрузку файла mhz.txt (установим таймер 60 секунд)
+        count = 60;
         while (!filePathExternal.exists() && count > 0) {
             pauseWhenLoading();
             count--;
         }
-        Toast.makeText(this, "File donnload. Timer = " + count, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "03 File download. Timer = " + count, Toast.LENGTH_LONG).show();
 
         /* удалим внутренний файл context.txt при его наличии
            необходимо для создания нового файла content.txt из нового
          */
         deleteFile(filePathLocal);
+
+        // ожидаем удаления файла (установим таймер 60 сек)
+        count = 60;
+        while (filePathLocal.exists() && count > 0) {
+            pauseWhenLoading();
+            count--;
+        }
+
+        // если по истичении таймера 60 сек файл все еще существует выдаем ошибку
+        if (filePathExternal.exists()) {
+            Toast.makeText(this, "04 File content.txt not deleted!",
+                    Toast.LENGTH_LONG).show();
+        }
 
         // READER EXTERNAL DOWNLOAD
         try {
@@ -188,7 +199,8 @@ public class MainActivity extends AppCompatActivity {
             // Класс для создания строк из последовательностей символов
             //StringBuilder stringBuilder = new StringBuilder();
             String line;
-            String s = "111";
+            String s = null;
+            int count = 0;
             try {
                 /* Производим построчное считывание данных из файла также построчно
                  * записываем это во внутренний файл приложения
@@ -197,9 +209,10 @@ public class MainActivity extends AppCompatActivity {
                     //stringBuilder.append(line);
                     fos.write(line.getBytes());
                     s = line;
+                    count++;
                 }
                 Toast.makeText(this, "Файл сохранен", Toast.LENGTH_SHORT).show();
-                editText1.setText(s);
+                editText1.setText(count + s);
                 inputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -261,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (filePathExternal.exists()) {
-            Toast.makeText(this, "File not deleted!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "05 File not deleted!", Toast.LENGTH_LONG).show();
         }
 
     }

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     // путь к файлу на google drive
     private static final String FILE_PATH_GOOGLE_DISK = "https://drive.google.com/uc?export=" +
-            "download&confirm=no_antivirus&id=1myzCzbolFHmq63jvprxNzGNNr6aqcr8h";
+            "download&confirm=no_antivirus&id=1tbWt0VaBAuhfBcD62ssK7CpeY8dG4fuy";
 
     // путь к файлу на external drive
     private static final String FILE_PATH_EXTERNAL = getExternalStorageDirectory().
@@ -120,28 +120,33 @@ public class MainActivity extends AppCompatActivity {
        /Download/mhz_data.txt из External хранилища
      */
 
-    private File filePathExternal = new File(FILE_PATH_EXTERNAL);
-    private File filePathLocal = new File(FILE_PATH_LOCAL);
+
 
 
 
     private void fileSynchronization() throws InterruptedException {
+        //Object file;
+        Object filePathExternal = new File(FILE_PATH_EXTERNAL);
+
+        File filePathLocal = new File(FILE_PATH_LOCAL);
+
 
         // при наличии файла /Download/mhz_data.txt удаляем его
-        deleteFile(filePathExternal);
+        deleteFile((File) filePathExternal);
 
         // ожидаем удаления файла (установим таймер 60 сек)
         count = seconds;
-        while (filePathExternal.exists() && count > 0) {
+        while (((File) filePathExternal).exists() && count > 0) {
             pauseWhenLoading();
             count--;
         }
 
         // если по истичении таймера 60 сек файл все еще существует выдаем ошибку
-        if (filePathExternal.exists()) {
+        if (((File) filePathExternal).exists()) {
             Toast.makeText(this, "01 File /Download/mhz_data.txt not deleted!",
                     Toast.LENGTH_LONG).show();
         }
+
 
         EditText editText1 = findViewById(R.id.editText1);
         EditText editText2 = findViewById(R.id.editText2);
@@ -156,22 +161,26 @@ public class MainActivity extends AppCompatActivity {
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE |
                 DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationUri(Uri.fromFile(filePathExternal));
+        request.setDestinationUri(Uri.fromFile((File) filePathExternal));       // !!!!!!!!!
         DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         manager.enqueue(request);
 
+        sleep(5000);
+
+
         // ожидаем загрузку файла mhz.txt (установим таймер 60 секунд)
         count = seconds;
-        while (!filePathExternal.exists() && count > 0) {
+        while (!((File) filePathExternal).exists() && count > 0) {
             pauseWhenLoading();
             count--;
         }
 
-        if (!filePathExternal.exists()) {
+        if (!((File) filePathExternal).exists()) {
             Toast.makeText(this, "02 File not uploaded. Timer = " + count, Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "03 File download. Timer = " + count, Toast.LENGTH_LONG).show();
         }
+
 
         /* удалим внутренний файл context.txt при его наличии
            необходимо для создания нового файла content.txt из нового
@@ -195,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
         // READER EXTERNAL DOWNLOAD
         try {
             // построчно читаем файл /Download/mhz_data.txt и записываем данные в локальный
-            FileInputStream inputStream = new FileInputStream(filePathExternal);
+            FileInputStream inputStream = new FileInputStream((File) filePathExternal);   //!!!!!!!!
 
             // stream для записи файла
             FileOutputStream fos = null;
@@ -251,16 +260,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         // при наличии файла /Download/mhz_data.txt удаляем его
-        deleteFile(filePathExternal);
+        deleteFile((File) filePathExternal);
 
         // ожидаем удаления файла
         count = seconds;
-        while (filePathExternal.exists() && count > 0) {
+        while (((File) filePathExternal).exists() && count > 0) {
             pauseWhenLoading();
             count--;
         }
 
-        if (filePathExternal.exists()) {
+        if (((File) filePathExternal).exists()) {
             Toast.makeText(this, "05 File not deleted!", Toast.LENGTH_LONG).show();
         }
 

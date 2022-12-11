@@ -5,8 +5,6 @@ import static android.os.Environment.getExternalStorageDirectory;
 import static java.lang.Thread.sleep;
 
 import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static boolean update = true;
 
-    private static final String FILE_PATH_LOCAL = "content.txt";
+    private static final String FILE_PATH_LOCAL_VERSION = "version.txt";
+    private static final String FILE_PATH_LOCAL_DATA = "mhz_data.txt";
 
     // путь к файлу version.txt на google drive
     private static final String FILE_PATH_GOOGLE_DISK_VERSION = "https://drive.google.com/uc?export=" +
@@ -52,9 +51,6 @@ public class MainActivity extends AppCompatActivity {
     // путь к файлу на external drive
     private static final String FILE_PATH_EXTERNAL = getExternalStorageDirectory().
             getAbsolutePath() + "/Download/mhz.txt";
-
-    private File filePathExternal = new File(FILE_PATH_EXTERNAL);
-    private File filePathLocal = new File(FILE_PATH_LOCAL);
 
     // счетчик для числа переходов
     private int count;
@@ -127,6 +123,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void button1() {
 
+        downloadFile(FILE_PATH_GOOGLE_DISK_VERSION, FILE_PATH_LOCAL_VERSION);
+        downloadFile(FILE_PATH_GOOGLE_DISK_DATA, FILE_PATH_LOCAL_DATA);
+
+
+        /*
         DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         // ЗАГРУЗКА ФАЙЛА version.txt
         File file_version = new File(getExternalFilesDir(null), "version.txt");
@@ -221,36 +222,65 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("3333333333" + "count = " + count);
         // file.delete();
 
+
+         */
     }
 
-    //now checking if download complete
 
-    private BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            System.out.println("eeeeeeeee");
-            long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-            if (downloadId == id) {
-                Toast.makeText(MainActivity.this, "Download Completed", Toast.LENGTH_SHORT).show();
-            }
+    private void downloadFile(String pathServerFile, String pathLocalFile) {
+
+        // ЗАГРУЗКА ФАЙЛА version.txt
+        File file = new File(getExternalFilesDir(null), pathLocalFile);
+
+        if (file.exists()) {
+            file.delete();
         }
-    };
 
-
-    //now checking if download complete
-/*
-    private BroadcastReceiver onDownloadComplete=new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            long id=intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID,-1);
-            System.out.println("33333");
-            if(downloadId==id){
-                Toast.makeText(MainActivity.this, "Download Completed", Toast.LENGTH_SHORT).show();
+        count = 20;
+        while (file.exists() && count > 0) {
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            count--;
         }
-    };
 
- */
+        System.out.println("1111111" + "count = " + count);
+
+        DownloadManager.Request request_version = null;
+        request_version = new DownloadManager.Request(Uri.parse(pathServerFile))
+                .setTitle("version_mhz")
+                .setDescription("Downloading")
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setDestinationUri(Uri.fromFile(file))
+                .setRequiresCharging(false)
+                .setAllowedOverMetered(true)
+                .setAllowedOverRoaming(true);
+        DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        downloadId = downloadManager.enqueue(request_version);
+
+        System.out.println("22222");
+
+        count = 20;
+        while (!file.exists() && count > 0) {
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            count--;
+        }
+
+        System.out.println("3333333333" + "count = " + count);
+        // file.delete();
+
+    }
+
+
+
+
+
 
     /* алгоритм работы метода актуализации данных следующий:
        сохраняем файл с google disk в папку download
@@ -259,6 +289,10 @@ public class MainActivity extends AppCompatActivity {
        /Download/mhz_data.txt из External хранилища
      */
     private void fileSynchronization() throws InterruptedException {
+
+        File filePathExternal = new File(FILE_PATH_EXTERNAL);
+        File filePathLocal = new File(FILE_PATH_LOCAL_DATA);
+
         // проверим что обновление еще не выполнялось
         if (!update) {
             System.out.println("Обновление уже выполнялось");
@@ -370,7 +404,7 @@ public class MainActivity extends AppCompatActivity {
 
             // stream для записи файла
             FileOutputStream fos = null;
-            fos = openFileOutput(FILE_PATH_LOCAL, MODE_PRIVATE);
+            fos = openFileOutput(FILE_PATH_LOCAL_DATA, MODE_PRIVATE);
 
             // буфферезируем данные из выходного потока файла
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));

@@ -3,9 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -17,33 +15,18 @@
         android:theme="@style/Theme.MHz"
         tools:targetApi="31">
 
-        <!-- If this receiver listens for broadcasts sent from the system or from
-     other apps, even other apps that you own, set android:exported to "true". -->
-        <receiver android:name=".MyBroadcastReceiver" android:exported="false">
-            <intent-filter>
-                <action android:name="APP_SPECIFIC_BROADCAST" />
-            </intent-filter>
-        </receiver>
-
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity android:name=".WebViewActivity" />
-
     </application>
-
-
 
 </manifest>

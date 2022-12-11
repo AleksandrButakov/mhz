@@ -35,14 +35,18 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     // массив для дальнейшего заполнения найденными позициями
-    public ArrayList listCardArray = new ArrayList();
+    private ArrayList listCardArray = new ArrayList();
 
     private static boolean update = true;
 
     private static final String FILE_PATH_LOCAL = "content.txt";
 
-    // путь к файлу на google drive
-    private static final String FILE_PATH_GOOGLE_DISK = "https://drive.google.com/uc?export=" +
+    // путь к файлу version.txt на google drive
+    private static final String FILE_PATH_GOOGLE_DISK_VERSION = "https://drive.google.com/uc?export=" +
+            "download&confirm=no_antivirus&id=1o7fiLYOSHK175bwU6pbe0xA_MmyXoZvZ";
+
+    // путь к файлу mhz_data.txt на google drive
+    private static final String FILE_PATH_GOOGLE_DISK_DATA = "https://drive.google.com/uc?export=" +
             "download&confirm=no_antivirus&id=1tbWt0VaBAuhfBcD62ssK7CpeY8dG4fuy";
 
     // путь к файлу на external drive
@@ -113,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickButton1(View view) {
         button1();
+
     }
 
     public void onClickButton2(View view) throws InterruptedException {
@@ -121,60 +126,101 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void button1() {
-//        System.out.println("11111");
-//        File file = new File(getExternalFilesDir(null), "Dummy");
-//        //checking if android version is equal and greater than noughat
-//        //now if download complete file not visible now lets show it
-//        DownloadManager.Request request = null;
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-//            request = new DownloadManager.Request(Uri.parse(FILE_PATH_GOOGLE_DISK))
-//                    .setTitle("Dummy")
-//                    .setDescription("Downloading")
-//                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-//                    .setDestinationUri(Uri.fromFile(file))
-//                    .setRequiresCharging(false)
-//                    .setAllowedOverMetered(true)
-//                    .setAllowedOverRoaming(true);
-//        } else {
-//            request = new DownloadManager.Request(Uri.parse(FILE_PATH_GOOGLE_DISK))
-//                    .setTitle("Dummy")
-//                    .setDescription("Downloading")
-//                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-//                    .setDestinationUri(Uri.fromFile(file))
-//                    .setAllowedOverRoaming(true);
-//        }
-//
-//        DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-//        downloadId = downloadManager.enqueue(request);
-//        System.out.println("22222");
 
-        File file = new File(getExternalFilesDir(null), "mhz_data.txt");
+        DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        // ЗАГРУЗКА ФАЙЛА version.txt
+        File file_version = new File(getExternalFilesDir(null), "version.txt");
 
+        if (file_version.exists()) {
+            file_version.delete();
+        }
 
-        DownloadManager.Request request = null;
-        request = new DownloadManager.Request(Uri.parse(FILE_PATH_GOOGLE_DISK))
-                .setTitle("database_mhz")
+        count = 20;
+        while (file_version.exists() && count > 0) {
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            count--;
+        }
+
+        System.out.println("1111111" + "count = " + count);
+
+        DownloadManager.Request request_version = null;
+        request_version = new DownloadManager.Request(Uri.parse(FILE_PATH_GOOGLE_DISK_VERSION))
+                .setTitle("version_mhz")
                 .setDescription("Downloading")
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                .setDestinationUri(Uri.fromFile(file))
+                .setDestinationUri(Uri.fromFile(file_version))
                 .setRequiresCharging(false)
                 .setAllowedOverMetered(true)
                 .setAllowedOverRoaming(true);
-
-
-        DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        downloadId = downloadManager.enqueue(request);
-
+        //DownloadManager downloadManager_version = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        downloadId = downloadManager.enqueue(request_version);
 
         System.out.println("22222");
-        try {
-            sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        System.out.println("3333333333");
 
-        file.delete();
+        count = 20;
+        while (!file_version.exists() && count > 0) {
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            count--;
+        }
+
+        System.out.println("3333333333" + "count = " + count);
+        // file.delete();
+
+
+        // ЗАГРУЗКА ФАЙЛА mhz_data.txt
+        File file_data = new File(getExternalFilesDir(null), "mhz_data.txt");
+
+        if (file_data.exists()) {
+            file_data.delete();
+        }
+
+        count = 20;
+        while (file_data.exists() && count > 0) {
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            count--;
+        }
+
+        System.out.println("1111111" + "count = " + count);
+
+        DownloadManager.Request request_data = null;
+        request_data = new DownloadManager.Request(Uri.parse(FILE_PATH_GOOGLE_DISK_DATA))
+                .setTitle("database_mhz")
+                .setDescription("Downloading")
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setDestinationUri(Uri.fromFile(file_data))
+                .setRequiresCharging(false)
+                .setAllowedOverMetered(true)
+                .setAllowedOverRoaming(true);
+        // DownloadManager downloadManager_data = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        downloadId = downloadManager.enqueue(request_data);
+
+        System.out.println("22222");
+
+        count = 20;
+        while (!file_data.exists() && count > 0) {
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            count--;
+        }
+
+        System.out.println("3333333333" + "count = " + count);
+        // file.delete();
+
     }
 
     //now checking if download complete
@@ -273,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
         //checking if android version is equal and greater than noughat
         //now if download complete file not visible now lets show it
         DownloadManager.Request request = null;
-        request = new DownloadManager.Request(Uri.parse(FILE_PATH_GOOGLE_DISK))
+        request = new DownloadManager.Request(Uri.parse(FILE_PATH_GOOGLE_DISK_DATA))
                 .setTitle("database_mhz")
                 .setDescription("Downloading")
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)

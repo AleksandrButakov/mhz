@@ -1,11 +1,12 @@
 package ru.anbn.mhz;
 
 import static android.os.Environment.getExternalStorageDirectory;
-
 import static java.lang.Thread.sleep;
 
 import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -123,7 +124,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void button1() {
 
+        // проверка наличия подключения к интернету
+        EditText editText1 = findViewById(R.id.editText1);
+        editText1.setText(String.valueOf(isOnline()));
+
+        // проверяес что файл version.txt существует, тогда читаем версию
+
+        // загрузка файла version.txt
         downloadFile(FILE_PATH_GOOGLE_DISK_VERSION, FILE_PATH_LOCAL_VERSION);
+
+        // загрузка файла mhz_data.txt
         downloadFile(FILE_PATH_GOOGLE_DISK_DATA, FILE_PATH_LOCAL_DATA);
 
 
@@ -227,59 +237,68 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void downloadFile(String pathServerFile, String pathLocalFile) {
-
-        // ЗАГРУЗКА ФАЙЛА version.txt
-        File file = new File(getExternalFilesDir(null), pathLocalFile);
-
-        if (file.exists()) {
-            file.delete();
+    // проверка наличия подключения к интернету
+    protected boolean isOnline() {
+        String cs = Context.CONNECTIVITY_SERVICE;
+        ConnectivityManager cm = (ConnectivityManager)
+                getSystemService(cs);
+        if (cm.getActiveNetworkInfo() == null) {
+            return false;
+        } else {
+            return true;
         }
-
-        count = 20;
-        while (file.exists() && count > 0) {
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            count--;
-        }
-
-        System.out.println("1111111" + "count = " + count);
-
-        DownloadManager.Request request_version = null;
-        request_version = new DownloadManager.Request(Uri.parse(pathServerFile))
-                .setTitle("version_mhz")
-                .setDescription("Downloading")
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                .setDestinationUri(Uri.fromFile(file))
-                .setRequiresCharging(false)
-                .setAllowedOverMetered(true)
-                .setAllowedOverRoaming(true);
-        DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        downloadId = downloadManager.enqueue(request_version);
-
-        System.out.println("22222");
-
-        count = 20;
-        while (!file.exists() && count > 0) {
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            count--;
-        }
-
-        System.out.println("3333333333" + "count = " + count);
-        // file.delete();
-
     }
 
 
+        private void downloadFile (String pathServerFile, String pathLocalFile){
 
+            // ЗАГРУЗКА ФАЙЛА version.txt
+            File file = new File(getExternalFilesDir(null), pathLocalFile);
 
+            if (file.exists()) {
+                file.delete();
+            }
+
+            count = 20;
+            while (file.exists() && count > 0) {
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                count--;
+            }
+
+            System.out.println("1111111" + "count = " + count);
+
+            DownloadManager.Request request_version = null;
+            request_version = new DownloadManager.Request(Uri.parse(pathServerFile))
+                    .setTitle("version_mhz")
+                    .setDescription("Downloading")
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setDestinationUri(Uri.fromFile(file))
+                    .setRequiresCharging(false)
+                    .setAllowedOverMetered(true)
+                    .setAllowedOverRoaming(true);
+            DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+            downloadId = downloadManager.enqueue(request_version);
+
+            System.out.println("22222");
+
+            count = 20;
+            while (!file.exists() && count > 0) {
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                count--;
+            }
+
+            System.out.println("3333333333" + "count = " + count);
+            // file.delete();
+
+        }
 
 
     /* алгоритм работы метода актуализации данных следующий:
@@ -288,21 +307,21 @@ public class MainActivity extends AppCompatActivity {
        для дальнейшего использования. После считывания удаляем скачанный файл
        /Download/mhz_data.txt из External хранилища
      */
-    private void fileSynchronization() throws InterruptedException {
+        private void fileSynchronization () throws InterruptedException {
 
-        File filePathExternal = new File(FILE_PATH_EXTERNAL);
-        File filePathLocal = new File(FILE_PATH_LOCAL_DATA);
+            File filePathExternal = new File(FILE_PATH_EXTERNAL);
+            File filePathLocal = new File(FILE_PATH_LOCAL_DATA);
 
-        // проверим что обновление еще не выполнялось
-        if (!update) {
-            System.out.println("Обновление уже выполнялось");
-            return;
-        }
+            // проверим что обновление еще не выполнялось
+            if (!update) {
+                System.out.println("Обновление уже выполнялось");
+                return;
+            }
 
-        // при наличии файла /Download/mhz_data.txt удаляем его
-        deleteFile(filePathExternal);
-        System.out.println("111111");
-        pauseWhenLoading();
+            // при наличии файла /Download/mhz_data.txt удаляем его
+            deleteFile(filePathExternal);
+            System.out.println("111111");
+            pauseWhenLoading();
         /*
         // ожидаем удаления файла (установим таймер 60 сек)
         count = seconds;
@@ -311,15 +330,15 @@ public class MainActivity extends AppCompatActivity {
             count--;
         }
 */
-        // если по истичении таймера 60 сек файл все еще существует выдаем ошибку
-        if (filePathExternal.exists()) {
-            Toast.makeText(this, "01 File /Download/mhz_data.txt not deleted!",
-                    Toast.LENGTH_LONG).show();
-        }
+            // если по истичении таймера 60 сек файл все еще существует выдаем ошибку
+            if (filePathExternal.exists()) {
+                Toast.makeText(this, "01 File /Download/mhz_data.txt not deleted!",
+                        Toast.LENGTH_LONG).show();
+            }
 
 
-        EditText editText1 = findViewById(R.id.editText1);
-        EditText editText2 = findViewById(R.id.editText2);
+            EditText editText1 = findViewById(R.id.editText1);
+            EditText editText2 = findViewById(R.id.editText2);
 
         /*
         // загружаем файл с google disk
@@ -337,9 +356,9 @@ public class MainActivity extends AppCompatActivity {
         manager.enqueue(request);
 
          */
-        //pauseWhenLoading();
-        pauseWhenLoading();
-        System.out.println("222222");
+            //pauseWhenLoading();
+            pauseWhenLoading();
+            System.out.println("222222");
         /*
         // ожидаем загрузку файла mhz.txt (установим таймер 60 секунд)
         count = seconds;
@@ -349,39 +368,39 @@ public class MainActivity extends AppCompatActivity {
         }
          */
 
-        File file = new File(getExternalFilesDir(null), "mhz_data.txt");
-        //checking if android version is equal and greater than noughat
-        //now if download complete file not visible now lets show it
-        DownloadManager.Request request = null;
-        request = new DownloadManager.Request(Uri.parse(FILE_PATH_GOOGLE_DISK_DATA))
-                .setTitle("database_mhz")
-                .setDescription("Downloading")
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                .setDestinationUri(Uri.fromFile(file))
-                .setRequiresCharging(false)
-                .setAllowedOverMetered(true)
-                .setAllowedOverRoaming(true);
+            File file = new File(getExternalFilesDir(null), "mhz_data.txt");
+            //checking if android version is equal and greater than noughat
+            //now if download complete file not visible now lets show it
+            DownloadManager.Request request = null;
+            request = new DownloadManager.Request(Uri.parse(FILE_PATH_GOOGLE_DISK_DATA))
+                    .setTitle("database_mhz")
+                    .setDescription("Downloading")
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setDestinationUri(Uri.fromFile(file))
+                    .setRequiresCharging(false)
+                    .setAllowedOverMetered(true)
+                    .setAllowedOverRoaming(true);
 
 
-        DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        downloadId = downloadManager.enqueue(request);
-        System.out.println("22222");
+            DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+            downloadId = downloadManager.enqueue(request);
+            System.out.println("22222");
 
 
-        if (!(filePathExternal).exists()) {
-            Toast.makeText(this, "02 File not uploaded. Timer = " + count, Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, "03 File download. Timer = " + count, Toast.LENGTH_LONG).show();
-        }
+            if (!(filePathExternal).exists()) {
+                Toast.makeText(this, "02 File not uploaded. Timer = " + count, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "03 File download. Timer = " + count, Toast.LENGTH_LONG).show();
+            }
 
 
         /* удалим внутренний файл context.txt при его наличии
            необходимо для создания нового файла content.txt из нового
          */
-        deleteFile(filePathLocal);
-        System.out.println("333333");
+            deleteFile(filePathLocal);
+            System.out.println("333333");
 
-        pauseWhenLoading();
+            pauseWhenLoading();
         /*
         // ожидаем удаления файла (установим таймер 60 сек)
         count = seconds;
@@ -390,75 +409,75 @@ public class MainActivity extends AppCompatActivity {
             count--;
         }
 */
-        // если по истичении таймера 60 сек файл все еще существует выдаем ошибку
-        if (filePathLocal.exists()) {
-            Toast.makeText(this, "04 File content.txt not deleted!",
-                    Toast.LENGTH_LONG).show();
-        }
+            // если по истичении таймера 60 сек файл все еще существует выдаем ошибку
+            if (filePathLocal.exists()) {
+                Toast.makeText(this, "04 File content.txt not deleted!",
+                        Toast.LENGTH_LONG).show();
+            }
 
 
-        // READER EXTERNAL DOWNLOAD
-        try {
-            // построчно читаем файл /Download/mhz_data.txt и записываем данные в локальный
-            FileInputStream inputStream = new FileInputStream((File) filePathExternal);   //!!!!!!!!
-
-            // stream для записи файла
-            FileOutputStream fos = null;
-            fos = openFileOutput(FILE_PATH_LOCAL_DATA, MODE_PRIVATE);
-
-            // буфферезируем данные из выходного потока файла
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            // Класс для создания строк из последовательностей символов
-            //StringBuilder stringBuilder = new StringBuilder();
-
-
-            String line;
-            String s = null;
-            int count = 0;
+            // READER EXTERNAL DOWNLOAD
             try {
-                /* Производим построчное считывание данных из файла также построчно
-                 * записываем это во внутренний файл приложения
-                 */
-                while ((line = bufferedReader.readLine()) != null) {
-                    //stringBuilder.append(line);
-                    fos.write(line.getBytes());
-                    s = line;
-                    count++;
+                // построчно читаем файл /Download/mhz_data.txt и записываем данные в локальный
+                FileInputStream inputStream = new FileInputStream((File) filePathExternal);   //!!!!!!!!
+
+                // stream для записи файла
+                FileOutputStream fos = null;
+                fos = openFileOutput(FILE_PATH_LOCAL_DATA, MODE_PRIVATE);
+
+                // буфферезируем данные из выходного потока файла
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                // Класс для создания строк из последовательностей символов
+                //StringBuilder stringBuilder = new StringBuilder();
+
+
+                String line;
+                String s = null;
+                int count = 0;
+                try {
+                    /* Производим построчное считывание данных из файла также построчно
+                     * записываем это во внутренний файл приложения
+                     */
+                    while ((line = bufferedReader.readLine()) != null) {
+                        //stringBuilder.append(line);
+                        fos.write(line.getBytes());
+                        s = line;
+                        count++;
+                    }
+                    Toast.makeText(this, "Файл сохранен", Toast.LENGTH_SHORT).show();
+                    editText1.setText(count + " " + s);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                Toast.makeText(this, "Файл сохранен", Toast.LENGTH_SHORT).show();
-                editText1.setText(count + " " + s);
 
-            } catch (IOException e) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
 
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-            try {
-                fos.close();
-            } catch (IOException e) {
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-
-            try {
-                bufferedReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
-        // при наличии файла /Download/mhz_data.txt удаляем его
-        deleteFile(filePathExternal);
-        System.out.println("44444");
-        pauseWhenLoading();
+            // при наличии файла /Download/mhz_data.txt удаляем его
+            deleteFile(filePathExternal);
+            System.out.println("44444");
+            pauseWhenLoading();
         /*
         // ожидаем удаления файла
         count = seconds;
@@ -467,29 +486,29 @@ public class MainActivity extends AppCompatActivity {
             count--;
         }
 */
-        System.out.println("555555");
-        if (filePathExternal.exists()) {
-            Toast.makeText(this, "05 File not deleted!", Toast.LENGTH_LONG).show();
+            System.out.println("555555");
+            if (filePathExternal.exists()) {
+                Toast.makeText(this, "05 File not deleted!", Toast.LENGTH_LONG).show();
+            }
+
+            Toast.makeText(this, "06 The code is executed", Toast.LENGTH_LONG).show();
+
+            // изменим значение update для исключения повторного запуска обновления в одной сессии
+            update = false;
+            System.out.println("555555");
         }
 
-        Toast.makeText(this, "06 The code is executed", Toast.LENGTH_LONG).show();
-
-        // изменим значение update для исключения повторного запуска обновления в одной сессии
-        update = false;
-        System.out.println("555555");
-    }
-
-    // при наличии файла /Download/mhz_data.txt удаляем его
-    public static void deleteFile(File file) {
-        if (file.exists()) {
-            file.delete();
+        // при наличии файла /Download/mhz_data.txt удаляем его
+        public static void deleteFile (File file){
+            if (file.exists()) {
+                file.delete();
+            }
         }
+
+        // наличие паузы при загрузке и считывании файла
+        public static void pauseWhenLoading () throws InterruptedException {
+            //sleep(20000);
+        }
+
+
     }
-
-    // наличие паузы при загрузке и считывании файла
-    public static void pauseWhenLoading() throws InterruptedException {
-        //sleep(20000);
-    }
-
-
-}

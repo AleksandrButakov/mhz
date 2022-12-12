@@ -25,8 +25,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 /*
@@ -102,7 +100,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickButton2(View view) throws IOException {
 
+        // модуль чтения файла mhz_data.csv с сохранением данных в ArrayList
         File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
+
+        // определим количество строк в файле
+        count = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(fileLocalData))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+                count++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        // объявим размерность массива в соответствии с размером файла
+        String[][] sData = new String[count][4];
 
         // открываем файл
         BufferedReader reader = new BufferedReader(new FileReader(fileLocalData));
@@ -110,36 +125,42 @@ public class MainActivity extends AppCompatActivity {
         // считываем построчно
         String line = null;
         Scanner scanner = null;
+        int id = 0;
         int index = 0;
-        List<Frequency> frequencyList = new ArrayList<>();
 
+        // заполняем массив данными из файла mhz_data.csv
         String data;
+        String version;
         while ((line = reader.readLine()) != null) {
-            Frequency frequency = new Frequency();
+            //Frequency frequency = new Frequency();
             scanner = new Scanner(line);
             scanner.useDelimiter(";");
             while (scanner.hasNext()) {
+                // заполнение данными массива
                 data = scanner.next();
                 if (index == 0)
-                    frequency.setRoad(data);
+                    sData[id][index] = data;
                 else if (index == 1)
-                    frequency.setRegion(data);
+                    sData[id][index] = data;
                 else if (index == 2)
-                    frequency.setStation(data);
+                    sData[id][index] = data;
                 else if (index == 3)
-                    frequency.setFrequency(data);
+                    sData[id][index] = data;
                 else
-                    System.out.println("Некорректные данные::" + data);
+                    System.out.println("Некорректные данные: " + data);
                 index++;
             }
+            id++;
             index = 0;
-            frequencyList.add(frequency);
-        }
 
-        //закрываем наш ридер
+        }
+        //закрываем reader
         reader.close();
 
-        System.out.println(frequencyList);
+        // выводим данные в консоль
+        for (int i = 0; i < count; i++) {
+            System.out.println(sData[i][0] + sData[i][1] + sData[i][2] + sData[i][3]);
+        }
 
     }
 

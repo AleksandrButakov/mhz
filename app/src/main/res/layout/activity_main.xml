@@ -42,7 +42,7 @@
         android:layout_marginStart="14dp"
         android:layout_marginTop="14dp"
         android:onClick="onClickButton1"
-        android:text="Button"
+        android:text="Button_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText2"
         tools:ignore="MissingConstraints" />
@@ -79,8 +79,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
         android:layout_marginTop="14dp"
-        android:text="Button"
         android:onClick="onClickButton2"
+        android:text="Button_2"
         app:layout_constraintStart_toEndOf="@+id/button1"
         app:layout_constraintTop_toBottomOf="@+id/editText2" />
 

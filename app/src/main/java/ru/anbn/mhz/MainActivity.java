@@ -104,6 +104,19 @@ public class MainActivity extends AppCompatActivity {
                     //}
 
                 }
+
+                // если есть результаты поиска выводим их в ListView, если нет то пишем
+                // что ничего не найдено
+
+
+                // listener ListView слушает клики. При выборе позиции закрываем listView
+                // и отображаем данные в формате дорога, регион, станция, частота
+
+
+
+
+
+
                 return false;
             }
         });

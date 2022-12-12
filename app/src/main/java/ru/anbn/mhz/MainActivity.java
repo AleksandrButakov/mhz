@@ -16,11 +16,13 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SearchView;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
@@ -29,12 +31,23 @@ import java.util.Scanner;
  */
 
 public class MainActivity extends AppCompatActivity {
+    // количество строк в файле mhz_data.txt
+    private int countRows;
+    private String[][] sData;
 
     // счетчик для числа переходов
-    private int count;
+    private int countSleep;
     private int timerSeconds = 120;
 
+    // id загрузки файла в менеджере
     private long downloadId;
+
+    // массив для дальнейшего заполнения найденными позициями при поиске станций
+    private ArrayList listStationArray = new ArrayList();
+
+    // в эти переменные запишем строки приведенные к верхнему регистру
+    private String sArrayUpper, sSearchUpper;
+    private String sTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +56,46 @@ public class MainActivity extends AppCompatActivity {
 
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+
+        // поиск содержимого по строке введенной в searchView
+        // зададим идентификаторы полю searchView
+        // создадим listner searchView1
+        final SearchView searchView = (SearchView) findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            // обработчик нажатия кнопки поиска поля searchView1
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // User pressed the search button
+                return false;
+            }
+
+            // обработчик ввода символа поля searchView
+            @Override
+            public boolean onQueryTextChange(String sSearch) {
+                listStationArray.clear();
+                sSearchUpper = sSearch.toUpperCase();
+
+                // проверим что длина введенной строки более 2х символов, тогда поиск совпадений
+                if (sSearch.length() > 1) {
+                    for (int i = 2; i <= countRows; i++) {
+                        sArrayUpper = sData[i][2].toUpperCase();
+                        // проверим вхождение искомой строки в название станции в массиве
+                        if (sArrayUpper.indexOf(sSearchUpper) != -1) {
+
+                            s = "   " + equipmentValue + "." + i + ". " + sCARD;
+                            listCardArray.add(s);
+                            number++;
+
+
+                        }
+
+                    }
+
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -108,19 +161,19 @@ public class MainActivity extends AppCompatActivity {
 
 
         // определим количество строк в файле
-        count = 0;
+        countRows = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(fileLocalData))) {
             String line;
             while ((line = br.readLine()) != null) {
                 System.out.println(line);
-                count++;
+                countRows++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // объявим размерность массива в соответствии с размером файла
-        String[][] sData = new String[count][4];
+        // зададим размерность массива в соответствии с размером файла
+        sData = new String[countRows][4];
 
         // открываем файл
         BufferedReader reader = new BufferedReader(new FileReader(fileLocalData));
@@ -160,9 +213,16 @@ public class MainActivity extends AppCompatActivity {
         reader.close();
 
         // выводим данные в консоль
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < countRows; i++) {
             System.out.println(sData[i][0] + sData[i][1] + sData[i][2] + sData[i][3]);
         }
+
+        /* на этом шаге файл загружен или произведена проверка того что файл существовал,
+           двумерный массив заполнен данными. Ожидаем ввода требуемой станции в поле поиска
+           и после ввода второго символа обновляем все используемые в данном блоке переменные,
+           производим поиск совпадений с заполнением индексов в listStationArray.
+         */
+
 
     }
 
@@ -194,14 +254,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // ожидаем уделение файла
-        count = timerSeconds;
-        while (file.exists() && count > 0) {
+        countSleep = timerSeconds;
+        while (file.exists() && countSleep > 0) {
             try {
                 sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            count--;
+            countSleep--;
         }
 
         // загрузка файла
@@ -218,14 +278,14 @@ public class MainActivity extends AppCompatActivity {
         downloadId = downloadManager.enqueue(request_version);
 
         // ожидание загрузки файла
-        count = timerSeconds;
-        while (!file.exists() && count > 0) {
+        countSleep = timerSeconds;
+        while (!file.exists() && countSleep > 0) {
             try {
                 sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            count--;
+            countSleep--;
         }
 
     }

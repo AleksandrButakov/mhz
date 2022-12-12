@@ -21,9 +21,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 /*
 1. Необходимо приостанавливать процесс выполнения обновления в случае прерывания по таймеру.
@@ -96,7 +100,46 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onClickButton2(View view) throws InterruptedException {
+    public void onClickButton2(View view) throws IOException {
+
+        File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
+
+        // открываем файл
+        BufferedReader reader = new BufferedReader(new FileReader(fileLocalData));
+
+        // считываем построчно
+        String line = null;
+        Scanner scanner = null;
+        int index = 0;
+        List<Frequency> frequencyList = new ArrayList<>();
+
+        String data;
+        while ((line = reader.readLine()) != null) {
+            Frequency frequency = new Frequency();
+            scanner = new Scanner(line);
+            scanner.useDelimiter(";");
+            while (scanner.hasNext()) {
+                data = scanner.next();
+                if (index == 0)
+                    frequency.setRoad(data);
+                else if (index == 1)
+                    frequency.setRegion(data);
+                else if (index == 2)
+                    frequency.setStation(data);
+                else if (index == 3)
+                    frequency.setFrequency(data);
+                else
+                    System.out.println("Некорректные данные::" + data);
+                index++;
+            }
+            index = 0;
+            frequencyList.add(frequency);
+        }
+
+        //закрываем наш ридер
+        reader.close();
+
+        System.out.println(frequencyList);
 
     }
 
@@ -126,17 +169,16 @@ public class MainActivity extends AppCompatActivity {
 
         EditText editText1 = findViewById(R.id.editText1);
 
-        // File file = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_VERSION);
 
-        try (FileReader fr = new FileReader(fileLocalVersion)) {
-            int content;
-            while ((content = fr.read()) != -1) {
-                System.out.println((char) content);
-                s += String.valueOf(content);
+        try (BufferedReader br = new BufferedReader(new FileReader(fileLocalVersion))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
         System.out.println("Line = " + s);
         Toast.makeText(this, "Line = " + s, Toast.LENGTH_SHORT).show();
@@ -154,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
          */
 
         System.out.println("7777777");
-        fileLocalVersion.delete();
+        // fileLocalVersion.delete();
         System.out.println("888888888");
 
     }

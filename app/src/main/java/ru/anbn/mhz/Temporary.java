@@ -94,9 +94,24 @@ public class Temporary {
         }
 
         System.out.println("3333333333" + "count = " + count);
-        // file.delete();
-         */
+        file.delete();
 
+
+        File fileLocalVersion = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_VERSION);
+        try (FileReader fr = new FileReader(fileLocalVersion)) {
+            int content;
+            while ((content = fr.read()) != -1) {
+                System.out.println((char) content);
+                s += String.valueOf(content);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+         */
 
 
 }

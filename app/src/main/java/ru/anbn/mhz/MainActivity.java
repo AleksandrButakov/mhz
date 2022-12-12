@@ -2,9 +2,7 @@ package ru.anbn.mhz;
 
 import static java.lang.Thread.sleep;
 import static ru.anbn.mhz.StaticVariables.FILE_PATH_GOOGLE_DISK_DATA;
-import static ru.anbn.mhz.StaticVariables.FILE_PATH_GOOGLE_DISK_VERSION;
 import static ru.anbn.mhz.StaticVariables.FILE_PATH_LOCAL_DATA;
-import static ru.anbn.mhz.StaticVariables.FILE_PATH_LOCAL_VERSION;
 
 import android.app.DownloadManager;
 import android.content.Context;
@@ -15,8 +13,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -93,15 +89,23 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void onClickButton1(View view) {
-        button1();
 
-    }
+    public void onClickButton1(View view) throws IOException {
+        /* проверка наличия подключения к интернету и в случае отсутствия
+           интернета прерываем программу */
+        if (!isOnline()) {
+            return;
+        }
 
-    public void onClickButton2(View view) throws IOException {
-
-        // модуль чтения файла mhz_data.csv с сохранением данных в ArrayList
+        // проверим что локальные файлы mhz_data.txt и version.txt существуют
         File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
+
+        // проверим что файл существует
+        if (!fileLocalData.exists()) {
+            // загрузка файлов mhz_data.csv
+            downloadFile(FILE_PATH_GOOGLE_DISK_DATA, FILE_PATH_LOCAL_DATA);
+        }
+
 
         // определим количество строк в файле
         count = 0;
@@ -115,13 +119,11 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         // объявим размерность массива в соответствии с размером файла
         String[][] sData = new String[count][4];
 
         // открываем файл
         BufferedReader reader = new BufferedReader(new FileReader(fileLocalData));
-
         // считываем построчно
         String line = null;
         Scanner scanner = null;
@@ -165,60 +167,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void button1() {
-        /* проверка наличия подключения к интернету и в случае отсутствия
-           интернета прерываем программу */
-        if (!isOnline()) {
-            return;
-        }
-
-        // проверим что локальные файлы mhz_data.txt и version.txt существуют
-        File fileLocalVersion = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_VERSION);
-        File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
-
-        if (fileLocalVersion.exists() && fileLocalData.exists()) {
-            // проверим актуальность локальных данных
-
-        } else {
-            // загрузка файлов mhz_data.txt и version.txt
-            downloadFile(FILE_PATH_GOOGLE_DISK_VERSION, FILE_PATH_LOCAL_VERSION);
-            downloadFile(FILE_PATH_GOOGLE_DISK_DATA, FILE_PATH_LOCAL_DATA);
-
-        }
-
-        String s = "";
-
-        EditText editText1 = findViewById(R.id.editText1);
-
-
-        try (BufferedReader br = new BufferedReader(new FileReader(fileLocalVersion))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                System.out.println(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        System.out.println("Line = " + s);
-        Toast.makeText(this, "Line = " + s, Toast.LENGTH_SHORT).show();
-
-        /*
-        System.out.println("Line = " + i);
-        Toast.makeText(this, "Line = " + i, Toast.LENGTH_SHORT).show();
-
-
-        editText1.setText("Line = " + i);
-        */
-
-        /* Создаем массивы для заполнения данными
-
-         */
-
-        System.out.println("7777777");
-        // fileLocalVersion.delete();
-        System.out.println("888888888");
+    public void onClickButton2(View view) throws IOException {
 
     }
 
@@ -255,8 +204,6 @@ public class MainActivity extends AppCompatActivity {
             count--;
         }
 
-        System.out.println("1111111" + "count = " + count);
-
         // загрузка файла
         DownloadManager.Request request_version = null;
         request_version = new DownloadManager.Request(Uri.parse(pathServerFile))
@@ -270,8 +217,6 @@ public class MainActivity extends AppCompatActivity {
         DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         downloadId = downloadManager.enqueue(request_version);
 
-        System.out.println("22222");
-
         // ожидание загрузки файла
         count = timerSeconds;
         while (!file.exists() && count > 0) {
@@ -283,17 +228,7 @@ public class MainActivity extends AppCompatActivity {
             count--;
         }
 
-        System.out.println("3333333333" + "count = " + count);
-
     }
-
-
-    /* алгоритм работы метода актуализации данных следующий:
-       сохраняем файл с google disk в папку download
-       там его последовательно считывая записываем в служебную директорию программы
-       для дальнейшего использования. После считывания удаляем скачанный файл
-       /Download/mhz_data.txt из External хранилища
-     */
 
 
 }

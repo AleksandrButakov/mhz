@@ -1,5 +1,6 @@
 package ru.anbn.mhz;
 
+import static android.content.ContentValues.TAG;
 import static java.lang.Thread.sleep;
 import static ru.anbn.mhz.StaticVariables.FILE_PATH_GOOGLE_DISK_DATA;
 import static ru.anbn.mhz.StaticVariables.FILE_PATH_LOCAL_DATA;
@@ -10,13 +11,14 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.SearchView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,7 +35,7 @@ import java.util.Scanner;
 public class MainActivity extends AppCompatActivity {
     // количество строк в файле mhz_data.txt
     private int countRows;
-    private String[][] sData;
+    private String[][] sData = null;
 
     // счетчик для числа переходов
     private int countSleep;
@@ -47,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
     // в эти переменные запишем строки приведенные к верхнему регистру
     private String sArrayUpper, sSearchUpper;
+
     private String sTemp;
+    private int number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +62,14 @@ public class MainActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
 
+
+
+
+
         // поиск содержимого по строке введенной в searchView
         // зададим идентификаторы полю searchView
         // создадим listner searchView1
-        final SearchView searchView = (SearchView) findViewById(R.id.searchView);
+        SearchView searchView = findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             // обработчик нажатия кнопки поиска поля searchView1
             @Override
@@ -78,19 +86,22 @@ public class MainActivity extends AppCompatActivity {
 
                 // проверим что длина введенной строки более 2х символов, тогда поиск совпадений
                 if (sSearch.length() > 1) {
-                    for (int i = 2; i <= countRows; i++) {
+
+                    for (int i = 2; i < countRows; i++) {
                         sArrayUpper = sData[i][2].toUpperCase();
                         // проверим вхождение искомой строки в название станции в массиве
                         if (sArrayUpper.indexOf(sSearchUpper) != -1) {
-
-                            s = "   " + equipmentValue + "." + i + ". " + sCARD;
-                            listCardArray.add(s);
-                            number++;
-
-
+                            /* сохраним индекс позиции с соответствием текста
+                               в дальнейшем по этим индексам будем выводить информацию */
+                            listStationArray.add(i);
                         }
 
                     }
+
+                    System.out.println("---------------==______________");
+                    //while (listStationArray != null) {
+                    System.out.println(listStationArray);
+                    //}
 
                 }
                 return false;
@@ -98,6 +109,46 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        /* при запуске приложения проверим наличие файла с данными, в случае необходимости
+           выполним загрузку и заполним массив для дальнейшей работы приложения */
+        try {
+            downloadAndReadFileData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
 
     // нарисуем меню
     @Override
@@ -144,6 +195,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onClickButton1(View view) throws IOException {
+        downloadAndReadFileData();
+    }
+
+
+    public void onClickButton2(View view) throws IOException {
+
+    }
+
+
+    // основной алгоритм проверки наличия файл данных и его чтения
+    private void downloadAndReadFileData() throws IOException {
+
         /* проверка наличия подключения к интернету и в случае отсутствия
            интернета прерываем программу */
         if (!isOnline()) {
@@ -223,11 +286,6 @@ public class MainActivity extends AppCompatActivity {
            производим поиск совпадений с заполнением индексов в listStationArray.
          */
 
-
-    }
-
-
-    public void onClickButton2(View view) throws IOException {
 
     }
 

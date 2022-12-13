@@ -15,9 +15,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -54,7 +56,10 @@ public class MainActivity extends AppCompatActivity {
     // в эти переменные запишем строки приведенные к верхнему регистру
     private String sArrayUpper, sSearchUpper;
 
+    // вспомогательная текстовая переменная
     private String sTemp;
+
+    // номер выбранной позиции в ListView
     private int number;
 
     // переменная хранит состояние поиска
@@ -67,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
 
         // поиск содержимого по строке введенной в searchView
         // зададим идентификаторы полю searchView
@@ -124,9 +128,66 @@ public class MainActivity extends AppCompatActivity {
 
                 return false;
             }
+
+        });
+
+
+
+
+        // метод прослушивания нажатий на ListView (выбор нужной позиции и отображение описания)
+        // отображение происходит в классе TwoActivity.java
+        ListView listView = findViewById(R.id.listView);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
+                number = 0;
+                // используем position для получения номера пункта по которому кликнул пользователь
+                number = integerArrayList.get(position);
+
+                // отобразим выбранную позицию
+                displayTheSelectedPositionListView();
+
+            }
         });
 
     }
+
+
+    // отображение выбранной в ListView позиции
+    public void displayTheSelectedPositionListView() {
+        // делаем ListView невидимым
+        listViewInvisible();
+        // Заполняем TextView5, 6 ,7 8 данными
+        TextView textView1 = findViewById(R.id.textView1);
+        TextView textView2 = findViewById(R.id.textView2);
+        TextView textView3 = findViewById(R.id.textView3);
+        TextView textView4 = findViewById(R.id.textView4);
+        TextView textView5 = findViewById(R.id.textView5);
+        TextView textView6 = findViewById(R.id.textView6);
+        TextView textView7 = findViewById(R.id.textView7);
+        TextView textView8 = findViewById(R.id.textView8);
+        textView5.setText(sData[number][0]);
+        textView6.setText(sData[number][1]);
+        textView7.setText(sData[number][2]);
+        textView8.setText(sData[number][3]);
+        // делаем textView visible
+        textView1.setVisibility(View.VISIBLE);
+        textView2.setVisibility(View.VISIBLE);
+        textView3.setVisibility(View.VISIBLE);
+        textView4.setVisibility(View.VISIBLE);
+        textView5.setVisibility(View.VISIBLE);
+        textView6.setVisibility(View.VISIBLE);
+        textView7.setVisibility(View.VISIBLE);
+        textView8.setVisibility(View.VISIBLE);
+
+    }
+
+    // сделаем ListView visible = false
+    public void listViewInvisible() {
+        ListView listView = findViewById(R.id.listView);
+        listView.setVisibility(View.INVISIBLE);
+    }
+
 
     // очистка содержимого в ListView
     public void listViewClear() {
@@ -190,7 +251,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Log.d(TAG, "onResume");
     }
-
 
     // нарисуем меню
     @Override

@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     // переменная хранит состояние поиска
     private boolean bSearch;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
                     listViewClear();
 
                 } else {
-                    // поиск успешен, выводим результаты в listView
+                    // поиск успешен, делаем textView invisible и выводим результаты в listView
+                    textViewInvisible();
                     searchResultsDisplay();
                 }
 
@@ -130,8 +133,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
-
 
 
         // метод прослушивания нажатий на ListView (выбор нужной позиции и отображение описания)
@@ -148,7 +149,36 @@ public class MainActivity extends AppCompatActivity {
                 displayTheSelectedPositionListView();
 
             }
+
         });
+
+    }
+
+
+    // делаем textView inbisible and clear
+    public void textViewInvisible() {
+        TextView textView1 = findViewById(R.id.textView1);
+        TextView textView2 = findViewById(R.id.textView2);
+        TextView textView3 = findViewById(R.id.textView3);
+        TextView textView4 = findViewById(R.id.textView4);
+        TextView textView5 = findViewById(R.id.textView5);
+        TextView textView6 = findViewById(R.id.textView6);
+        TextView textView7 = findViewById(R.id.textView7);
+        TextView textView8 = findViewById(R.id.textView8);
+
+        textView5.setText("");
+        textView6.setText("");
+        textView7.setText("");
+        textView8.setText("");
+
+        textView1.setVisibility(View.INVISIBLE);
+        textView2.setVisibility(View.INVISIBLE);
+        textView3.setVisibility(View.INVISIBLE);
+        textView4.setVisibility(View.INVISIBLE);
+        textView5.setVisibility(View.INVISIBLE);
+        textView6.setVisibility(View.INVISIBLE);
+        textView7.setVisibility(View.INVISIBLE);
+        textView8.setVisibility(View.INVISIBLE);
 
     }
 
@@ -189,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     // очистка содержимого в ListView
     public void listViewClear() {
         // получаем экземпляр элемента ListView
@@ -207,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
     public void searchResultsDisplay() {
         // получаем экземпляр элемента ListView
         ListView listView = findViewById(R.id.listView);
+        listView.setVisibility(View.VISIBLE);
         // используем адаптер данных
         ArrayAdapter<String> adapter = new
                 ArrayAdapter<String>(this, R.layout.my_list_item, stringArrayList);

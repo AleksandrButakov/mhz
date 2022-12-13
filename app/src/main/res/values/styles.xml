@@ -13,4 +13,5 @@
     <style name="AppThemeSearchView">
         <item name="android:textColorPrimary">@color/colorBlack</item>
     </style>
+
 </resources>

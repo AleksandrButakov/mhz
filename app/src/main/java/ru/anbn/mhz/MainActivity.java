@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
     private String sTemp;
     private int number;
 
+    // переменная хранит состояние поиска
+    private boolean bSearch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,10 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
-
-
-
 
 
         // поиск содержимого по строке введенной в searchView
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String sSearch) {
                 listStationArray.clear();
                 sSearchUpper = sSearch.toUpperCase();
+                bSearch = false;
 
                 // проверим что длина введенной строки более 2х символов, тогда поиск совпадений
                 if (sSearch.length() > 1) {
@@ -94,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                             /* сохраним индекс позиции с соответствием текста
                                в дальнейшем по этим индексам будем выводить информацию */
                             listStationArray.add(i);
+                            bSearch = true;
                         }
 
                     }
@@ -105,16 +108,24 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-                // если есть результаты поиска выводим их в ListView, если нет то пишем
-                // что ничего не найдено
+                // проверим успешный ли был поиск
+                if (bSearch == false) {
+                    // поиск не дал результата, очистим ListView от информации
+                    // после предыдущего поиска
+                    listViewClear();
+                } else {
+                    // поиск успешен, выводим результаты в listView
+                    //ListView listView = findViewById(R.id.listView);
+                    //listView.setVisibility(View.VISIBLE);
+                    searchResultsDisplay();
+
+
+
+                }
 
 
                 // listener ListView слушает клики. При выборе позиции закрываем listView
                 // и отображаем данные в формате дорога, регион, станция, частота
-
-
-
-
 
 
                 return false;
@@ -123,6 +134,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // очистка содержимого в ListView
+    public void listViewClear() {
+        // получаем экземпляр элемента ListView
+        ListView listView = findViewById(R.id.listView);
+        // очистим listArray для дальнейшей очистки массива
+        listStationArray.clear();
+        // используем адаптер данных
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, listStationArray);
+        listView.setAdapter(adapter);
+    }
+
+
+    // вывод результатов поиска в ListView
+    public void searchResultsDisplay () {
+        // получаем экземпляр элемента ListView
+        ListView listView = findViewById(R.id.listView);
+        // используем адаптер данных
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, listStationArray);
+        listView.setAdapter(adapter);
+    }
 
 
     @Override

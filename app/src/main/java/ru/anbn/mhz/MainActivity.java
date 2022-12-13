@@ -47,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
     private long downloadId;
 
     // массив для дальнейшего заполнения найденными позициями при поиске станций
-    private ArrayList listStationArray = new ArrayList();
+    private ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
+    private ArrayList<String> stringArrayList = new ArrayList<String>();
+
 
     // в эти переменные запишем строки приведенные к верхнему регистру
     private String sArrayUpper, sSearchUpper;
@@ -82,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
             // обработчик ввода символа поля searchView
             @Override
             public boolean onQueryTextChange(String sSearch) {
-                listStationArray.clear();
+                integerArrayList.clear();
+                stringArrayList.clear();
                 sSearchUpper = sSearch.toUpperCase();
                 bSearch = false;
 
@@ -95,16 +98,13 @@ public class MainActivity extends AppCompatActivity {
                         if (sArrayUpper.indexOf(sSearchUpper) != -1) {
                             /* сохраним индекс позиции с соответствием текста
                                в дальнейшем по этим индексам будем выводить информацию */
-                            listStationArray.add(i);
+                            integerArrayList.add(i);
+                            sTemp = sData[i][0] + "  " + sData[i][1] + "  " + sData[i][2];
+                            stringArrayList.add(sTemp);
+
                             bSearch = true;
                         }
-
                     }
-
-                    System.out.println("---------------==______________");
-                    //while (listStationArray != null) {
-                    System.out.println(listStationArray);
-                    //}
 
                 }
 
@@ -113,20 +113,14 @@ public class MainActivity extends AppCompatActivity {
                     // поиск не дал результата, очистим ListView от информации
                     // после предыдущего поиска
                     listViewClear();
+
                 } else {
                     // поиск успешен, выводим результаты в listView
-                    //ListView listView = findViewById(R.id.listView);
-                    //listView.setVisibility(View.VISIBLE);
                     searchResultsDisplay();
-
-
-
                 }
-
 
                 // listener ListView слушает клики. При выборе позиции закрываем listView
                 // и отображаем данные в формате дорога, регион, станция, частота
-
 
                 return false;
             }
@@ -139,22 +133,22 @@ public class MainActivity extends AppCompatActivity {
         // получаем экземпляр элемента ListView
         ListView listView = findViewById(R.id.listView);
         // очистим listArray для дальнейшей очистки массива
-        listStationArray.clear();
+        stringArrayList.clear();
         // используем адаптер данных
         ArrayAdapter<String> adapter = new
-                ArrayAdapter<>(this, R.layout.my_list_item, listStationArray);
+                ArrayAdapter<String>(this, R.layout.my_list_item, stringArrayList);
 
         listView.setAdapter(adapter);
     }
 
 
     // вывод результатов поиска в ListView
-    public void searchResultsDisplay () {
+    public void searchResultsDisplay() {
         // получаем экземпляр элемента ListView
         ListView listView = findViewById(R.id.listView);
         // используем адаптер данных
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                R.layout.my_list_item, listStationArray);
+        ArrayAdapter<String> adapter = new
+                ArrayAdapter<String>(this, R.layout.my_list_item, stringArrayList);
         listView.setAdapter(adapter);
         // android.R.layout.simple_list_item_1
     }

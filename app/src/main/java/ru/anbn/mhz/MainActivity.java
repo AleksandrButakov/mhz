@@ -141,8 +141,9 @@ public class MainActivity extends AppCompatActivity {
         // очистим listArray для дальнейшей очистки массива
         listStationArray.clear();
         // используем адаптер данных
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, listStationArray);
+        ArrayAdapter<String> adapter = new
+                ArrayAdapter<>(this, R.layout.my_list_item, listStationArray);
+
         listView.setAdapter(adapter);
     }
 
@@ -153,8 +154,9 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.listView);
         // используем адаптер данных
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, listStationArray);
+                R.layout.my_list_item, listStationArray);
         listView.setAdapter(adapter);
+        // android.R.layout.simple_list_item_1
     }
 
 

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -145,6 +146,12 @@ public class MainActivity extends AppCompatActivity {
                 // используем position для получения номера пункта по которому кликнул пользователь
                 number = integerArrayList.get(position);
 
+
+                // прячем клавиатуру. butCalculate - это кнопка
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(searchView.getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+
                 // отобразим выбранную позицию
                 displayTheSelectedPositionListView();
 
@@ -190,9 +197,10 @@ public class MainActivity extends AppCompatActivity {
         // Заполняем TextView5, 6 ,7 8 данными
         TextView textView1 = findViewById(R.id.textView1);
 
-        sTemp = "  ДОРОГА:\n " + sData[number][0] + "\n" + "  РЕГИОН:\n " + sData[number][1] +
-                "  СТАНЦМЯ:\n " + sData[number][2] + "  ЧАСТОТА:\n " + sData[number][3];
+        sTemp = "\n" + "    Дорога:   " + sData[number][0] + "\n" + "    Регион:   " + sData[number][1] + "\n" +
+                "    Станция:  " + sData[number][2] + "\n" + "    Частота:  " + sData[number][3] + " МГц" + "\n";
 
+        textView1.setText(sTemp);
 
 //        TextView textView2 = findViewById(R.id.textView2);
 //        TextView textView3 = findViewById(R.id.textView3);

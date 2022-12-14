@@ -165,27 +165,8 @@ public class MainActivity extends AppCompatActivity {
     // делаем textView inbisible and clear
     public void textViewInvisible() {
         TextView textView1 = findViewById(R.id.textView1);
-//        TextView textView2 = findViewById(R.id.textView2);
-//        TextView textView3 = findViewById(R.id.textView3);
-//        TextView textView4 = findViewById(R.id.textView4);
-//        TextView textView5 = findViewById(R.id.textView5);
-//        TextView textView6 = findViewById(R.id.textView6);
-//        TextView textView7 = findViewById(R.id.textView7);
-//        TextView textView8 = findViewById(R.id.textView8);
-
-//        textView5.setText("");
-//        textView6.setText("");
-//        textView7.setText("");
-//        textView8.setText("");
 
         textView1.setVisibility(View.INVISIBLE);
-//        textView2.setVisibility(View.INVISIBLE);
-//        textView3.setVisibility(View.INVISIBLE);
-//        textView4.setVisibility(View.INVISIBLE);
-//        textView5.setVisibility(View.INVISIBLE);
-//        textView6.setVisibility(View.INVISIBLE);
-//        textView7.setVisibility(View.INVISIBLE);
-//        textView8.setVisibility(View.INVISIBLE);
 
     }
 
@@ -202,26 +183,8 @@ public class MainActivity extends AppCompatActivity {
 
         textView1.setText(sTemp);
 
-//        TextView textView2 = findViewById(R.id.textView2);
-//        TextView textView3 = findViewById(R.id.textView3);
-//        TextView textView4 = findViewById(R.id.textView4);
-//        TextView textView5 = findViewById(R.id.textView5);
-//        TextView textView6 = findViewById(R.id.textView6);
-//        TextView textView7 = findViewById(R.id.textView7);
-//        TextView textView8 = findViewById(R.id.textView8);
-//        textView5.setText(sData[number][0]);
-//        textView6.setText(sData[number][1]);
-//        textView7.setText(sData[number][2]);
-//        textView8.setText(sData[number][3]);
         // делаем textView visible
         textView1.setVisibility(View.VISIBLE);
-//        textView2.setVisibility(View.VISIBLE);
-//        textView3.setVisibility(View.VISIBLE);
-//        textView4.setVisibility(View.VISIBLE);
-//        textView5.setVisibility(View.VISIBLE);
-//        textView6.setVisibility(View.VISIBLE);
-//        textView7.setVisibility(View.VISIBLE);
-//        textView8.setVisibility(View.VISIBLE);
 
     }
 
@@ -230,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.listView);
         listView.setVisibility(View.INVISIBLE);
     }
-
 
 
     // очистка содержимого в ListView
@@ -340,15 +302,19 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // клик по кнопре для отображения инструкции
+    public void onButtonClickShowInstruction(View view) throws IOException {
+        /* проверяем что выбрана станция и модель оборудования
+           отображаем layout с инструкцией pdf
+           в случае если станция не выбрана, отображаем инструкцию и пишем что
+           необходимо выбрать станцию;
+           если выбрана, отображаем и частоту и инструкцию */
 
-    public void onClickButton1(View view) throws IOException {
-        downloadAndReadFileData();
+
+
     }
 
 
-    public void onClickButton2(View view) throws IOException {
-
-    }
 
 
     // основной алгоритм проверки наличия файл данных и его чтения

@@ -158,27 +158,27 @@ public class MainActivity extends AppCompatActivity {
     // делаем textView inbisible and clear
     public void textViewInvisible() {
         TextView textView1 = findViewById(R.id.textView1);
-        TextView textView2 = findViewById(R.id.textView2);
-        TextView textView3 = findViewById(R.id.textView3);
-        TextView textView4 = findViewById(R.id.textView4);
-        TextView textView5 = findViewById(R.id.textView5);
-        TextView textView6 = findViewById(R.id.textView6);
-        TextView textView7 = findViewById(R.id.textView7);
-        TextView textView8 = findViewById(R.id.textView8);
+//        TextView textView2 = findViewById(R.id.textView2);
+//        TextView textView3 = findViewById(R.id.textView3);
+//        TextView textView4 = findViewById(R.id.textView4);
+//        TextView textView5 = findViewById(R.id.textView5);
+//        TextView textView6 = findViewById(R.id.textView6);
+//        TextView textView7 = findViewById(R.id.textView7);
+//        TextView textView8 = findViewById(R.id.textView8);
 
-        textView5.setText("");
-        textView6.setText("");
-        textView7.setText("");
-        textView8.setText("");
+//        textView5.setText("");
+//        textView6.setText("");
+//        textView7.setText("");
+//        textView8.setText("");
 
         textView1.setVisibility(View.INVISIBLE);
-        textView2.setVisibility(View.INVISIBLE);
-        textView3.setVisibility(View.INVISIBLE);
-        textView4.setVisibility(View.INVISIBLE);
-        textView5.setVisibility(View.INVISIBLE);
-        textView6.setVisibility(View.INVISIBLE);
-        textView7.setVisibility(View.INVISIBLE);
-        textView8.setVisibility(View.INVISIBLE);
+//        textView2.setVisibility(View.INVISIBLE);
+//        textView3.setVisibility(View.INVISIBLE);
+//        textView4.setVisibility(View.INVISIBLE);
+//        textView5.setVisibility(View.INVISIBLE);
+//        textView6.setVisibility(View.INVISIBLE);
+//        textView7.setVisibility(View.INVISIBLE);
+//        textView8.setVisibility(View.INVISIBLE);
 
     }
 
@@ -189,26 +189,31 @@ public class MainActivity extends AppCompatActivity {
         listViewInvisible();
         // Заполняем TextView5, 6 ,7 8 данными
         TextView textView1 = findViewById(R.id.textView1);
-        TextView textView2 = findViewById(R.id.textView2);
-        TextView textView3 = findViewById(R.id.textView3);
-        TextView textView4 = findViewById(R.id.textView4);
-        TextView textView5 = findViewById(R.id.textView5);
-        TextView textView6 = findViewById(R.id.textView6);
-        TextView textView7 = findViewById(R.id.textView7);
-        TextView textView8 = findViewById(R.id.textView8);
-        textView5.setText(sData[number][0]);
-        textView6.setText(sData[number][1]);
-        textView7.setText(sData[number][2]);
-        textView8.setText(sData[number][3]);
+
+        sTemp = "  ДОРОГА:\n " + sData[number][0] + "\n" + "  РЕГИОН:\n " + sData[number][1] +
+                "  СТАНЦМЯ:\n " + sData[number][2] + "  ЧАСТОТА:\n " + sData[number][3];
+
+
+//        TextView textView2 = findViewById(R.id.textView2);
+//        TextView textView3 = findViewById(R.id.textView3);
+//        TextView textView4 = findViewById(R.id.textView4);
+//        TextView textView5 = findViewById(R.id.textView5);
+//        TextView textView6 = findViewById(R.id.textView6);
+//        TextView textView7 = findViewById(R.id.textView7);
+//        TextView textView8 = findViewById(R.id.textView8);
+//        textView5.setText(sData[number][0]);
+//        textView6.setText(sData[number][1]);
+//        textView7.setText(sData[number][2]);
+//        textView8.setText(sData[number][3]);
         // делаем textView visible
         textView1.setVisibility(View.VISIBLE);
-        textView2.setVisibility(View.VISIBLE);
-        textView3.setVisibility(View.VISIBLE);
-        textView4.setVisibility(View.VISIBLE);
-        textView5.setVisibility(View.VISIBLE);
-        textView6.setVisibility(View.VISIBLE);
-        textView7.setVisibility(View.VISIBLE);
-        textView8.setVisibility(View.VISIBLE);
+//        textView2.setVisibility(View.VISIBLE);
+//        textView3.setVisibility(View.VISIBLE);
+//        textView4.setVisibility(View.VISIBLE);
+//        textView5.setVisibility(View.VISIBLE);
+//        textView6.setVisibility(View.VISIBLE);
+//        textView7.setVisibility(View.VISIBLE);
+//        textView8.setVisibility(View.VISIBLE);
 
     }
 

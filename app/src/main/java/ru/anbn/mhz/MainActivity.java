@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -270,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        // строка поиска
+        // инструкция пользователя
         if (id == R.id.manual) {
             Variables.setUrl("https://AleksandrButakov.github.io/Pinout/PolicyPrivacy/");
             Intent intent = new Intent(this, WebViewActivity.class);
@@ -279,21 +280,25 @@ public class MainActivity extends AppCompatActivity {
 
         // политика конфиденциальности
         if (id == R.id.privacy) {
-            Variables.setUrl("https://AleksandrButakov.github.io/Pinout/PolicyPrivacy/");
+            Variables.setUrl("https://AleksandrButakov.github.io/MHz/PolicyPrivacy/");
             Intent intent = new Intent(this, WebViewActivity.class);
             startActivity(intent);
         }
 
         // оценить приложение
         if (id == R.id.estimate) {
+            Toast.makeText(this, "Данный раздел станет доступен после публикации " +
+                    "приложения в Google Play", Toast.LENGTH_SHORT).show();
+            /*
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.anbn.pinout"));
             startActivity(intent);
+             */
         }
 
         // о программе
         if (id == R.id.about) {
-            Variables.setUrl("https://AleksandrButakov.github.io/Pinout/About/");
+            Variables.setUrl("https://AleksandrButakov.github.io/MHz/About/");
             Intent intent = new Intent(this, WebViewActivity.class);
             startActivity(intent);
         }

@@ -315,6 +315,10 @@ public class MainActivity extends AppCompatActivity {
            если выбрана, отображаем и частоту и инструкцию */
 
 
+        // переходим к ActivityTwo
+        Intent intent = new Intent(this, TwoActivity.class);
+        startActivity(intent);
+
 
     }
 

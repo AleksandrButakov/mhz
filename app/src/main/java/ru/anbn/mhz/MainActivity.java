@@ -177,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
         // Заполняем TextView5, 6 ,7 8 данными
         TextView textView1 = findViewById(R.id.textView1);
 
-        sTemp = "\n" + "    Дорога:   " + sData[number][0] + "\n" + "    Регион:   " + sData[number][1] + "\n" +
-                "    Станция:  " + sData[number][2] + "\n" + "    Частота:  " + sData[number][3] + " МГц" + "\n";
+        sTemp = "\n" + "    Дорога:    " + sData[number][0] + "\n" + "    Регион:    " +
+                sData[number][1] + "\n" + "    Станция:  " + sData[number][2] + "\n" + "    Частота:  " + sData[number][3] + " МГц" + "\n";
 
         textView1.setText(sTemp);
 

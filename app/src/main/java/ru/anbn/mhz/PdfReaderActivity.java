@@ -31,10 +31,20 @@ public class PdfReaderActivity extends AppCompatActivity {
         String file_name = "";
         String path;
 
-        // найдем путь к файлу
-        path = "1.pdf";
-
+        // выведем выбранную станцию и частоту на экран
         TextView textView = findViewById(R.id.textView);
+        if (!MainActivity.choiceFrequency.equals("")) {
+            // станция выбрана
+            textView.setText(MainActivity.choiceFrequency);
+        } else {
+            // станция не выбрана
+            textView.setText("Не выбрана станция для отображения частоты");
+        }
+
+        // найдем путь к файлу
+        path = MainActivity.fileName;
+
+
 
 
         pdfView.fromAsset(path)

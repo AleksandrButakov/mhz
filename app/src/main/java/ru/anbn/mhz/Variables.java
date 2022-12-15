@@ -11,8 +11,12 @@ public class Variables {
         return url;
     }
 
-}
 
+    public static final String[] SEQUIPMENT = {
+            "Выберите оборудование...",
+            "Радиостанция РВС-1"};
+
+}
 
 /*
         String[] sRoad = {

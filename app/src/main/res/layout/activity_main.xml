@@ -26,7 +26,7 @@
         app:showAsAction="collapseActionView|ifRoom" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/spinner"
         android:layout_width="0dp"
         android:layout_height="42dp"
         android:layout_marginStart="14dp"
@@ -69,7 +69,7 @@
         android:textSize="14sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
         tools:ignore="MissingConstraints" />
 
     <TextView

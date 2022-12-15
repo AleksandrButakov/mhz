@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
     // переменная хранит состояние поиска
     private boolean bSearch;
 
+    // !!! Подумать над этим блока
+    // Посмотреть как заметки оставлять
+    private int equip;
+    public static String fileName = "";
+    public static String choiceFrequency = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,47 @@ public class MainActivity extends AppCompatActivity {
 
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+
+        // зададим идентификаторы полям spinner
+        final Spinner spinner = findViewById(R.id.spinner);
+
+        // адаптер для spinner1 со списком оборудования
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.
+                R.layout.simple_spinner_item, Variables.SEQUIPMENT);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+
+        // устанавливаем обработчик нажатия spinner1
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // показываем позиция нажатого элемента
+                // Toast.makeText(getBaseContext(), "Position = " + position, Toast.
+                // LENGTH_SHORT).show();
+                equip = position;
+
+                // выбрана позиция 0: Выберите оборудование
+                if (position == 0) {
+                    displayToast("Выберите оборудование");
+                    fileName = "";
+                }
+
+                // выбрана позиция 1: СМК-30 MUX
+                if (position == 1) {
+                    fileName = "RVS1.pdf";
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+
+        });
+
 
         // поиск содержимого по строке введенной в searchView
         // зададим идентификаторы полю searchView
@@ -95,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
                 stringArrayList.clear();
                 sSearchUpper = sSearch.toUpperCase();
                 bSearch = false;
+
+                choiceFrequency = "";
 
                 // проверим что длина введенной строки более 2х символов, тогда поиск совпадений
                 if (sSearch.length() > 1) {
@@ -158,6 +207,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // вывод на экрон Toast
+    public void displayToast(String sText) {
+        //создаём и отображаем текстовое уведомление
+        Toast toast = Toast.makeText(this, sText,
+                Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
+
     // делаем textView inbisible and clear
     public void textViewInvisible() {
         TextView textView1 = findViewById(R.id.textView1);
@@ -175,6 +234,9 @@ public class MainActivity extends AppCompatActivity {
         sTemp = "\n" + "    Дорога:    " + sData[number][0] + "\n" + "    Регион:    " +
                 sData[number][1] + "\n" + "    Станция:  " + sData[number][2] + "\n" +
                 "    Частота:  " + sData[number][3] + " МГц" + "\n";
+
+        choiceFrequency = sData[number][2] + "  " + sData[number][2] + " МГц";
+
         textView1.setText(sTemp);
 
         // делаем textView visible
@@ -320,9 +382,17 @@ public class MainActivity extends AppCompatActivity {
            необходимо выбрать станцию;
            если выбрана, отображаем и частоту и инструкцию */
 
-        // переходим к ActivityTwo
-        Intent intent = new Intent(this, PdfReaderActivity.class);
-        startActivity(intent);
+        // проверим что инструкция для отображения выбрана
+        if (!fileName.equals("")) {
+            // оборудование выбрано, отображаем инструкцию
+            // переходим к ActivityTwo
+            Intent intent = new Intent(this, PdfReaderActivity.class);
+            startActivity(intent);
+        } else {
+            // оборудование не выбрано, выводим Toast
+            displayToast("Выберите оборудование...");
+        }
+
     }
 
     // основной алгоритм проверки наличия файл данных и его чтения

@@ -30,7 +30,7 @@
         </activity>
 
         <activity android:name=".WebViewActivity" />
-        <activity android:name=".TwoActivity" />
+        <activity android:name=".PdfReaderActivity" />
 
     </application>
 

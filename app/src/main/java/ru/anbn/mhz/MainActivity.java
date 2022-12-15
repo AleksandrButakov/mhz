@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     // массив для дальнейшего заполнения найденными позициями при поиске станций
     private ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
     private ArrayList<String> stringArrayList = new ArrayList<String>();
-
 
     // в эти переменные запишем строки приведенные к верхнему регистру
     private String sArrayUpper, sSearchUpper;
@@ -135,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-
         // метод прослушивания нажатий на ListView (выбор нужной позиции и отображение описания)
         // отображение происходит в классе TwoActivity.java
         ListView listView = findViewById(R.id.listView);
@@ -154,33 +153,28 @@ public class MainActivity extends AppCompatActivity {
 
                 // отобразим выбранную позицию
                 displayTheSelectedPositionListView();
-
             }
-
         });
 
     }
 
-
     // делаем textView inbisible and clear
     public void textViewInvisible() {
         TextView textView1 = findViewById(R.id.textView1);
-
         textView1.setVisibility(View.INVISIBLE);
-
     }
-
 
     // отображение выбранной в ListView позиции
     public void displayTheSelectedPositionListView() {
         // делаем ListView невидимым
         listViewInvisible();
+
         // Заполняем TextView5, 6 ,7 8 данными
         TextView textView1 = findViewById(R.id.textView1);
 
         sTemp = "\n" + "    Дорога:    " + sData[number][0] + "\n" + "    Регион:    " +
-                sData[number][1] + "\n" + "    Станция:  " + sData[number][2] + "\n" + "    Частота:  " + sData[number][3] + " МГц" + "\n";
-
+                sData[number][1] + "\n" + "    Станция:  " + sData[number][2] + "\n" +
+                "    Частота:  " + sData[number][3] + " МГц" + "\n";
         textView1.setText(sTemp);
 
         // делаем textView visible
@@ -193,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.listView);
         listView.setVisibility(View.INVISIBLE);
     }
-
 
     // очистка содержимого в ListView
     public void listViewClear() {
@@ -208,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-
     // вывод результатов поиска в ListView
     public void searchResultsDisplay() {
         // получаем экземпляр элемента ListView
@@ -220,7 +212,6 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         // android.R.layout.simple_list_item_1
     }
-
 
     @Override
     public void onDestroy() {
@@ -273,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
 
         // инструкция пользователя
         if (id == R.id.manual) {
-            Variables.setUrl("https://AleksandrButakov.github.io/Pinout/PolicyPrivacy/");
+            Variables.setUrl("https://AleksandrButakov.github.io/MHz/Manual/");
             Intent intent = new Intent(this, WebViewActivity.class);
             startActivity(intent);
         }
@@ -287,13 +278,28 @@ public class MainActivity extends AppCompatActivity {
 
         // оценить приложение
         if (id == R.id.estimate) {
-            Toast.makeText(this, "Данный раздел станет доступен после публикации " +
-                    "приложения в Google Play", Toast.LENGTH_SHORT).show();
+            //создаём и отображаем текстовое уведомление
+            Toast toast = Toast.makeText(this,
+                    "Данный раздел станет доступен после публикации приложения в Google Play",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+
             /*
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.anbn.pinout"));
             startActivity(intent);
              */
+        }
+
+        // оценить приложение
+        if (id == R.id.update) {
+            //создаём и отображаем текстовое уведомление
+            Toast toast = Toast.makeText(this,
+                    "Данный раздел находится в разработке",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         }
 
         // о программе
@@ -314,16 +320,10 @@ public class MainActivity extends AppCompatActivity {
            необходимо выбрать станцию;
            если выбрана, отображаем и частоту и инструкцию */
 
-
         // переходим к ActivityTwo
-        Intent intent = new Intent(this, TwoActivity.class);
+        Intent intent = new Intent(this, PdfReaderActivity.class);
         startActivity(intent);
-
-
     }
-
-
-
 
     // основной алгоритм проверки наличия файл данных и его чтения
     private void downloadAndReadFileData() throws IOException {
@@ -342,7 +342,6 @@ public class MainActivity extends AppCompatActivity {
             // загрузка файлов mhz_data.csv
             downloadFile(FILE_PATH_GOOGLE_DISK_DATA, FILE_PATH_LOCAL_DATA);
         }
-
 
         // определим количество строк в файле
         countRows = 0;
@@ -407,9 +406,7 @@ public class MainActivity extends AppCompatActivity {
            производим поиск совпадений с заполнением индексов в listStationArray.
          */
 
-
     }
-
 
     // проверка наличия подключения к интернету
     protected boolean isOnline() {
@@ -466,7 +463,6 @@ public class MainActivity extends AppCompatActivity {
             }
             countSleep--;
         }
-
     }
 
 

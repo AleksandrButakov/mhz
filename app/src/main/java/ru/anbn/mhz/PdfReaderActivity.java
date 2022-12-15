@@ -38,7 +38,7 @@ public class PdfReaderActivity extends AppCompatActivity {
             textView.setText(MainActivity.choiceFrequency);
         } else {
             // станция не выбрана
-            textView.setText("Не выбрана станция для отображения частоты");
+            textView.setText("Выберите станцию для отображения частоты");
         }
 
         // найдем путь к файлу

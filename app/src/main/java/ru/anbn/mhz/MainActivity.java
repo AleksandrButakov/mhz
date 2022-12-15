@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // выбрана позиция 0: Выберите оборудование
                 if (position == 0) {
-                    displayToast("Выберите оборудование");
+                    //displayToast("Выберите оборудование");
                     fileName = "";
                 }
 
@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                 sData[number][1] + "\n" + "    Станция:  " + sData[number][2] + "\n" +
                 "    Частота:  " + sData[number][3] + " МГц" + "\n";
 
-        choiceFrequency = sData[number][2] + "  " + sData[number][2] + " МГц";
+        choiceFrequency = sData[number][2] + "  " + sData[number][3] + " МГц";
 
         textView1.setText(sTemp);
 

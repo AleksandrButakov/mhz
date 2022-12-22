@@ -17,7 +17,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:textColor="@color/colorTextStation"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

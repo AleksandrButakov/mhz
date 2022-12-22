@@ -14,7 +14,7 @@ public class Variables {
     public static final String[] SEQUIPMENT = {
             "  Выберите оборудование...",
             "  РЛСМ-10",
-            "  РВ1-1М в СРС",
+            "  РВ-1.1М",
             "  РВ-1М",
             "  РВС-1"};
 

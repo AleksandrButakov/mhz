@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
     public static String fileName = "";
     public static String choiceFrequency = "";
 
+    // тип выбранной радиостанции
+    public static String typeOfRadioStation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,26 +110,31 @@ public class MainActivity extends AppCompatActivity {
                 if (position == 0) {
                     //displayToast("Выберите оборудование");
                     fileName = "";
+                    typeOfRadioStation = "notSelected"
                 }
 
                 // выбрана позиция 1: РЛСМ-10
                 if (position == 1) {
                     fileName = "rlsm10.pdf";
+                    typeOfRadioStation = "РЛСМ-10";
                 }
 
-                // выбрана позиция 1: РВ1-1М в СРС
+                // выбрана позиция 1: РВ-1.1М
                 if (position == 2) {
-                    fileName = "rv1_1m_in_srs.pdf";
+                    fileName = "rv1_1m.pdf";
+                    typeOfRadioStation = "РВ-1.1М";
                 }
 
                 // выбрана позиция 1: РВ-1М
                 if (position == 3) {
                     fileName = "rv1m.pdf";
+                    typeOfRadioStation = "РВ-1М";
                 }
 
                 // выбрана позиция 1: РВС-1
                 if (position == 4) {
                     fileName = "rvs1.pdf";
+                    typeOfRadioStation = "РВС-1";
                 }
 
             }
@@ -244,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
         listViewInvisible();
 
         // Заполняем TextView5, 6 ,7 8 данными
-        TextView textView1 = findViewById(R.id.textView1);
+        //TextView textView1 = findViewById(R.id.textView1);
 
         int index = -1;
         // в зависимости от номера частоты выведем соответствующие данные из radioFrequencyChannel
@@ -255,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
                     "    Дорога:    " + sData[number][0] + "\n" +
                     "    Регион:    " + sData[number][1] + "\n" +
                     "    Станция:  " + sData[number][2] + "\n" +
-                    "    НЕТ ДАННЫХ ПО СТАНЦИИ"  + "\n";
+                    "    НЕТ ДАННЫХ ПО СТАНЦИИ" + "\n";
         } else {
             // есть данные по станции
             for (int i = 0; i <= 6; i++) {
@@ -283,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
                     "    РВ-1.1М:     " + radioFrequencyChannel[index][2] + "\n" +
                     "    РВ-1М:        " + radioFrequencyChannel[index][3] + "\n" +
                     "    РВ-1.2МК:   " + radioFrequencyChannel[index][4] + "\n" +
-                    "    РВС-01:       " + radioFrequencyChannel[index][5] + "\n" +
+                    "    РВС-1:       " + radioFrequencyChannel[index][5] + "\n" +
                     "    РЛСМ-10:    " + radioFrequencyChannel[index][6] + "\n";
 
         }
@@ -291,12 +299,23 @@ public class MainActivity extends AppCompatActivity {
         // сформируем информацию для отображения на странице с инструкцией
         choiceFrequency = sData[number][2] + "  " + sData[number][3] + " МГц";
 
-        textView1.setText(sTemp);
+
+
+        // textView1.setText(sTemp);
+        fillTextView(sTemp);
 
         // делаем textView visible
-        textView1.setVisibility(View.VISIBLE);
+        //textView1.setVisibility(View.VISIBLE);
 
     }
+
+    // обновим информацию в textView1 в соответствии с выбранными параметрами
+    public void fillTextView(String sTemp) {
+        TextView textView1 = findViewById(R.id.textView1);
+        textView1.setText(sTemp);
+        textView1.setVisibility(View.VISIBLE);
+    }
+
 
     // сделаем ListView visible = false
     public void listViewInvisible() {

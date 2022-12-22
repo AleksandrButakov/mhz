@@ -78,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
     // тип выбранной радиостанции
     public static String typeOfRadioStation = "notSelected";
 
+    // индекс во вспомогательном массиве для отображения параметров настройки радиостанции
+    public static int index = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -254,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
         // Заполняем TextView5, 6 ,7 8 данными
         //TextView textView1 = findViewById(R.id.textView1);
 
-        int index = -1;
+        index = -1;
         // в зависимости от номера частоты выведем соответствующие данные из radioFrequencyChannel
         if (sData[number][3].equals("Нет данных")) {
             // нет данных по станции
@@ -296,39 +299,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        // сформируем информацию для отображения на странице с инструкцией
-        //choiceFrequency = sData[number][2] + "  " + sData[number][3] + " МГц";
-        choiceFrequency =
-                "    Регион:     " + sData[number][1] + "\n" +
-                        "    Станция:   " + sData[number][2] + "\n" +
-                        "    Наименование радиостанции:" + "\n";
-
-        if (!sData[number][3].equals("Нет данных")) {
-
-            if (typeOfRadioStation.equals("notSelected")) {
-                // в документации нет выбранной инструкции
-                choiceFrequency +=
-                        "    РВ-1.1М:     " + radioFrequencyChannel[index][2] + "\n" +
-                                "    РВ-1М:        " + radioFrequencyChannel[index][3] + "\n" +
-                                "    РВ-1.2МК:   " + radioFrequencyChannel[index][4] + "\n" +
-                                "    РВС-1:       " + radioFrequencyChannel[index][5] + "\n" +
-                                "    РЛСМ-10:    " + radioFrequencyChannel[index][6] + "\n";
-            } else if (typeOfRadioStation.equals("РВ-1.1М")) {
-                choiceFrequency += "    РВ-1.1М:     " + radioFrequencyChannel[index][2];
-            } else if (typeOfRadioStation.equals("РВ-1М")) {
-                choiceFrequency += "    РВ-1М:        " + radioFrequencyChannel[index][3];
-            } else if (typeOfRadioStation.equals("РВС-1")) {
-                choiceFrequency += "    РВС-1:       " + radioFrequencyChannel[index][5];
-            } else if (typeOfRadioStation.equals("РЛСМ-10")) {
-                choiceFrequency += "    РЛСМ-10:    " + radioFrequencyChannel[index][6];
-            }
-        } else {
-            choiceFrequency =
-                    "    Регион:     " + sData[number][1] + "\n" +
-                            "    Станция:   " + sData[number][2] + "\n" +
-                            "Нет данных по выбранной станции...";
-
-        }
+        informationForPdfDisplayActivity();
 
 
         // textView1.setText(sTemp);
@@ -338,6 +309,46 @@ public class MainActivity extends AppCompatActivity {
         //textView1.setVisibility(View.VISIBLE);
 
     }
+
+    // подготовим информацию для отображения в textView pdf activity
+    public void informationForPdfDisplayActivity() {
+        // сформируем информацию для отображения на странице с инструкцией
+        //choiceFrequency = sData[number][2] + "  " + sData[number][3] + " МГц";
+        choiceFrequency =
+                "Регион:      " + sData[number][1] + "\n" +
+                        "Станция:    " + sData[number][2] + "\n";
+
+        if (!sData[number][3].equals("Нет данных")) {
+
+            if (typeOfRadioStation.equals("notSelected")) {
+                // в документации нет выбранной инструкции
+                choiceFrequency +=
+                        "РВ-1.1М:     " + radioFrequencyChannel[index][2] + "\n" +
+                                "РВ-1М:        " + radioFrequencyChannel[index][3] + "\n" +
+                                "РВ-1.2МК:   " + radioFrequencyChannel[index][4] + "\n" +
+                                "РВС-1:       " + radioFrequencyChannel[index][5] + "\n" +
+                                "РЛСМ-10:    " + radioFrequencyChannel[index][6] + "\n";
+            } else if (typeOfRadioStation.equals("РВ-1.1М")) {
+                choiceFrequency += "РВ-1.1М:     " + radioFrequencyChannel[index][2];
+            } else if (typeOfRadioStation.equals("РВ-1М")) {
+                choiceFrequency += "РВ-1М:        " + radioFrequencyChannel[index][3];
+            } else if (typeOfRadioStation.equals("РВС-1")) {
+                choiceFrequency += "РВС-1:       " + radioFrequencyChannel[index][5];
+            } else if (typeOfRadioStation.equals("РЛСМ-10")) {
+                choiceFrequency += "РЛСМ-10:    " + radioFrequencyChannel[index][6];
+            }
+        } else {
+            choiceFrequency =
+                    "Регион:     " + sData[number][1] + "\n" +
+                            "Станция:   " + sData[number][2] + "\n" +
+                            "Нет данных по выбранной станции...";
+
+        }
+
+
+
+    }
+
 
     // обновим информацию в textView1 в соответствии с выбранными параметрами
     public void fillTextView(String sTemp) {
@@ -487,6 +498,9 @@ public class MainActivity extends AppCompatActivity {
 
         // проверим что инструкция для отображения выбрана
         if (!fileName.equals("")) {
+            // подготовим переменную choiceFrequency for display in activity
+            informationForPdfDisplayActivity();
+
             // оборудование выбрано, отображаем инструкцию
             // переходим к ActivityTwo
             Intent intent = new Intent(this, PdfReaderActivity.class);

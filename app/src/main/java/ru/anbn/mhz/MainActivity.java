@@ -2,8 +2,9 @@ package ru.anbn.mhz;
 
 import static android.content.ContentValues.TAG;
 import static java.lang.Thread.sleep;
-import static ru.anbn.mhz.StaticVariables.FILE_PATH_GOOGLE_DISK_DATA;
 import static ru.anbn.mhz.StaticVariables.FILE_PATH_LOCAL_DATA;
+import static ru.anbn.mhz.StaticVariables.FILE_PATH_YANDEX_DISK_DATA;
+import static ru.anbn.mhz.StaticVariables.radioFrequencyChannel;
 
 import android.app.DownloadManager;
 import android.content.Context;
@@ -108,11 +109,25 @@ public class MainActivity extends AppCompatActivity {
                     fileName = "";
                 }
 
-                // выбрана позиция 1: СМК-30 MUX
+                // выбрана позиция 1: РЛСМ-10
                 if (position == 1) {
-                    fileName = "RVS1.pdf";
+                    fileName = "rlsm10.pdf";
                 }
 
+                // выбрана позиция 1: РВ1-1М в СРС
+                if (position == 2) {
+                    fileName = "rv1_1m_in_srs.pdf";
+                }
+
+                // выбрана позиция 1: РВ-1М
+                if (position == 3) {
+                    fileName = "rv1m.pdf";
+                }
+
+                // выбрана позиция 1: РВС-1
+                if (position == 4) {
+                    fileName = "rvs1.pdf";
+                }
 
             }
 
@@ -231,10 +246,49 @@ public class MainActivity extends AppCompatActivity {
         // Заполняем TextView5, 6 ,7 8 данными
         TextView textView1 = findViewById(R.id.textView1);
 
-        sTemp = "\n" + "    Дорога:    " + sData[number][0] + "\n" + "    Регион:    " +
-                sData[number][1] + "\n" + "    Станция:  " + sData[number][2] + "\n" +
-                "    Частота:  " + sData[number][3] + " МГц" + "\n";
+        int index = -1;
+        // в зависимости от номера частоты выведем соответствующие данные из radioFrequencyChannel
+        if (sData[number][3].equals("Нет данных")) {
+            // нет данных по станции
+            // сформируем данные для отображения
+            sTemp = "\n" +
+                    "    Дорога:    " + sData[number][0] + "\n" +
+                    "    Регион:    " + sData[number][1] + "\n" +
+                    "    Станция:  " + sData[number][2] + "\n" +
+                    "    НЕТ ДАННЫХ ПО СТАНЦИИ"  + "\n";
+        } else {
+            // есть данные по станции
+            for (int i = 0; i <= 6; i++) {
+                if (sData[number][3].equals(radioFrequencyChannel[i][0])) {
+                    // соответствие каналов найдено
+                    index = i;
+                    break;
+                } else {
+                    // соответствие каналов не найдено
+                }
+            }
+            // дополнительная проверка на соответствие данных
+            if (index == -1) {
+                Toast.makeText(this, "Соответствий в каналах не найдено! " +
+                        "Ошибка исходных данных!", Toast.LENGTH_SHORT).show();
+            }
 
+            // сформируем данные для отображения
+            sTemp = "\n" +
+                    "    Дорога:     " + sData[number][0] + "\n" +
+                    "    Регион:     " + sData[number][1] + "\n" +
+                    "    Станция:   " + sData[number][2] + "\n" +
+                    "    Вид радиосвязи:  " + radioFrequencyChannel[index][1] + "\n" +
+                    "    Наименование радиостанции:" + "\n" +
+                    "    РВ-1.1М:     " + radioFrequencyChannel[index][2] + "\n" +
+                    "    РВ-1М:        " + radioFrequencyChannel[index][3] + "\n" +
+                    "    РВ-1.2МК:   " + radioFrequencyChannel[index][4] + "\n" +
+                    "    РВС-01:       " + radioFrequencyChannel[index][5] + "\n" +
+                    "    РЛСМ-10:    " + radioFrequencyChannel[index][6] + "\n";
+
+        }
+
+        // сформируем информацию для отображения на странице с инструкцией
         choiceFrequency = sData[number][2] + "  " + sData[number][3] + " МГц";
 
         textView1.setText(sTemp);
@@ -410,7 +464,7 @@ public class MainActivity extends AppCompatActivity {
         // проверим что файл существует
         if (!fileLocalData.exists()) {
             // загрузка файлов mhz_data.csv
-            downloadFile(FILE_PATH_GOOGLE_DISK_DATA, FILE_PATH_LOCAL_DATA);
+            downloadFile(FILE_PATH_YANDEX_DISK_DATA, FILE_PATH_LOCAL_DATA);
         }
 
         // определим количество строк в файле
@@ -454,8 +508,23 @@ public class MainActivity extends AppCompatActivity {
                     sData[id][index] = data;
                 else if (index == 3)
                     sData[id][index] = data;
-                else
-                    System.out.println("Некорректные данные: " + data);
+                else if (index == 4) ;
+                    //
+                else if (index == 5) ;
+                    //
+                else if (index == 6) ;
+                    //
+                else if (index == 7) ;
+                    //
+                else if (index == 8) ;
+                    //
+                else if (index == 9) ;
+                    //
+                else if (index == 10) ;
+                    //
+                else if (index == 11) ;
+                //
+                System.out.println("Некорректные данные: " + data);
                 index++;
             }
             id++;

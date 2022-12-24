@@ -263,10 +263,10 @@ public class MainActivity extends AppCompatActivity {
             // нет данных по станции
             // сформируем данные для отображения
             sTemp = "\n" +
-                    "    Дорога:    " + sData[number][0] + "\n" +
-                    "    Регион:    " + sData[number][1] + "\n" +
-                    "    Станция:  " + sData[number][2] + "\n" +
-                    "    НЕТ ДАННЫХ ПО СТАНЦИИ" + "\n";
+                    "   Дорога:    " + sData[number][0] + "\n" +
+                    "   Регион:    " + sData[number][1] + "\n" +
+                    "   Станция:  " + sData[number][2] + "\n" +
+                    "   НЕТ ДАННЫХ ПО СТАНЦИИ" + "\n";
         } else {
             // есть данные по станции
             for (int i = 0; i <= 6; i++) {
@@ -286,16 +286,17 @@ public class MainActivity extends AppCompatActivity {
 
             // сформируем данные для отображения
             sTemp = "\n" +
-                    "    Дорога:     " + sData[number][0] + "\n" +
-                    "    Регион:     " + sData[number][1] + "\n" +
-                    "    Станция:   " + sData[number][2] + "\n" +
-                    "    Вид радиосвязи:  " + radioFrequencyChannel[index][1] + "\n" +
-                    "    Наименование радиостанции:" + "\n" +
-                    "    РВ-1.1М:     " + radioFrequencyChannel[index][2] + "\n" +
-                    "    РВ-1М:        " + radioFrequencyChannel[index][3] + "\n" +
-                    "    РВ-1.2МК:   " + radioFrequencyChannel[index][4] + "\n" +
-                    "    РВС-1:        " + radioFrequencyChannel[index][5] + "\n" +
-                    "    РЛСМ-10:    " + radioFrequencyChannel[index][6] + "\n";
+                    "   Дорога:   " + sData[number][0] + "\n" +
+                    "   Регион:   " + sData[number][1] + "\n" +
+                    "   Станция:  " + sData[number][2] + "\n" +
+                    //"   Радиосвязь: " + radioFrequencyChannel[index][1] + "\n" +
+                    "\n" +
+                    "   Модель:   Режим:" + "\n" +
+                    "   РВ-1.1М:  " + radioFrequencyChannel[index][2] + "\n" +
+                    "   РВ-1М:    " + radioFrequencyChannel[index][3] + "\n" +
+                    "   РВ-1.2МК: " + radioFrequencyChannel[index][4] + "\n" +
+                    "   РВС-1:    " + radioFrequencyChannel[index][5] + "\n" +
+                    "   РЛСМ-10:  " + radioFrequencyChannel[index][6] + "\n";
 
         }
 
@@ -342,10 +343,7 @@ public class MainActivity extends AppCompatActivity {
                     "Регион:     " + sData[number][1] + "\n" +
                             "Станция:   " + sData[number][2] + "\n" +
                             "Нет данных по выбранной станции...";
-
         }
-
-
 
     }
 
@@ -440,14 +438,20 @@ public class MainActivity extends AppCompatActivity {
 
         // инструкция пользователя
         if (id == R.id.manual) {
-            Variables.setUrl("https://AleksandrButakov.github.io/MHz/Manual/");
+            // onLine path
+            // Variables.setUrl("https://AleksandrButakov.github.io/MHz/Manual/");
+            // offLine path
+            Variables.setUrl("file:///android_asset/manual_menu.html");
             Intent intent = new Intent(this, WebViewActivity.class);
             startActivity(intent);
         }
 
         // политика конфиденциальности
         if (id == R.id.privacy) {
-            Variables.setUrl("https://AleksandrButakov.github.io/MHz/PolicyPrivacy/");
+            // onLine path
+            // Variables.setUrl("https://AleksandrButakov.github.io/MHz/PolicyPrivacy/");
+            // offLine path
+            Variables.setUrl("file:///android_asset/privacy_policy_menu.html");
             Intent intent = new Intent(this, WebViewActivity.class);
             startActivity(intent);
         }

@@ -30,4 +30,5 @@
 /app/src/main/assets/
 /app/src/main/res/assets/
 /app/src/main/res/raw/
+/app/src/main/ic_launcher-playstore.png
 app/src/main/java/ru/anbn/mhz/StaticVariables.java

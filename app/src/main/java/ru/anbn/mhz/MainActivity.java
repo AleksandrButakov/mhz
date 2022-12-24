@@ -236,9 +236,8 @@ public class MainActivity extends AppCompatActivity {
     // вывод на экрон Toast
     public void displayToast(String sText) {
         //создаём и отображаем текстовое уведомление
-        Toast toast = Toast.makeText(this, sText,
-                Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
+        Toast toast = Toast.makeText(this, sText, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP, 0, 0);
         toast.show();
     }
 
@@ -265,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
             sTemp = "\n" +
                     "   Дорога:    " + sData[number][0] + "\n" +
                     "   Регион:    " + sData[number][1] + "\n" +
-                    "   Станция:  " + sData[number][2] + "\n" +
+                    "   Станция:   " + sData[number][2] + "\n" +
                     "   НЕТ ДАННЫХ ПО СТАНЦИИ" + "\n";
         } else {
             // есть данные по станции
@@ -440,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.manual) {
             // onLine path
             // Variables.setUrl("https://AleksandrButakov.github.io/MHz/Manual/");
-            // offLine path
+            // local path
             Variables.setUrl("file:///android_asset/manual_menu.html");
             Intent intent = new Intent(this, WebViewActivity.class);
             startActivity(intent);
@@ -450,7 +449,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.privacy) {
             // onLine path
             // Variables.setUrl("https://AleksandrButakov.github.io/MHz/PolicyPrivacy/");
-            // offLine path
+            // local path
             Variables.setUrl("file:///android_asset/privacy_policy_menu.html");
             Intent intent = new Intent(this, WebViewActivity.class);
             startActivity(intent);
@@ -464,7 +463,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
-
             /*
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.anbn.pinout"));
@@ -472,7 +470,7 @@ public class MainActivity extends AppCompatActivity {
              */
         }
 
-        // оценить приложение
+        // проверка обновления
         if (id == R.id.update) {
             //создаём и отображаем текстовое уведомление
             Toast toast = Toast.makeText(this,
@@ -484,7 +482,10 @@ public class MainActivity extends AppCompatActivity {
 
         // о программе
         if (id == R.id.about) {
-            Variables.setUrl("https://AleksandrButakov.github.io/MHz/About/");
+            // onLine path
+            // Variables.setUrl("https://AleksandrButakov.github.io/MHz/About/");
+            // local path
+            Variables.setUrl("file:///android_asset/about_menu.html");
             Intent intent = new Intent(this, WebViewActivity.class);
             startActivity(intent);
         }

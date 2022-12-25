@@ -82,12 +82,10 @@
         android:background="@drawable/textview_shape"
         android:elevation="8dp"
         android:fontFamily="monospace"
-
         android:queryHint="Название станции"
         android:text="Дорога:\n dfdsf"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
-
         android:theme="@style/AppThemeSearchView"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"

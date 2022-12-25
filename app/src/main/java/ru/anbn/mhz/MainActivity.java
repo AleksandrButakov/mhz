@@ -63,11 +63,11 @@ public class MainActivity extends AppCompatActivity {
     private String[][] sData = null;
 
     // счетчик для числа переходов
-    private int countSleep;
-    private int timerSeconds = 120;
+    private static int countSleep;
+    private static int timerSeconds = 120;
 
     // id загрузки файла в менеджере
-    private long downloadId;
+    private static long downloadId;
 
     // массив для дальнейшего заполнения найденными позициями при поиске станций
     private ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
@@ -88,14 +88,14 @@ public class MainActivity extends AppCompatActivity {
     // !!! Подумать над этим блока
     // Посмотреть как заметки оставлять
     private int equip;
-    public static String fileName = "";
-    public static String choiceFrequency = "";
+    protected static String fileName = "";
+    protected static String choiceFrequency = "";
 
     // тип выбранной радиостанции
-    public static String typeOfRadioStation = "notSelected";
+    private static String typeOfRadioStation = "notSelected";
 
     // индекс во вспомогательном массиве для отображения параметров настройки радиостанции
-    public static int index = -1;
+    private static int index = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
 
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
 
         // зададим идентификаторы полям spinner
         final Spinner spinner = findViewById(R.id.spinner);
@@ -115,16 +114,10 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-
         // устанавливаем обработчик нажатия spinner1
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // показываем позиция нажатого элемента
-                // Toast.makeText(getBaseContext(), "Position = " + position, Toast.
-                // LENGTH_SHORT).show();
-                equip = position;
-
                 // выбрана позиция 0: Выберите оборудование
                 if (position == 0) {
                     //displayToast("Выберите оборудование");
@@ -155,19 +148,16 @@ public class MainActivity extends AppCompatActivity {
                     fileName = "rvs1.pdf";
                     typeOfRadioStation = "РВС-1";
                 }
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
-
         });
 
 
-        // поиск содержимого по строке введенной в searchView
-        // зададим идентификаторы полю searchView
-        // создадим listner searchView1
+        /* зададим listener для поиска станции по двум и более введенным символам
+           в поле searchView */
         SearchView searchView = findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             // обработчик нажатия кнопки поиска поля searchView1
@@ -197,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                             /* сохраним индекс позиции с соответствием текста
                                в дальнейшем по этим индексам будем выводить информацию */
                             integerArrayList.add(i);
-                            sTemp = sData[i][0] + "  " + sData[i][1] + "  " + sData[i][2];
+                            sTemp = sData[i][2] + " " + sData[i][1]; // + "  " + sData[i][2];
                             stringArrayList.add(sTemp);
 
                             bSearch = true;
@@ -439,6 +429,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onResume");
     }
 
+
     // нарисуем меню
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -509,7 +500,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    // клик по кнопре для отображения инструкции
+    // клик по кнопке для отображения инструкции
     public void onButtonClickShowInstruction(View view) throws IOException {
         /* проверяем что выбрана станция и модель оборудования
            отображаем layout с инструкцией pdf
@@ -533,9 +524,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
+
     // основной алгоритм проверки наличия файл данных и его чтения
     private void downloadAndReadFileData() throws IOException {
-
         /* проверка наличия подключения к интернету и в случае отсутствия
            интернета прерываем программу */
         if (!isOnline()) {
@@ -631,6 +626,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     // проверка наличия подключения к интернету
     protected boolean isOnline() {
         String cs = Context.CONNECTIVITY_SERVICE;
@@ -643,7 +639,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // загрузка файла из google drive на смартфон
+
+    // загрузка файла из Yandex Disk на смартфон
     private void downloadFile(String pathServerFile, String pathLocalFile) {
         File file = new File(getExternalFilesDir(null), pathLocalFile);
 

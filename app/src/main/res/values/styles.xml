@@ -12,10 +12,4 @@
         <item name="android:textColorPrimary">@color/colorBlack</item>
     </style>
 
-    <!-- Тема для поля textView -->
-    <style name="TextViewPdfReaderActivity">
-        <item name="android:textColorPrimary">@color/colorTextStation</item>
-
-    </style>
-
 </resources>

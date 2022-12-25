@@ -43,7 +43,8 @@ import java.util.Scanner;
 3. Процесс синхронизации данных продумать
 4. Необходимо приостанавливать процесс выполнения обновления в случае прерывания по таймеру.
 5. Рефакторинг кода.
-6. Поработать с отображением результата.
+6. Проверить длину выводимой информации чтоб она не превышала длину поля textView и не возникало
+    переноса
 
 1. На первой странице добавил в использование моношрифт, поработал над выводом результата,
     результат выводится красиво.
@@ -192,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
                             bSearch = true;
                         }
                     }
-
                 }
 
                 // проверим успешный ли был поиск
@@ -208,23 +208,18 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // listener ListView слушает клики. При выборе позиции закрываем listView
-                // и отображаем данные в формате дорога, регион, станция, частота
-
+                // и отображаем данные в формате: станция, регион
                 return false;
             }
-
         });
 
-        // метод прослушивания нажатий на ListView (выбор нужной позиции и отображение описания)
-        // отображение происходит в классе TwoActivity.java
+        // метод прослушивания нажатий на ListView, выбор нужной позиции и отображение результата
         ListView listView = findViewById(R.id.listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
-                number = 0;
                 // используем position для получения номера пункта по которому кликнул пользователь
                 number = integerArrayList.get(position);
-
 
                 // прячем клавиатуру. butCalculate - это кнопка
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -235,10 +230,10 @@ public class MainActivity extends AppCompatActivity {
                 displayTheSelectedPositionListView();
             }
         });
-
     }
 
-    // вывод на экрон Toast
+
+    // вывод на экрон toast
     public void displayToast(String sText) {
         //создаём и отображаем текстовое уведомление
         Toast toast = Toast.makeText(this, sText, Toast.LENGTH_SHORT);
@@ -257,9 +252,6 @@ public class MainActivity extends AppCompatActivity {
     public void displayTheSelectedPositionListView() {
         // делаем ListView невидимым
         listViewInvisible();
-
-        // Заполняем TextView5, 6 ,7 8 данными
-        //TextView textView1 = findViewById(R.id.textView1);
 
         index = -1;
         // в зависимости от номера частоты выведем соответствующие данные из radioFrequencyChannel
@@ -301,24 +293,16 @@ public class MainActivity extends AppCompatActivity {
                     "   РВ-1.2МК: " + radioFrequencyChannel[index][4] + "\n" +
                     "   РВС-1:    " + radioFrequencyChannel[index][5] + "\n" +
                     "   РЛСМ-10:  " + radioFrequencyChannel[index][6] + "\n";
-
         }
 
         informationForPdfDisplayActivity();
-
-
-        // textView1.setText(sTemp);
+        // выведем результат в поле TextView
         fillTextView(sTemp);
-
-        // делаем textView visible
-        //textView1.setVisibility(View.VISIBLE);
-
     }
 
     // подготовим информацию для отображения в textView pdf activity
     public void informationForPdfDisplayActivity() {
         // сформируем информацию для отображения на странице с инструкцией
-        //choiceFrequency = sData[number][2] + "  " + sData[number][3] + " МГц";
         choiceFrequency =
                 "   Регион:   " + sData[number][1] + "\n" +
                         "   Станция:  " + sData[number][2] + "\n";
@@ -357,7 +341,6 @@ public class MainActivity extends AppCompatActivity {
         textView1.setText(sTemp);
         textView1.setVisibility(View.VISIBLE);
     }
-
 
     // сделаем ListView visible = false
     public void listViewInvisible() {
@@ -521,10 +504,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-
-
-
 
 
     // основной алгоритм проверки наличия файл данных и его чтения

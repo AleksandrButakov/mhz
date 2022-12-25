@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
     // переменная хранит состояние поиска
     private boolean bSearch;
 
+    // переменная хранит состояние видимости textView
+    private boolean bVisibleTextView = false;
+
     // !!! Подумать над этим блока
     // Посмотреть как заметки оставлять
     private int equip;
@@ -245,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
     public void textViewInvisible() {
         TextView textView1 = findViewById(R.id.textView1);
         textView1.setVisibility(View.INVISIBLE);
+        bVisibleTextView = false;
     }
 
     // отображение выбранной в ListView позиции
@@ -339,6 +343,7 @@ public class MainActivity extends AppCompatActivity {
         TextView textView1 = findViewById(R.id.textView1);
         textView1.setText(sTemp);
         textView1.setVisibility(View.VISIBLE);
+        bVisibleTextView = true;
     }
 
     // сделаем ListView visible = false
@@ -490,18 +495,22 @@ public class MainActivity extends AppCompatActivity {
 
         // проверим что инструкция для отображения выбрана
         if (!fileName.equals("")) {
-            // подготовим переменную choiceFrequency for display in activity
-            informationForPdfDisplayActivity();
+            if (bVisibleTextView) {
+                // подготовим переменную choiceFrequency for display in activity
+                informationForPdfDisplayActivity();
 
-            // оборудование выбрано, отображаем инструкцию
-            // переходим к ActivityTwo
-            Intent intent = new Intent(this, PdfReaderActivity.class);
-            startActivity(intent);
+                // оборудование выбрано, станция выбрана, отображаем инструкцию
+                // переходим к ActivityTwo
+                Intent intent = new Intent(this, PdfReaderActivity.class);
+                startActivity(intent);
+            } else {
+                // станция не выбрана, выводим Toast
+                displayToast("Выберите станцию...");
+            }
         } else {
             // оборудование не выбрано, выводим Toast
             displayToast("Выберите оборудование...");
         }
-
     }
 
 

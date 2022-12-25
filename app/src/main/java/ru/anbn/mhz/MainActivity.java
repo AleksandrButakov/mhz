@@ -45,7 +45,6 @@ import java.util.Scanner;
 5. Рефакторинг кода.
 6. Поработать с отображением результата.
 
-
 1. На первой странице добавил в использование моношрифт, поработал над выводом результата,
     результат выводится красиво.
 2. Убрал строку из вывода результата: Назначение радиосвязи УКВ ПРС.
@@ -54,7 +53,8 @@ import java.util.Scanner;
 4. Файлы .html отображающие информацию пунктов меню: Инструкция, Политика конфиденциальности и
     О приложении перенес на устройство и реализовал метод локального их чтения. Раньще эти файлы
     подтягивались из сети и требовалось подключение к интернету
-5.
+5. Изменил отображение результатов в списке соответствий, убрал отображение дороги.
+6.
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -189,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
                             integerArrayList.add(i);
                             sTemp = sData[i][2] + " " + sData[i][1]; // + "  " + sData[i][2];
                             stringArrayList.add(sTemp);
-
                             bSearch = true;
                         }
                     }
@@ -321,35 +320,34 @@ public class MainActivity extends AppCompatActivity {
         // сформируем информацию для отображения на странице с инструкцией
         //choiceFrequency = sData[number][2] + "  " + sData[number][3] + " МГц";
         choiceFrequency =
-                "Регион:      " + sData[number][1] + "\n" +
-                        "Станция:    " + sData[number][2] + "\n";
+                "   Регион:   " + sData[number][1] + "\n" +
+                        "   Станция:  " + sData[number][2] + "\n";
 
         if (!sData[number][3].equals("Нет данных")) {
 
             if (typeOfRadioStation.equals("notSelected")) {
                 // в документации нет выбранной инструкции
                 choiceFrequency +=
-                        "РВ-1.1М:     " + radioFrequencyChannel[index][2] + "\n" +
-                                "РВ-1М:        " + radioFrequencyChannel[index][3] + "\n" +
-                                "РВ-1.2МК:   " + radioFrequencyChannel[index][4] + "\n" +
-                                "РВС-1:       " + radioFrequencyChannel[index][5] + "\n" +
-                                "РЛСМ-10:    " + radioFrequencyChannel[index][6] + "\n";
+                        "   РВ-1.1М:  " + radioFrequencyChannel[index][2] + "\n" +
+                                "   РВ-1М:    " + radioFrequencyChannel[index][3] + "\n" +
+                                "   РВ-1.2МК: " + radioFrequencyChannel[index][4] + "\n" +
+                                "   РВС-1:    " + radioFrequencyChannel[index][5] + "\n" +
+                                "   РЛСМ-10:  " + radioFrequencyChannel[index][6] + "\n";
             } else if (typeOfRadioStation.equals("РВ-1.1М")) {
-                choiceFrequency += "РВ-1.1М:     " + radioFrequencyChannel[index][2];
+                choiceFrequency += "   РВ-1.1М:  " + radioFrequencyChannel[index][2];
             } else if (typeOfRadioStation.equals("РВ-1М")) {
-                choiceFrequency += "РВ-1М:        " + radioFrequencyChannel[index][3];
+                choiceFrequency += "   РВ-1М:    " + radioFrequencyChannel[index][3];
             } else if (typeOfRadioStation.equals("РВС-1")) {
-                choiceFrequency += "РВС-1:       " + radioFrequencyChannel[index][5];
+                choiceFrequency += "   РВС-1:    " + radioFrequencyChannel[index][5];
             } else if (typeOfRadioStation.equals("РЛСМ-10")) {
-                choiceFrequency += "РЛСМ-10:    " + radioFrequencyChannel[index][6];
+                choiceFrequency += "   РЛСМ-10:  " + radioFrequencyChannel[index][6];
             }
         } else {
             choiceFrequency =
-                    "Регион:     " + sData[number][1] + "\n" +
-                            "Станция:   " + sData[number][2] + "\n" +
-                            "Нет данных по выбранной станции...";
+                    "   Регион:   " + sData[number][1] + "\n" +
+                            "   Станция:  " + sData[number][2] + "\n" +
+                            "   Нет данных по выбранной станции...";
         }
-
     }
 
 

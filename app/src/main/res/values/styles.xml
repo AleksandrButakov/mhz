@@ -7,11 +7,15 @@
         <item name="android:actionBarSize">45dp</item>
     </style>
 
-    <!--
-    Тема для поля SearchView
-    -->
+    <!-- Тема для поля SearchView -->
     <style name="AppThemeSearchView">
         <item name="android:textColorPrimary">@color/colorBlack</item>
+    </style>
+
+    <!-- Тема для поля textView -->
+    <style name="TextViewPdfReaderActivity">
+        <item name="android:textColorPrimary">@color/colorTextStation</item>
+
     </style>
 
 </resources>

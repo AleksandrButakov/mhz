@@ -516,7 +516,7 @@ public class MainActivity extends AppCompatActivity {
         try (BufferedReader br = new BufferedReader(new FileReader(fileLocalData))) {
             String line;
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
+                // System.out.println(line);
                 countRows++;
             }
         } catch (IOException e) {
@@ -631,33 +631,15 @@ public class MainActivity extends AppCompatActivity {
     private void downloadFile(String pathServerFile, String pathLocalFile) {
         File file = new File(getExternalFilesDir(null), pathLocalFile);
 
-        // проверим перед загрузкой что такого файла не существует, если существует, то удалим его
-
         // если такой файл уже существует то перед загрузкой новой версии удалим его
         deletingFile(file);
-
-//        if (file.exists()) {
-//            file.delete();
-//        }
-//
-//        // ожидаем уделение файла
-//        countSleep = timerSeconds;
-//        while (file.exists() && countSleep > 0) {
-//            try {
-//                sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            countSleep--;
-//        }
 
         // загрузка файла
         DownloadManager.Request request_version = null;
         request_version = new DownloadManager.Request(Uri.parse(pathServerFile))
                 .setTitle(pathLocalFile)
-                .setDescription("Downloading")
+                //.setDescription("Downloading")
                 //.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                //.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
                 .setDestinationUri(Uri.fromFile(file))
                 .setRequiresCharging(false)
                 .setAllowedOverMetered(true)

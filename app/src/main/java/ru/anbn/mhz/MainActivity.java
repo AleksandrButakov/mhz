@@ -3,6 +3,7 @@ package ru.anbn.mhz;
 import static android.content.ContentValues.TAG;
 import static java.lang.Thread.sleep;
 import static ru.anbn.mhz.StaticVariables.FILE_PATH_LOCAL_DATA;
+import static ru.anbn.mhz.StaticVariables.FILE_PATH_LOCAL_DATA_TEMP;
 import static ru.anbn.mhz.StaticVariables.FILE_PATH_YANDEX_DISK_DATA;
 import static ru.anbn.mhz.StaticVariables.radioFrequencyChannel;
 
@@ -515,17 +516,17 @@ public class MainActivity extends AppCompatActivity {
 
     // основной алгоритм проверки наличия файл данных и его чтения
     private void downloadAndReadFileData() throws IOException {
-        /* проверка наличия подключения к интернету и в случае отсутствия
-           интернета прерываем программу */
-        if (!isOnline()) {
-            return;
-        }
-
-        // проверим что локальные файлы mhz_data.txt и version.txt существуют
+        // проверим что локальный файл mhz_data.txt существует
         File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
 
         // проверим что файл существует
         if (!fileLocalData.exists()) {
+            /* проверка наличия подключения к интернету и в случае отсутствия
+               интернета прерываем программу */
+            if (!isOnline()) {
+                displayToast("Отсутствует подключение к сети интернет. Данные не загружены.");
+                return;
+            }
             // загрузка файлов mhz_data.csv
             downloadFile(FILE_PATH_YANDEX_DISK_DATA, FILE_PATH_LOCAL_DATA);
         }
@@ -597,16 +598,40 @@ public class MainActivity extends AppCompatActivity {
         //закрываем reader
         reader.close();
 
-        // выводим данные в консоль
-        for (int i = 0; i < countRows; i++) {
-            System.out.println(sData[i][0] + sData[i][1] + sData[i][2] + sData[i][3]);
-        }
-
         /* на этом шаге файл загружен или произведена проверка того что файл существовал,
-           двумерный массив заполнен данными. Ожидаем ввода требуемой станции в поле поиска
-           и после ввода второго символа обновляем все используемые в данном блоке переменные,
-           производим поиск совпадений с заполнением индексов в listStationArray.
+           двумерный массив заполнен данными. Reader файла закрыт. Файл на этом этапе работы
+           программы не нужен.
+           Выполним загрузку файла с сервера проверим актуальность и в случае необходимости
+           обновим данные.
          */
+        dataSynchronizationWithTheServer(fileLocalData);
+
+    }
+
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    // синхронизация данных с сервером
+    public void dataSynchronizationWithTheServer(File fileLocalData) {
+        // проверим что локальный файл mhz_data.txt существует
+        File fileLocalDataTemp = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA_TEMP);
+        // удалим файл
+        deletingFile(fileLocalDataTemp);
+        // проверим что файла не существует
+        if (!fileLocalDataTemp.exists()) {
+            // проверяем наличие сети Интернет. При наличии загружаем файл с сервера
+            if (isOnline()) {
+                // загрузка файлов mhz_data.csv /sdcard/Android/data/ru.anbn.mhz/files/temp.csv
+                downloadFile(FILE_PATH_YANDEX_DISK_DATA, FILE_PATH_LOCAL_DATA_TEMP);
+                // если файл существует то выполняем блок
+                if (fileLocalDataTemp.exists()) {
+                    // удаляем основной рабочий файл
+                    fileLocalData.delete();
+                    // переименовываем вновь загруженный файл с именем temp.csv in mhz_data.csv
+                    fileLocalDataTemp.renameTo(fileLocalData);
+                }
+            }
+        }
 
     }
 
@@ -628,21 +653,25 @@ public class MainActivity extends AppCompatActivity {
     private void downloadFile(String pathServerFile, String pathLocalFile) {
         File file = new File(getExternalFilesDir(null), pathLocalFile);
 
-        // если такой файл уже существует то перед загрузкой новой версии удалим его
-        if (file.exists()) {
-            file.delete();
-        }
+        // проверим перед загрузкой что такого файла не существует, если существует, то удалим его
 
-        // ожидаем уделение файла
-        countSleep = timerSeconds;
-        while (file.exists() && countSleep > 0) {
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            countSleep--;
-        }
+        // если такой файл уже существует то перед загрузкой новой версии удалим его
+        deletingFile(file);
+
+//        if (file.exists()) {
+//            file.delete();
+//        }
+//
+//        // ожидаем уделение файла
+//        countSleep = timerSeconds;
+//        while (file.exists() && countSleep > 0) {
+//            try {
+//                sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            countSleep--;
+//        }
 
         // загрузка файла
         DownloadManager.Request request_version = null;
@@ -667,6 +696,26 @@ public class MainActivity extends AppCompatActivity {
             }
             countSleep--;
         }
+    }
+
+    // метод удаления файла
+    public void deletingFile(File file) {
+        // если такой файл уже существует то перед загрузкой новой версии удалим его
+        if (file.exists()) {
+            file.delete();
+        }
+
+        // ожидаем уделение файла
+        countSleep = timerSeconds;
+        while (file.exists() && countSleep > 0) {
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            countSleep--;
+        }
+
     }
 
 

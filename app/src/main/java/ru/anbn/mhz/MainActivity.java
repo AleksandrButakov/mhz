@@ -37,26 +37,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/*
-0. Понять как скачивать с Яндекса или найти другой хостинг с постоянной ссылкой
-1. При запуске выбираем инструкцию нажимаем кнопку и все закрывается
-3. Процесс синхронизации данных продумать
-4. Необходимо приостанавливать процесс выполнения обновления в случае прерывания по таймеру.
-6. Проверить длину выводимой информации чтоб она не превышала длину поля textView и не возникало
-    переноса
-
-1. На первой странице добавил в использование моношрифт, поработал над выводом результата,
-    результат выводится достаточно читаемо.
-2. Сделал нормальное отображение иконки в сплывающих сообщениях. У гугла в андроид 12 здесь
-    оказывается есть маленький баг который отнял у меня много времени.
-3. Файлы .html отображающие информацию пунктов меню: Инструкция, Политика конфиденциальности и
-    О приложении перенес на устройство и реализовал метод локального их чтения. Раньще эти файлы
-    подтягивались из сети и требовалось подключение к интернету.
-4. Изменил отображение результатов в списке найденных соответствий, убрал отображение дороги.
-5. Немного улучшил код.
-7.
- */
-
 public class MainActivity extends AppCompatActivity {
     // количество строк в файле mhz_data.txt
     private int countRows;
@@ -609,8 +589,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!
-
     // синхронизация данных с сервером
     public void dataSynchronizationWithTheServer(File fileLocalData) {
         // проверим что локальный файл mhz_data.txt существует
@@ -678,7 +656,8 @@ public class MainActivity extends AppCompatActivity {
         request_version = new DownloadManager.Request(Uri.parse(pathServerFile))
                 .setTitle(pathLocalFile)
                 .setDescription("Downloading")
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                //.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                //.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
                 .setDestinationUri(Uri.fromFile(file))
                 .setRequiresCharging(false)
                 .setAllowedOverMetered(true)

@@ -214,6 +214,17 @@ public class MainActivity extends AppCompatActivity {
                 displayTheSelectedPositionListView();
             }
         });
+
+        if (!bSynchronizationIsCompleted) {
+            try {
+                downloadAndReadFileData();
+                bSynchronizationIsCompleted = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "onStart");
+        }
+
     }
 
 
@@ -376,12 +387,17 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         /* при запуске приложения проверим наличие файла с данными, в случае необходимости
            выполним загрузку и заполним массив для дальнейшей работы приложения */
-        try {
-            downloadAndReadFileData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Log.d(TAG, "onStart");
+//        // if (!bSynchronizationIsCompleted) {
+//            try {
+//                downloadAndReadFileData();
+//                System.out.println(iSynchronizationIsCompleted);
+//                iSynchronizationIsCompleted++;
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            Log.d(TAG, "onStart");
+//        // }
+
     }
 
     @Override
@@ -390,9 +406,20 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onPause");
     }
 
+    // !!!!!!!! Выяснить почему на разных устройствах работает по разному
     @Override
     public void onResume() {
         super.onResume();
+
+        if (bSynchronizationIsCompleted && sData == null) {
+            try {
+                downloadAndReadFileData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "onStart");
+        }
+
         Log.d(TAG, "onResume");
     }
 
@@ -586,11 +613,7 @@ public class MainActivity extends AppCompatActivity {
            Выполним загрузку файла с сервера проверим актуальность и в случае необходимости
            обновим данные.
          */
-        if (bSynchronizationIsCompleted) {
-            dataSynchronizationWithTheServer(fileLocalData);
-            bSynchronizationIsCompleted = true;
-        }
-
+        dataSynchronizationWithTheServer(fileLocalData);
 
     }
 

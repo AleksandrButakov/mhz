@@ -70,9 +70,11 @@ public class MainActivity extends AppCompatActivity {
 
     // !!! Подумать над этим блока
     // Посмотреть как заметки оставлять
-    private int equip;
     protected static String fileName = "";
     protected static String choiceFrequency = "";
+
+    // информация о синхронизации данных
+    private static boolean bSynchronizationIsCompleted = false;
 
     // тип выбранной радиостанции
     private static String typeOfRadioStation = "notSelected";
@@ -584,7 +586,11 @@ public class MainActivity extends AppCompatActivity {
            Выполним загрузку файла с сервера проверим актуальность и в случае необходимости
            обновим данные.
          */
-        dataSynchronizationWithTheServer(fileLocalData);
+        if (bSynchronizationIsCompleted) {
+            dataSynchronizationWithTheServer(fileLocalData);
+            bSynchronizationIsCompleted = true;
+        }
+
 
     }
 

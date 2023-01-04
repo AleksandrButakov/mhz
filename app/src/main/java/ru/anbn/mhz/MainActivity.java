@@ -10,6 +10,7 @@ import static ru.anbn.mhz.StaticVariables.radioFrequencyChannel;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -82,6 +84,14 @@ public class MainActivity extends AppCompatActivity {
     // индекс во вспомогательном массиве для отображения параметров настройки радиостанции
     private static int index = -1;
 
+
+    private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1; // in Meters
+    private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000; // in Milliseconds
+
+    protected LocationManager locationManager;
+
+    protected Button retrieveLocationButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +99,16 @@ public class MainActivity extends AppCompatActivity {
 
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+
+
+
+
+
+
+
+
+
 
         // зададим идентификаторы полям spinner
         final Spinner spinner = findViewById(R.id.spinner);
@@ -138,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
+
         });
 
 
@@ -215,17 +236,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (!bSynchronizationIsCompleted) {
-            try {
-                downloadAndReadFileData();
-                bSynchronizationIsCompleted = true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Log.d(TAG, "onStart");
-        }
+//        if (!bSynchronizationIsCompleted) {
+//            // downloadAndReadFileData();
+//            bSynchronizationIsCompleted = true;
+//            Log.d(TAG, "onStart");
+//        }
 
     }
+
+
+
+
+
+
+
+
 
 
     // вывод на экрон toast
@@ -418,6 +443,8 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             Log.d(TAG, "onStart");
+        } else {
+            bSynchronizationIsCompleted = true;
         }
 
         Log.d(TAG, "onResume");
@@ -527,7 +554,7 @@ public class MainActivity extends AppCompatActivity {
     private void downloadAndReadFileData() throws IOException {
         // проверим что локальный файл mhz_data.txt существует
         File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
-
+        System.out.println("444444444444444444444444444444");
         // проверим что файл существует
         if (!fileLocalData.exists()) {
             /* проверка наличия подключения к интернету и в случае отсутствия
@@ -597,7 +624,7 @@ public class MainActivity extends AppCompatActivity {
                     //
                 else if (index == 11) ;
                 //
-                System.out.println("Некорректные данные: " + data);
+                // System.out.println("Некорректные данные: " + data);
                 index++;
             }
             id++;
@@ -705,8 +732,6 @@ public class MainActivity extends AppCompatActivity {
             }
             countSleep--;
         }
-
     }
-
 
 }

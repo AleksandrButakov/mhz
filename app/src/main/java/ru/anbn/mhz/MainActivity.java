@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     // информация о синхронизации данных
     private static boolean bSynchronizationIsCompleted = false;
+    private static boolean bFirstRun = false;
 
     // тип выбранной радиостанции
     private static String typeOfRadioStation = "notSelected";
@@ -99,15 +100,6 @@ public class MainActivity extends AppCompatActivity {
 
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
-
-
-
-
-
-
-
-
 
 
         // зададим идентификаторы полям spinner
@@ -243,14 +235,6 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
     }
-
-
-
-
-
-
-
-
 
 
     // вывод на экрон toast
@@ -410,19 +394,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        /* при запуске приложения проверим наличие файла с данными, в случае необходимости
-           выполним загрузку и заполним массив для дальнейшей работы приложения */
-//        // if (!bSynchronizationIsCompleted) {
-//            try {
-//                downloadAndReadFileData();
-//                System.out.println(iSynchronizationIsCompleted);
-//                iSynchronizationIsCompleted++;
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            Log.d(TAG, "onStart");
-//        // }
-
+        Log.d(TAG, "onStart");
     }
 
     @Override
@@ -431,20 +403,22 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onPause");
     }
 
-    // !!!!!!!! Выяснить почему на разных устройствах работает по разному
     @Override
     public void onResume() {
         super.onResume();
 
-        if (bSynchronizationIsCompleted && sData == null) {
+        downloadFileData();
+
+        if (sData == null) {
             try {
-                downloadAndReadFileData();
+                readFileData();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Log.d(TAG, "onStart");
-        } else {
-            bSynchronizationIsCompleted = true;
+        }
+
+        if (!bSynchronizationIsCompleted) {
+            dataSynchronizationWithTheServer();
         }
 
         Log.d(TAG, "onResume");
@@ -550,11 +524,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // основной алгоритм проверки наличия файл данных и его чтения
-    private void downloadAndReadFileData() throws IOException {
+    private void downloadFileData() {
         // проверим что локальный файл mhz_data.txt существует
         File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
-        System.out.println("444444444444444444444444444444");
         // проверим что файл существует
         if (!fileLocalData.exists()) {
             /* проверка наличия подключения к интернету и в случае отсутствия
@@ -565,7 +537,30 @@ public class MainActivity extends AppCompatActivity {
             }
             // загрузка файлов mhz_data.csv
             downloadFile(FILE_PATH_YANDEX_DISK_DATA, FILE_PATH_LOCAL_DATA);
+            // переменная необходима для исключения повторной загрузки файла
+            bFirstRun = true;
+            bSynchronizationIsCompleted = true;
         }
+    }
+
+
+    // основной алгоритм проверки наличия файл данных и его чтения
+    private void readFileData() throws IOException {
+        // проверим что локальный файл mhz_data.txt существует
+        File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
+//        // проверим что файл существует
+//        if (!fileLocalData.exists()) {
+//            /* проверка наличия подключения к интернету и в случае отсутствия
+//               интернета прерываем программу */
+//            if (!isOnline()) {
+//                displayToast("Отсутствует подключение к сети интернет. Данные не загружены.");
+//                return;
+//            }
+//            // загрузка файлов mhz_data.csv
+//            downloadFile(FILE_PATH_YANDEX_DISK_DATA, FILE_PATH_LOCAL_DATA);
+//            // переменная необходима для исключения повторной загрузки файла
+//            bFirstRun = true;
+//        }
 
         // определим количество строк в файле
         countRows = 0;
@@ -634,20 +629,19 @@ public class MainActivity extends AppCompatActivity {
         //закрываем reader
         reader.close();
 
-        /* на этом шаге файл загружен или произведена проверка того что файл существовал,
-           двумерный массив заполнен данными. Reader файла закрыт. Файл на этом этапе работы
-           программы не нужен.
-           Выполним загрузку файла с сервера проверим актуальность и в случае необходимости
-           обновим данные.
-         */
-        dataSynchronizationWithTheServer(fileLocalData);
+//        // исключим повторную загрузку файла если приложение загружено впервые
+//        if (!bFirstRun) {
+//            //dataSynchronizationWithTheServer(fileLocalData);
+//            dataSynchronizationWithTheServer();
+//        }
 
     }
 
 
     // синхронизация данных с сервером
-    public void dataSynchronizationWithTheServer(File fileLocalData) {
+    public void dataSynchronizationWithTheServer() {
         // проверим что локальный файл mhz_data.txt существует
+        File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
         File fileLocalDataTemp = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA_TEMP);
         // удалим файл
         deletingFile(fileLocalDataTemp);
@@ -666,7 +660,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-
+        // вспомогательная переменнная говорит нам что синхронизация выполнена
+        bSynchronizationIsCompleted = true;
     }
 
 

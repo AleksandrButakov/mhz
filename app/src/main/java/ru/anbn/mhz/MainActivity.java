@@ -41,7 +41,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 public class MainActivity extends AppCompatActivity {
     // количество строк в файле mhz_data.txt
     private int countRows;
@@ -88,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
     // индекс во вспомогательном массиве для отображения параметров настройки радиостанции
     private static int index = -1;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,14 +95,16 @@ public class MainActivity extends AppCompatActivity {
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
+        // блок получения координат
+        Button btnGetLoc = findViewById(R.id.btnGetLoc);
 
-        Button btnGetLoc = (Button) findViewById(R.id.btnGetLoc);
-
-        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION }, 123); // запрос разрешение на использовние геопозиции
+        // запрос разрешение на использовние геопозиции
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]
+                {Manifest.permission.ACCESS_FINE_LOCATION }, 123);
         btnGetLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GPStracker g = new GPStracker(getApplicationContext()); //создаём трекер
+                GPSTracker g = new GPSTracker(getApplicationContext()); //создаём трекер
                 Location l = g.getLocation(); // получаем координаты
                 if(l != null){
                     double lat = l.getLatitude();  // широта
@@ -114,9 +113,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
 
         // зададим идентификаторы полям spinner
         final Spinner spinner = findViewById(R.id.spinner);
@@ -168,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
 
         /* зададим listener для поиска станции по двум и более введенным символам
            в поле searchView */
@@ -557,19 +552,6 @@ public class MainActivity extends AppCompatActivity {
     private void readFileData() throws IOException {
         // проверим что локальный файл mhz_data.txt существует
         File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
-//        // проверим что файл существует
-//        if (!fileLocalData.exists()) {
-//            /* проверка наличия подключения к интернету и в случае отсутствия
-//               интернета прерываем программу */
-//            if (!isOnline()) {
-//                displayToast("Отсутствует подключение к сети интернет. Данные не загружены.");
-//                return;
-//            }
-//            // загрузка файлов mhz_data.csv
-//            downloadFile(FILE_PATH_YANDEX_DISK_DATA, FILE_PATH_LOCAL_DATA);
-//            // переменная необходима для исключения повторной загрузки файла
-//            bFirstRun = true;
-//        }
 
         // определим количество строк в файле
         countRows = 0;
@@ -637,15 +619,7 @@ public class MainActivity extends AppCompatActivity {
         }
         //закрываем reader
         reader.close();
-
-//        // исключим повторную загрузку файла если приложение загружено впервые
-//        if (!bFirstRun) {
-//            //dataSynchronizationWithTheServer(fileLocalData);
-//            dataSynchronizationWithTheServer();
-//        }
-
     }
-
 
     // синхронизация данных с сервером
     public void dataSynchronizationWithTheServer() {
@@ -673,7 +647,6 @@ public class MainActivity extends AppCompatActivity {
         bSynchronizationIsCompleted = true;
     }
 
-
     // проверка наличия подключения к интернету
     protected boolean isOnline() {
         String cs = Context.CONNECTIVITY_SERVICE;
@@ -685,7 +658,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     }
-
 
     // загрузка файла из Yandex Disk на смартфон
     private void downloadFile(String pathServerFile, String pathLocalFile) {

@@ -14,13 +14,13 @@
         android:layout_height="42dp"
         android:layout_marginStart="14dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="14dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/search_shape"
         android:elevation="8dp"
         android:queryHint="Название станции"
-        android:theme="@style/AppThemeSearchView"
 
-        app:layout_constraintEnd_toEndOf="parent"
+        android:theme="@style/AppThemeSearchView"
+        app:layout_constraintEnd_toStartOf="@+id/btnGetLoc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:showAsAction="collapseActionView|ifRoom" />
@@ -76,15 +76,15 @@
         android:id="@+id/btnGetLoc"
         android:layout_width="wrap_content"
         android:layout_height="42dp"
-        android:layout_marginStart="14dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="14dp"
         android:background="@drawable/button_shape"
         android:text="GPS"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <TextView

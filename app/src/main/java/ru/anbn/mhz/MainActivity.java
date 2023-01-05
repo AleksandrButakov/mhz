@@ -7,9 +7,11 @@ import static ru.anbn.mhz.StaticVariables.FILE_PATH_LOCAL_DATA_TEMP;
 import static ru.anbn.mhz.StaticVariables.FILE_PATH_YANDEX_DISK_DATA;
 import static ru.anbn.mhz.StaticVariables.radioFrequencyChannel;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -29,6 +32,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     private static int index = -1;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +97,24 @@ public class MainActivity extends AppCompatActivity {
 
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+
+        Button btnGetLoc = (Button) findViewById(R.id.btnGetLoc);
+
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION }, 123); // запрос разрешение на использовние геопозиции
+        btnGetLoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GPStracker g = new GPStracker(getApplicationContext()); //создаём трекер
+                Location l = g.getLocation(); // получаем координаты
+                if(l != null){
+                    double lat = l.getLatitude();  // широта
+                    double lon = l.getLongitude(); // долгота
+                    Toast.makeText(getApplicationContext(), "Широта: "+lat+"\nДолгота: "+lon, Toast.LENGTH_LONG).show(); // вывод в тосте
+                }
+            }
+        });
+
 
 
 
@@ -222,11 +245,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
-
-
-
 
     // вывод на экрон toast
     public void displayToast(String sText) {

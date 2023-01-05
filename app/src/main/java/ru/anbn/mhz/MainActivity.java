@@ -10,7 +10,6 @@ import static ru.anbn.mhz.StaticVariables.radioFrequencyChannel;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,7 +21,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -38,6 +36,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 
 public class MainActivity extends AppCompatActivity {
     // количество строк в файле mhz_data.txt
@@ -86,13 +85,6 @@ public class MainActivity extends AppCompatActivity {
     private static int index = -1;
 
 
-    private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1; // in Meters
-    private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000; // in Milliseconds
-
-    protected LocationManager locationManager;
-
-    protected Button retrieveLocationButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
 
 
         // зададим идентификаторы полям spinner
@@ -228,13 +221,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        if (!bSynchronizationIsCompleted) {
-//            // downloadAndReadFileData();
-//            bSynchronizationIsCompleted = true;
-//            Log.d(TAG, "onStart");
-//        }
-
     }
+
+
+
+
 
 
     // вывод на экрон toast

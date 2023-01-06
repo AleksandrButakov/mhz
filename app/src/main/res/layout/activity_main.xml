@@ -14,7 +14,7 @@
         android:layout_height="42dp"
         android:layout_marginStart="14dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="14dp"
         android:background="@drawable/search_shape"
         android:elevation="8dp"
         android:queryHint="Название станции"
@@ -36,7 +36,7 @@
         android:elevation="8dp"
         android:queryHint="Название станции"
         android:theme="@style/AppThemeSearchView"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
@@ -58,23 +58,23 @@
 
     <Button
         android:id="@+id/button5"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="42dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="14dp"
         android:background="@drawable/button_shape"
         android:onClick="onButtonClickShowInstruction"
-        android:text="     ПОКАЗАТЬ ИНСТРУКЦИЮ     "
+        android:text="NEXT"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintTop_toBottomOf="@+id/btnGetLoc"
         tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/btnGetLoc"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="42dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="14dp"

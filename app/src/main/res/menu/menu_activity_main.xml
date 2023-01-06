@@ -15,13 +15,8 @@
         android:title="Оценить приложение" />
 
     <item
-        android:id="@+id/update"
-        android:orderInCategory="3"
-        android:title="Проверить обновление" />
-
-    <item
         android:id="@+id/about"
-        android:orderInCategory="4"
+        android:orderInCategory="3"
         android:title="О приложении" />
 
 </menu>

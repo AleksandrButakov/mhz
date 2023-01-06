@@ -26,17 +26,18 @@ public class GPSTracker implements LocationListener {
             Toast.makeText(context, "Разрешение не предоставлено", Toast.LENGTH_LONG).show();
             return null;
         }
+
         //подключаем менеджер локаций
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         boolean isGPSEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
         // проверяем что GPS включен
         if (isGPSEnabled) {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    6000, 10, this);
+                    6000, 100, this);
             Location l = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             return l;
         } else {
-            Toast.makeText(context, "Пожалуйста, включите GPS! =)", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Включите GPS...", Toast.LENGTH_LONG).show();
         }
         return null;
     }

@@ -100,16 +100,21 @@ public class MainActivity extends AppCompatActivity {
 
         // запрос разрешение на использовние геопозиции
         ActivityCompat.requestPermissions(MainActivity.this, new String[]
-                {Manifest.permission.ACCESS_FINE_LOCATION }, 123);
+                {Manifest.permission.ACCESS_FINE_LOCATION}, 123);
         btnGetLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GPSTracker g = new GPSTracker(getApplicationContext()); //создаём трекер
                 Location l = g.getLocation(); // получаем координаты
-                if(l != null){
+                if (l != null) {
                     double lat = l.getLatitude();  // широта
                     double lon = l.getLongitude(); // долгота
-                    Toast.makeText(getApplicationContext(), "Широта: "+lat+"\nДолгота: "+lon, Toast.LENGTH_LONG).show(); // вывод в тосте
+                    Toast.makeText(getApplicationContext(), "Широта: " + lat +
+                            "\nДолгота: " + lon, Toast.LENGTH_LONG).show(); // вывод в тосте
+                } else {
+                    Toast.makeText(getApplicationContext(), "Координаты не определены, " +
+                                    "требуется время",
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -474,16 +479,6 @@ public class MainActivity extends AppCompatActivity {
             intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.anbn.pinout"));
             startActivity(intent);
              */
-        }
-
-        // проверка обновления
-        if (id == R.id.update) {
-            //создаём и отображаем текстовое уведомление
-            Toast toast = Toast.makeText(this,
-                    "Данный раздел находится в разработке",
-                    Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
         }
 
         // о программе

@@ -509,6 +509,13 @@ public class MainActivity extends AppCompatActivity {
             double lon = l.getLongitude(); // долгота
             Toast.makeText(getApplicationContext(), "Широта: " + lat +
                     "\nДолгота: " + lon, Toast.LENGTH_LONG).show(); // вывод в тосте
+
+            /* массив координатами из файла в десятичном виде уже заполнен, координаты
+               устройства получены. Необходимо найти ближайшую станцию и отобразить на экране
+             */
+
+
+
         } else {
             Toast.makeText(getApplicationContext(), "Координаты не определены, " +
                             "требуется время",
@@ -609,7 +616,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // зададим размерность массива в соответствии с размером файла
-        sData = new String[countRows][4];
+        sData = new String[countRows][12];
         dGeographicCoordinates = new double[countRows][2];
 
         // открываем файл
@@ -644,22 +651,22 @@ public class MainActivity extends AppCompatActivity {
                     //
                 else if (index == 6)
                     // широта градусы
-                    dGeographicCoordinates[id][0] = Double.parseDouble(data);
+                    sData[id][index] = data;
                 else if (index == 7)
                     // широта минуты
-                    dGeographicCoordinates[id][0] += (Double.parseDouble(data)) / 60;
+                    sData[id][index] = data;
                 else if (index == 8)
                     // широта секунды
-                    dGeographicCoordinates[id][0] += (Double.parseDouble(data)) / 3600;
+                    sData[id][index] = data;
                 else if (index == 9)
                     // долгота градусы
-                    dGeographicCoordinates[id][1] += Double.parseDouble(data);
+                    sData[id][index] = data;
                 else if (index == 10)
                     // долгота минуты
-                    dGeographicCoordinates[id][1] += (Double.parseDouble(data)) / 60;
+                    sData[id][index] = data;
                 else if (index == 11)
                     // долгота секунды
-                    dGeographicCoordinates[id][1] += (Double.parseDouble(data)) / 3600;
+                    sData[id][index] = data;
                 // System.out.println("Некорректные данные: " + data);
                 index++;
             }
@@ -667,8 +674,20 @@ public class MainActivity extends AppCompatActivity {
             index = 0;
 
         }
-        //закрываем reader
+        // закрываем reader
         reader.close();
+
+        // заполним массив данными о широте и долготе в десятичном формате
+        for (int i = 2; i < countRows; i++) {
+            // широта
+            dGeographicCoordinates[i][0] = Double.parseDouble(sData[i][6]);
+            dGeographicCoordinates[i][0] += (Double.parseDouble(sData[i][7])) / 60;
+            dGeographicCoordinates[i][0] += (Double.parseDouble(sData[i][8])) / 3600;
+            // долгота
+            dGeographicCoordinates[i][1] = Double.parseDouble(sData[i][9]);
+            dGeographicCoordinates[i][1] += (Double.parseDouble(sData[i][10])) / 60;
+            dGeographicCoordinates[i][1] += (Double.parseDouble(sData[i][11])) / 3600;
+        }
     }
 
     // синхронизация данных с сервером

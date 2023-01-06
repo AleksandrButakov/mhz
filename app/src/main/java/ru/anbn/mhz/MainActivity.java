@@ -507,13 +507,14 @@ public class MainActivity extends AppCompatActivity {
         if (l != null) {
             double lat = l.getLatitude();  // широта
             double lon = l.getLongitude(); // долгота
-            Toast.makeText(getApplicationContext(), "Широта: " + lat +
-                    "\nДолгота: " + lon, Toast.LENGTH_LONG).show(); // вывод в тосте
+//            Toast.makeText(getApplicationContext(), "Широта: " + lat +
+//                    "\nДолгота: " + lon, Toast.LENGTH_LONG).show(); // вывод в тосте
 
             /* массив координатами из файла в десятичном виде уже заполнен, координаты
                устройства получены. Необходимо найти ближайшую станцию и отобразить на экране
              */
-            FindNearestStation.findNearestStation(lat, lon);
+            number = FindNearestStation.findNearestStation(lat, lon);
+            displayTheSelectedPositionListView();
 
         } else {
             Toast.makeText(getApplicationContext(), "Координаты не определены, " +

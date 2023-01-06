@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -95,29 +94,34 @@ public class MainActivity extends AppCompatActivity {
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        // блок получения координат
-        Button btnGetLoc = findViewById(R.id.btnGetLoc);
-
         // запрос разрешение на использовние геопозиции
         ActivityCompat.requestPermissions(MainActivity.this, new String[]
                 {Manifest.permission.ACCESS_FINE_LOCATION}, 123);
-        btnGetLoc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GPSTracker g = new GPSTracker(getApplicationContext()); //создаём трекер
-                Location l = g.getLocation(); // получаем координаты
-                if (l != null) {
-                    double lat = l.getLatitude();  // широта
-                    double lon = l.getLongitude(); // долгота
-                    Toast.makeText(getApplicationContext(), "Широта: " + lat +
-                            "\nДолгота: " + lon, Toast.LENGTH_LONG).show(); // вывод в тосте
-                } else {
-                    Toast.makeText(getApplicationContext(), "Координаты не определены, " +
-                                    "требуется время",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+
+
+//        // блок получения координат
+//        Button btnGetLoc = findViewById(R.id.btnGetLoc);
+
+//        // запрос разрешение на использовние геопозиции
+//        ActivityCompat.requestPermissions(MainActivity.this, new String[]
+//                {Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+//        btnGetLoc.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                GPSTracker g = new GPSTracker(getApplicationContext()); //создаём трекер
+//                Location l = g.getLocation(); // получаем координаты
+//                if (l != null) {
+//                    double lat = l.getLatitude();  // широта
+//                    double lon = l.getLongitude(); // долгота
+//                    Toast.makeText(getApplicationContext(), "Широта: " + lat +
+//                            "\nДолгота: " + lon, Toast.LENGTH_LONG).show(); // вывод в тосте
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "Координаты не определены, " +
+//                                    "требуется время",
+//                            Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
 
         // зададим идентификаторы полям spinner
         final Spinner spinner = findViewById(R.id.spinner);
@@ -490,12 +494,54 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, WebViewActivity.class);
             startActivity(intent);
         }
-
         return true;
     }
 
+
+    // клик по кнопке получения координат
+    public void onClickBtnGetLoc(View view) throws IOException {
+        GPSTracker g = new GPSTracker(getApplicationContext()); //создаём трекер
+        Location l = g.getLocation(); // получаем координаты
+        if (l != null) {
+            double lat = l.getLatitude();  // широта
+            double lon = l.getLongitude(); // долгота
+            Toast.makeText(getApplicationContext(), "Широта: " + lat +
+                    "\nДолгота: " + lon, Toast.LENGTH_LONG).show(); // вывод в тосте
+        } else {
+            Toast.makeText(getApplicationContext(), "Координаты не определены, " +
+                            "требуется время",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    //        // блок получения координат
+//        Button btnGetLoc = findViewById(R.id.btnGetLoc);
+
+//        // запрос разрешение на использовние геопозиции
+//        ActivityCompat.requestPermissions(MainActivity.this, new String[]
+//                {Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+//        btnGetLoc.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                GPSTracker g = new GPSTracker(getApplicationContext()); //создаём трекер
+//                Location l = g.getLocation(); // получаем координаты
+//                if (l != null) {
+//                    double lat = l.getLatitude();  // широта
+//                    double lon = l.getLongitude(); // долгота
+//                    Toast.makeText(getApplicationContext(), "Широта: " + lat +
+//                            "\nДолгота: " + lon, Toast.LENGTH_LONG).show(); // вывод в тосте
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "Координаты не определены, " +
+//                                    "требуется время",
+//                            Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+
+
     // клик по кнопке для отображения инструкции
-    public void onButtonClickShowInstruction(View view) throws IOException {
+    public void onClickBtnNext(View view) throws IOException {
         /* проверяем что выбрана станция и модель оборудования
            отображаем layout с инструкцией pdf
            в случае если станция не выбрана, отображаем инструкцию и пишем что

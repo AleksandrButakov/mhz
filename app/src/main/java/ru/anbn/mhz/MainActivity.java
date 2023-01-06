@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     // количество строк в файле mhz_data.txt
     private int countRows;
     private String[][] sData = null;
+    // массив для хранения десятичных координат станций широты и долготы соответственно
+    private double[][] dGeographicCoordinates = null;
 
     // счетчик для числа переходов
     private static int countSleep;
@@ -608,6 +610,7 @@ public class MainActivity extends AppCompatActivity {
 
         // зададим размерность массива в соответствии с размером файла
         sData = new String[countRows][4];
+        dGeographicCoordinates = new double[countRows][2];
 
         // открываем файл
         BufferedReader reader = new BufferedReader(new FileReader(fileLocalData));
@@ -639,18 +642,24 @@ public class MainActivity extends AppCompatActivity {
                     //
                 else if (index == 5) ;
                     //
-                else if (index == 6) ;
-                    //
-                else if (index == 7) ;
-                    //
-                else if (index == 8) ;
-                    //
-                else if (index == 9) ;
-                    //
-                else if (index == 10) ;
-                    //
-                else if (index == 11) ;
-                //
+                else if (index == 6)
+                    // широта градусы
+                    dGeographicCoordinates[id][0] = Double.parseDouble(data);
+                else if (index == 7)
+                    // широта минуты
+                    dGeographicCoordinates[id][0] += (Double.parseDouble(data)) / 60;
+                else if (index == 8)
+                    // широта секунды
+                    dGeographicCoordinates[id][0] += (Double.parseDouble(data)) / 3600;
+                else if (index == 9)
+                    // долгота градусы
+                    dGeographicCoordinates[id][1] += Double.parseDouble(data);
+                else if (index == 10)
+                    // долгота минуты
+                    dGeographicCoordinates[id][1] += (Double.parseDouble(data)) / 60;
+                else if (index == 11)
+                    // долгота секунды
+                    dGeographicCoordinates[id][1] += (Double.parseDouble(data)) / 3600;
                 // System.out.println("Некорректные данные: " + data);
                 index++;
             }

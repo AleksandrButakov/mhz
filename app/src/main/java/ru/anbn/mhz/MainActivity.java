@@ -42,10 +42,10 @@ import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
     // количество строк в файле mhz_data.txt
-    private int countRows;
+    public static int countRows;
     private String[][] sData = null;
     // массив для хранения десятичных координат станций широты и долготы соответственно
-    private double[][] dGeographicCoordinates = null;
+    public static double[][] dGeographicCoordinates = null;
 
     // счетчик для числа переходов
     private static int countSleep;
@@ -513,8 +513,7 @@ public class MainActivity extends AppCompatActivity {
             /* массив координатами из файла в десятичном виде уже заполнен, координаты
                устройства получены. Необходимо найти ближайшую станцию и отобразить на экране
              */
-
-
+            FindNearestStation.findNearestStation(lat, lon);
 
         } else {
             Toast.makeText(getApplicationContext(), "Координаты не определены, " +

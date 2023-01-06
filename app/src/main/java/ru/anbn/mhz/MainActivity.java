@@ -517,9 +517,10 @@ public class MainActivity extends AppCompatActivity {
             displayTheSelectedPositionListView();
 
         } else {
-            Toast.makeText(getApplicationContext(), "Координаты не определены, " +
-                            "требуется время",
-                    Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(), "Координаты не определены, требуется время",
+//                    Toast.LENGTH_LONG).show();
+
+            displayToast("Требуется время для поиска координат");
         }
     }
 

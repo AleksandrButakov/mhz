@@ -7,6 +7,7 @@ public class FindNearestStation extends MainActivity {
 
     public static int findNearestStation(double lat, double lon) {
 
+        // определим ближайшую к нам станцию
         indexMinDistance = 2;
         iDistance = (int) Math.sqrt(Math.pow((lat * 111 - dGeographicCoordinates[2][0] * 111), 2)
                 + Math.pow((lon * 50 - dGeographicCoordinates[2][1] * 50), 2));

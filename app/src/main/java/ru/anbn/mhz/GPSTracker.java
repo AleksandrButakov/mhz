@@ -23,7 +23,7 @@ public class GPSTracker implements LocationListener {
         // проверяем что разрешение получено
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(context, "Разрешение не предоставлено", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Разрешение GPS не предоставлено", Toast.LENGTH_LONG).show();
             return null;
         }
 

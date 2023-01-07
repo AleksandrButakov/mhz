@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     // счетчик для числа переходов
     private static int countSleep;
-    private static int timerSeconds = 12;
+    private static int timerSeconds = 5;
 
     // id загрузки файла в менеджере
     private static long downloadId;
@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 R.layout.simple_spinner_item, Variables.SEQUIPMENT);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
 
         // устанавливаем обработчик нажатия spinner1
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -411,7 +412,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (!bSynchronizationIsCompleted) {
-            dataSynchronizationWithTheServer();
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    dataSynchronizationWithTheServer();
+                }
+            }).start();
+
+            // dataSynchronizationWithTheServer();
         }
 
         Log.d(TAG, "onResume");

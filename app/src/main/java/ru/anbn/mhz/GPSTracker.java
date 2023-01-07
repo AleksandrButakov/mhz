@@ -23,7 +23,10 @@ public class GPSTracker implements LocationListener {
         // проверяем что разрешение получено
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(context, "Разрешение GPS не предоставлено", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Разрешение GPS не предоставлено",
+                    Toast.LENGTH_LONG).show();
+
+            MainActivity.bGPSCoordinatesFound = false;
             return null;
         }
 
@@ -35,9 +38,12 @@ public class GPSTracker implements LocationListener {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     6000, 100, this);
             Location l = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            MainActivity.bGPSCoordinatesFound = true;
             return l;
         } else {
             Toast.makeText(context, "Включите GPS...", Toast.LENGTH_LONG).show();
+            MainActivity.bGPSCoordinatesFound = false;
         }
         return null;
     }

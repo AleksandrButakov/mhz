@@ -88,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
     // индекс во вспомогательном массиве для отображения параметров настройки радиостанции
     private static int index = -1;
 
+    // переменная для обработки статуса поиска координат
+    public static boolean bGPSCoordinatesFound = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,32 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
         // запрос разрешение на использовние геопозиции
         ActivityCompat.requestPermissions(MainActivity.this, new String[]
-                {Manifest.permission.ACCESS_FINE_LOCATION}, 123);
-
-
-//        // блок получения координат
-//        Button btnGetLoc = findViewById(R.id.btnGetLoc);
-
-//        // запрос разрешение на использовние геопозиции
-//        ActivityCompat.requestPermissions(MainActivity.this, new String[]
-//                {Manifest.permission.ACCESS_FINE_LOCATION}, 123);
-//        btnGetLoc.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                GPSTracker g = new GPSTracker(getApplicationContext()); //создаём трекер
-//                Location l = g.getLocation(); // получаем координаты
-//                if (l != null) {
-//                    double lat = l.getLatitude();  // широта
-//                    double lon = l.getLongitude(); // долгота
-//                    Toast.makeText(getApplicationContext(), "Широта: " + lat +
-//                            "\nДолгота: " + lon, Toast.LENGTH_LONG).show(); // вывод в тосте
-//                } else {
-//                    Toast.makeText(getApplicationContext(), "Координаты не определены, " +
-//                                    "требуется время",
-//                            Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
+                {Manifest.permission.ACCESS_FINE_LOCATION}, 15);
 
         // зададим идентификаторы полям spinner
         final Spinner spinner = findViewById(R.id.spinner);
@@ -520,7 +498,9 @@ public class MainActivity extends AppCompatActivity {
 //            Toast.makeText(getApplicationContext(), "Координаты не определены, требуется время",
 //                    Toast.LENGTH_LONG).show();
 
-            displayToast("Требуется время для поиска координат");
+            if (bGPSCoordinatesFound) {
+                displayToast("Требуется время для поиска координат");
+            }
         }
     }
 

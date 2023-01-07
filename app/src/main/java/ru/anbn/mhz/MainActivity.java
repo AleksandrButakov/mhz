@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     // счетчик для числа переходов
     private static int countSleep;
-    private static int timerSeconds = 5;
+    private static int timerSeconds = 10;
 
     // id загрузки файла в менеджере
     private static long downloadId;
@@ -100,8 +100,9 @@ public class MainActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         // запрос разрешение на использовние геопозиции
-        ActivityCompat.requestPermissions(MainActivity.this, new String[]
-                {Manifest.permission.ACCESS_FINE_LOCATION}, 15);
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                StaticVariables.MY_PERMISSIONS_REQUEST_GPS);
 
         // зададим идентификаторы полям spinner
         final Spinner spinner = findViewById(R.id.spinner);
@@ -152,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
-
         });
 
         /* зададим listener для поиска станции по двум и более введенным символам
@@ -412,17 +412,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (!bSynchronizationIsCompleted) {
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    dataSynchronizationWithTheServer();
-                }
-            }).start();
-
-            // dataSynchronizationWithTheServer();
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    dataSynchronizationWithTheServer();
+//                }
+//            }).start();
+            dataSynchronizationWithTheServer();
         }
-
         Log.d(TAG, "onResume");
     }
 

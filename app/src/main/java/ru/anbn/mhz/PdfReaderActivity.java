@@ -27,17 +27,12 @@ public class PdfReaderActivity extends AppCompatActivity {
         // pdf Viewer
         PDFView pdfView = findViewById(R.id.pdfView);
 
-
-
         // выведем выбранную станцию и частоту на экран
         TextView textView = findViewById(R.id.textView1);
         if (!MainActivity.choiceFrequency.equals("")) {
             // станция выбрана
             textView.setText(MainActivity.choiceFrequency);
-        } //else {
-//            // станция не выбрана
-//            textView.setText("Выберите станцию для отображения частоты");
-//        }
+        }
 
         // найдем путь к файлу
         path = MainActivity.fileName;
@@ -77,21 +72,5 @@ public class PdfReaderActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
-
-//    public void onClickButtonTwo(View v) {
-//        //Intent intent = new  Intent(this, MainActivity.class);
-//        //startActivity(MainActivity.class);
-//        onBackPressed();// возврат на предыдущий activity
-//    }
-    //"#FF9800"
-
-    // дальнейший фрагмент выполняет загрузку файла по нажатию кнопки Download
-//    public void onClickButtonDownload(View v) {
-//        //
-//        Toast.makeText(this, "Функционал находится в разработке...",
-//                Toast.LENGTH_SHORT).show();
-//        //DefineVersion();
-//    }
-
 
 }

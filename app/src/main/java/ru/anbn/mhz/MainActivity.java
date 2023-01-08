@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -79,8 +80,11 @@ public class MainActivity extends AppCompatActivity {
     protected static String choiceFrequency = "";
 
     // информация о синхронизации данных
+    private static boolean bFileDataDownload = false;
+    private static boolean bFileTempDownload = false;
     private static boolean bSynchronizationIsCompleted = false;
-    private static boolean bFirstRun = false;
+    private static boolean bProgramProblem = false;
+
 
     // тип выбранной радиостанции
     private static String typeOfRadioStation = "notSelected";
@@ -169,11 +173,19 @@ public class MainActivity extends AppCompatActivity {
             // обработчик ввода символа поля searchView
             @Override
             public boolean onQueryTextChange(String sSearch) {
+
+                if (sData == null) {
+                    try {
+                        readFileData();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 integerArrayList.clear();
                 stringArrayList.clear();
                 sSearchUpper = sSearch.toUpperCase();
                 bSearch = false;
-
                 choiceFrequency = "";
 
                 // проверим что длина введенной строки более 2х символов, тогда поиск совпадений
@@ -228,6 +240,12 @@ public class MainActivity extends AppCompatActivity {
                 displayTheSelectedPositionListView();
             }
         });
+
+        // в случае отсутствия файла mhz_data.csv выполним его загрузку
+        if (!bFileDataDownload) {
+            bFileDataDownload = true;
+            downloadFileData();
+        }
 
     }
 
@@ -329,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
             choiceFrequency =
                     "   Регион:   " + sData[number][1] + "\n" +
                             "   Станция:  " + sData[number][2] + "\n" +
-                            "   Нет данных по выбранной станции...";
+                            "   Нет информации о станции...";
         }
     }
 
@@ -401,7 +419,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        downloadFileData();
+        // downloadFileData();
 
         if (sData == null) {
             try {
@@ -411,16 +429,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if (!bSynchronizationIsCompleted) {
+//        if (!bSynchronizationIsCompleted) {
 //            new Thread(new Runnable() {
 //                @Override
 //                public void run() {
 //                    dataSynchronizationWithTheServer();
 //                }
 //            }).start();
-            dataSynchronizationWithTheServer();
-        }
-        Log.d(TAG, "onResume");
+//            dataSynchronizationWithTheServer();
+//        }
+//        Log.d(TAG, "onResume");
     }
 
 
@@ -486,6 +504,21 @@ public class MainActivity extends AppCompatActivity {
 
     // клик по кнопке получения координат
     public void onClickBtnGetLoc(View view) throws IOException {
+
+        if (sData == null) {
+            try {
+                readFileData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (bProgramProblem) {
+            disableElements("Code 10");
+            displayToast("Code 10");
+            return;
+        }
+
         GPSTracker g = new GPSTracker(getApplicationContext()); //создаём трекер
         Location l = g.getLocation(); // получаем координаты
         if (l != null) {
@@ -505,7 +538,7 @@ public class MainActivity extends AppCompatActivity {
 //                    Toast.LENGTH_LONG).show();
 
             if (bGPSCoordinatesFound) {
-                displayToast("Требуется время для поиска координат");
+                displayToast("Требуется время для поиска координат...");
             }
         }
     }
@@ -544,6 +577,12 @@ public class MainActivity extends AppCompatActivity {
            необходимо выбрать станцию;
            если выбрана, отображаем и частоту и инструкцию */
 
+        if (bProgramProblem) {
+            disableElements("Code 10");
+            displayToast("Code 10");
+            return;
+        }
+
         // проверим что инструкция для отображения выбрана
         if (!fileName.equals("")) {
             if (bVisibleTextView) {
@@ -576,11 +615,41 @@ public class MainActivity extends AppCompatActivity {
                 displayToast("Отсутствует подключение к сети интернет. Данные не загружены.");
                 return;
             }
-            // загрузка файлов mhz_data.csv
-            downloadFile(FILE_PATH_YANDEX_DISK_DATA, FILE_PATH_LOCAL_DATA);
+            // загрузка файла mhz_data.csv
+            //downloadFile(FILE_PATH_YANDEX_DISK_DATA, FILE_PATH_LOCAL_DATA);
             // переменная необходима для исключения повторной загрузки файла
-            bFirstRun = true;
-            bSynchronizationIsCompleted = true;
+
+            // загрузка файла
+            DownloadManager.Request request_version = null;
+            request_version = new DownloadManager.Request(Uri.parse(FILE_PATH_YANDEX_DISK_DATA))
+                    .setTitle(FILE_PATH_LOCAL_DATA)
+                    //.setDescription("Downloading")
+                    //.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setDestinationUri(Uri.fromFile(fileLocalData))
+                    .setRequiresCharging(false)
+                    .setAllowedOverMetered(true)
+                    .setAllowedOverRoaming(true);
+            DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+            downloadId = downloadManager.enqueue(request_version);
+
+            // ожидание загрузки файла
+            countSleep = timerSeconds;
+            while (!fileLocalData.exists() && countSleep > 0) {
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                countSleep--;
+            }
+
+            if (!fileLocalData.exists()) {
+                displayToast("File not download...");
+                bProgramProblem = true;
+                return;
+            }
+
+
         }
     }
 
@@ -598,9 +667,11 @@ public class MainActivity extends AppCompatActivity {
                 // System.out.println(line);
                 countRows++;
             }
+            br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
         // зададим размерность массива в соответствии с размером файла
         sData = new String[countRows][12];
@@ -624,6 +695,11 @@ public class MainActivity extends AppCompatActivity {
             while (scanner.hasNext()) {
                 // заполнение данными массива
                 data = scanner.next();
+                if (data == null) {
+                    displayToast("Code 77");
+                    return;
+                }
+
                 if (index == 0)
                     sData[id][index] = data;
                 else if (index == 1)
@@ -677,6 +753,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // bProgramProblem == true
+    public void disableElements(String s) {
+        SearchView searchView = findViewById(R.id.searchView);
+        Spinner spinner = findViewById(R.id.spinner);
+        TextView textView1 = findViewById(R.id.textView1);
+        Button btnGetLoc = findViewById(R.id.btnGetLoc);
+        Button btnNext = findViewById(R.id.btnNext);
+
+        searchView.setVisibility(View.GONE);
+
+        spinner.setEnabled(false);
+        textView1.setText(s);
+        textView1.setVisibility(View.VISIBLE);
+        btnGetLoc.setEnabled(false);
+        btnNext.setEnabled(false);
+
+    }
+
+
     // синхронизация данных с сервером
     public void dataSynchronizationWithTheServer() {
         // проверим что локальный файл mhz_data.txt существует
@@ -698,6 +793,8 @@ public class MainActivity extends AppCompatActivity {
                     fileLocalDataTemp.renameTo(fileLocalData);
                 }
             }
+        } else {
+            displayToast("Code 10");
         }
         // вспомогательная переменнная говорит нам что синхронизация выполнена
         bSynchronizationIsCompleted = true;
@@ -735,16 +832,18 @@ public class MainActivity extends AppCompatActivity {
         DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         downloadId = downloadManager.enqueue(request_version);
 
-        // ожидание загрузки файла
-        countSleep = timerSeconds;
-        while (!file.exists() && countSleep > 0) {
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            countSleep--;
-        }
+//        // ожидание загрузки файла
+//        countSleep = timerSeconds;
+//        while (!file.exists() && countSleep > 0) {
+//            try {
+//                sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            countSleep--;
+//        }
+
+
     }
 
     // метод удаления файла
@@ -752,17 +851,18 @@ public class MainActivity extends AppCompatActivity {
         // если такой файл уже существует то перед загрузкой новой версии удалим его
         if (file.exists()) {
             file.delete();
-        }
 
-        // ожидаем уделение файла
-        countSleep = timerSeconds;
-        while (file.exists() && countSleep > 0) {
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            // ожидаем уделение файла
+            countSleep = timerSeconds;
+            while (file.exists() && countSleep > 0) {
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                countSleep--;
             }
-            countSleep--;
+
         }
     }
 

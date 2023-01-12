@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     // счетчик для числа переходов
     private static int countSleep;
-    private static int timerSeconds = 10;
+    private static int timerSeconds = 8;
 
     // id загрузки файла в менеджере
     private static long downloadId;
@@ -102,6 +102,14 @@ public class MainActivity extends AppCompatActivity {
 
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        // в случае отсутствия файла mhz_data.csv выполним его загрузку
+        File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
+        if (!fileLocalData.exists()) {
+            bFileDataDownload = true;
+            downloadFileData(fileLocalData);
+        }
+
 
         // запрос разрешение на использовние геопозиции
         ActivityCompat.requestPermissions(MainActivity.this,
@@ -159,9 +167,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         /* зададим listener для поиска станции по двум и более введенным символам
            в поле searchView */
         SearchView searchView = findViewById(R.id.searchView);
+        // блок необходим чтобы клик воспринимался любой частью поля а не только увеличительным
+        // стеклом
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setIconified(false);
+            }
+        });
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             // обработчик нажатия кнопки поиска поля searchView1
             @Override
@@ -240,12 +258,6 @@ public class MainActivity extends AppCompatActivity {
                 displayTheSelectedPositionListView();
             }
         });
-
-        // в случае отсутствия файла mhz_data.csv выполним его загрузку
-        if (!bFileDataDownload) {
-            bFileDataDownload = true;
-            downloadFileData();
-        }
 
     }
 
@@ -421,13 +433,13 @@ public class MainActivity extends AppCompatActivity {
 
         // downloadFileData();
 
-        if (sData == null) {
-            try {
-                readFileData();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (sData == null) {
+//            try {
+//                readFileData();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
 //        if (!bSynchronizationIsCompleted) {
 //            new Thread(new Runnable() {
@@ -479,7 +491,7 @@ public class MainActivity extends AppCompatActivity {
             //создаём и отображаем текстовое уведомление
             Toast toast = Toast.makeText(this,
                     "Данный раздел станет доступен после публикации приложения в Google Play",
-                    Toast.LENGTH_LONG);
+                    Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
             /*
@@ -604,9 +616,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void downloadFileData() {
+    private void downloadFileData(File fileLocalData) {
         // проверим что локальный файл mhz_data.txt существует
-        File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
+        //File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
         // проверим что файл существует
         if (!fileLocalData.exists()) {
             /* проверка наличия подключения к интернету и в случае отсутствия
@@ -646,13 +658,11 @@ public class MainActivity extends AppCompatActivity {
             if (!fileLocalData.exists()) {
                 displayToast("File not download...");
                 bProgramProblem = true;
+                disableElements("Code 77");
                 return;
             }
-
-
         }
     }
-
 
     // основной алгоритм проверки наличия файл данных и его чтения
     private void readFileData() throws IOException {

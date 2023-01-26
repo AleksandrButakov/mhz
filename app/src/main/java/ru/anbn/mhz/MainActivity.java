@@ -333,33 +333,33 @@ public class MainActivity extends AppCompatActivity {
     public void informationForPdfDisplayActivity() {
         // сформируем информацию для отображения на странице с инструкцией
         choiceFrequency =
-                "   Регион:   " + sData[number][1] + "\n" +
-                        "   Станция:  " + sData[number][2] + "\n";
+                " Регион:   " + sData[number][1] + "\n" +
+                        " Станция:  " + sData[number][2] + "\n";
 
         if (!sData[number][3].equals("Нет данных")) {
 
             if (typeOfRadioStation.equals("notSelected")) {
                 // в документации нет выбранной инструкции
                 choiceFrequency +=
-                        "   РВ-1.1М:  " + radioFrequencyChannel[index][2] + "\n" +
-                                "   РВ-1М:    " + radioFrequencyChannel[index][3] + "\n" +
-                                "   РВ-1.2МК: " + radioFrequencyChannel[index][4] + "\n" +
-                                "   РВС-1:    " + radioFrequencyChannel[index][5] + "\n" +
-                                "   РЛСМ-10:  " + radioFrequencyChannel[index][6] + "\n";
+                        " РВ-1.1М:  " + radioFrequencyChannel[index][2] + "\n" +
+                                " РВ-1М:    " + radioFrequencyChannel[index][3] + "\n" +
+                                " РВ-1.2МК: " + radioFrequencyChannel[index][4] + "\n" +
+                                " РВС-1:    " + radioFrequencyChannel[index][5] + "\n" +
+                                " РЛСМ-10:  " + radioFrequencyChannel[index][6] + "\n";
             } else if (typeOfRadioStation.equals("РВ-1.1М")) {
-                choiceFrequency += "   РВ-1.1М:  " + radioFrequencyChannel[index][2];
+                choiceFrequency += " РВ-1.1М:  " + radioFrequencyChannel[index][2];
             } else if (typeOfRadioStation.equals("РВ-1М")) {
-                choiceFrequency += "   РВ-1М:    " + radioFrequencyChannel[index][3];
+                choiceFrequency += " РВ-1М:    " + radioFrequencyChannel[index][3];
             } else if (typeOfRadioStation.equals("РВС-1")) {
-                choiceFrequency += "   РВС-1:    " + radioFrequencyChannel[index][5];
+                choiceFrequency += " РВС-1:    " + radioFrequencyChannel[index][5];
             } else if (typeOfRadioStation.equals("РЛСМ-10")) {
-                choiceFrequency += "   РЛСМ-10:  " + radioFrequencyChannel[index][6];
+                choiceFrequency += " РЛСМ-10:  " + radioFrequencyChannel[index][6];
             }
         } else {
             choiceFrequency =
-                    "   Регион:   " + sData[number][1] + "\n" +
-                            "   Станция:  " + sData[number][2] + "\n" +
-                            "   Нет информации о станции...";
+                    " Регион:   " + sData[number][1] + "\n" +
+                            " Станция:  " + sData[number][2] + "\n" +
+                            " Нет информации о станции...";
         }
     }
 

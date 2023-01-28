@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
         /* зададим listener для поиска станции по двум и более введенным символам
            в поле searchView */
         SearchView searchView = findViewById(R.id.searchView);
+        searchView.clearFocus();
         // блок необходим чтобы клик воспринимался любой частью поля а не только увеличительным
         // стеклом
         searchView.setOnClickListener(new View.OnClickListener() {
@@ -216,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
                             /* сохраним индекс позиции с соответствием текста
                                в дальнейшем по этим индексам будем выводить информацию */
                             integerArrayList.add(i);
-                            sTemp = sData[i][2] + " " + sData[i][1]; // + "  " + sData[i][2];
+                            sTemp = sData[i][2] + "\n" + "   " + sData[i][1]; // + "  " + sData[i][2];
                             stringArrayList.add(sTemp);
                             bSearch = true;
                         }
@@ -419,6 +420,9 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart");
+        // скрываем клавиатуру при возвращении к activity
+        SearchView searchView = findViewById(R.id.searchView);
+        searchView.clearFocus();
     }
 
     @Override

@@ -431,26 +431,6 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        // downloadFileData();
-
-//        if (sData == null) {
-//            try {
-//                readFileData();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
-//        if (!bSynchronizationIsCompleted) {
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    dataSynchronizationWithTheServer();
-//                }
-//            }).start();
-//            dataSynchronizationWithTheServer();
-//        }
-//        Log.d(TAG, "onResume");
     }
 
 

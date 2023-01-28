@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
                             /* сохраним индекс позиции с соответствием текста
                                в дальнейшем по этим индексам будем выводить информацию */
                             integerArrayList.add(i);
-                            sTemp = sData[i][2] + "\n" + "   " + sData[i][1]; // + "  " + sData[i][2];
+                            sTemp = sData[i][2] + " " + sData[i][1]; // + " " + sData[i][0];
                             stringArrayList.add(sTemp);
                             bSearch = true;
                         }

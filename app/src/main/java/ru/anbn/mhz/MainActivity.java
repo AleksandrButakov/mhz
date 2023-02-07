@@ -602,7 +602,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void downloadFileData(File fileLocalData) {
         // проверим что локальный файл mhz_data.txt существует
-        //File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
+        // File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
         // проверим что файл существует
         if (!fileLocalData.exists()) {
             /* проверка наличия подключения к интернету и в случае отсутствия
@@ -612,7 +612,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             // загрузка файла mhz_data.csv
-            //downloadFile(FILE_PATH_YANDEX_DISK_DATA, FILE_PATH_LOCAL_DATA);
+            // downloadFile(FILE_PATH_YANDEX_DISK_DATA, FILE_PATH_LOCAL_DATA);
             // переменная необходима для исключения повторной загрузки файла
 
             // загрузка файла
@@ -690,7 +690,7 @@ public class MainActivity extends AppCompatActivity {
                 // заполнение данными массива
                 data = scanner.next();
                 if (data == null) {
-                    displayToast("Code 77");
+                    displayToast("Code 88");
                     return;
                 }
 

@@ -408,12 +408,18 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
+
+        displayToast("XXX onDestroy");
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
         Log.d(TAG, "onStop");
+
+        displayToast("XXX onStop");
+
     }
 
     @Override
@@ -423,17 +429,25 @@ public class MainActivity extends AppCompatActivity {
         // скрываем клавиатуру при возвращении к activity
         SearchView searchView = findViewById(R.id.searchView);
         searchView.clearFocus();
+
+        displayToast("XXX onStart");
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
+
+        displayToast("XXX onPause");
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        displayToast("XXX onResume");
 
     }
 
@@ -517,6 +531,7 @@ public class MainActivity extends AppCompatActivity {
 
         GPSTracker g = new GPSTracker(getApplicationContext()); //создаём трекер
         Location l = g.getLocation(); // получаем координаты
+
         if (l != null) {
             double lat = l.getLatitude();  // широта
             double lon = l.getLongitude(); // долгота
@@ -760,7 +775,7 @@ public class MainActivity extends AppCompatActivity {
         spinner.setEnabled(false);
         textView1.setText(s);
         textView1.setVisibility(View.VISIBLE);
-        btnGetLoc.setEnabled(false);
+        // btnGetLoc.setEnabled(false);
         btnNext.setEnabled(false);
 
     }

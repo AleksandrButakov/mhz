@@ -36,11 +36,11 @@ public class GPSTracker implements LocationListener {
         // проверяем что GPS включен
         if (isGPSEnabled) {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    100, 1000, this);
+                    60000, 1000, this);
 
             Location l = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
             MainActivity.bGPSCoordinatesFound = true;
+
             return l;
         } else {
             Toast.makeText(context, "Включите GPS...", Toast.LENGTH_SHORT).show();

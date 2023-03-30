@@ -43,35 +43,45 @@ import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
     // количество строк в файле mhz_data.txt
+    // number of lines in the file mhz_data.txt
     public static int countRows;
     private String[][] sData = null;
     // массив для хранения десятичных координат станций широты и долготы соответственно
+    // array for storing decimal coordinates of latitude and longitude stations, respectively
     public static double[][] dGeographicCoordinates = null;
 
     // счетчик для числа переходов
+    // counter for the number of transitions
     private static int countSleep;
     private static int timerSeconds = 8;
 
     // id загрузки файла в менеджере
+    // file upload id in the manager
     private static long downloadId;
 
     // массив для дальнейшего заполнения найденными позициями при поиске станций
+    // array for further filling with found positions when searching for stations
     private ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
     private ArrayList<String> stringArrayList = new ArrayList<String>();
 
     // в эти переменные запишем строки приведенные к верхнему регистру
+    // in these variables we will write the upper case strings
     private String sArrayUpper, sSearchUpper;
 
     // вспомогательная текстовая переменная
+    // auxiliary text variable
     private String sTemp;
 
     // номер выбранной позиции в ListView
+    // the number of the selected position in the ListView
     private int number;
 
     // переменная хранит состояние поиска
+    // the variable stores the search state
     private boolean bSearch;
 
     // переменная хранит состояние видимости textView
+    // the variable stores the visibility state of the TextView
     private boolean bVisibleTextView = false;
 
     // !!! Подумать над этим блока

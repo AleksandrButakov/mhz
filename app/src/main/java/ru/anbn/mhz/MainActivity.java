@@ -42,15 +42,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
-    // количество строк в файле mhz_data.txt
+
     // number of lines in the file mhz_data.txt
     public static int countRows;
     private String[][] sData = null;
-    // массив для хранения десятичных координат станций широты и долготы соответственно
+
     // array for storing decimal coordinates of latitude and longitude stations, respectively
     public static double[][] dGeographicCoordinates = null;
 
-    // счетчик для числа переходов
     // counter for the number of transitions
     private static int countSleep;
     private static int timerSeconds = 8;
@@ -64,11 +63,9 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
     private ArrayList<String> stringArrayList = new ArrayList<String>();
 
-    // в эти переменные запишем строки приведенные к верхнему регистру
     // in these variables we will write the upper case strings
     private String sArrayUpper, sSearchUpper;
 
-    // вспомогательная текстовая переменная
     // auxiliary text variable
     private String sTemp;
 
@@ -76,33 +73,33 @@ public class MainActivity extends AppCompatActivity {
     // the number of the selected position in the ListView
     private int number;
 
-    // переменная хранит состояние поиска
     // the variable stores the search state
     private boolean bSearch;
 
-    // переменная хранит состояние видимости textView
     // the variable stores the visibility state of the TextView
     private boolean bVisibleTextView = false;
 
-    // !!! Подумать над этим блока
-    // Посмотреть как заметки оставлять
+    // TODO Think about this block
     protected static String fileName = "";
     protected static String choiceFrequency = "";
 
     // информация о синхронизации данных
+    // information about data synchronization
     private static boolean bFileDataDownload = false;
     private static boolean bFileTempDownload = false;
     private static boolean bSynchronizationIsCompleted = false;
     private static boolean bProgramProblem = false;
 
-
     // тип выбранной радиостанции
+    // the type of the selected radio station
     private static String typeOfRadioStation = "notSelected";
 
     // индекс во вспомогательном массиве для отображения параметров настройки радиостанции
+    // index in the auxiliary array for displaying the radio station settings
     private static int index = -1;
 
     // переменная для обработки статуса поиска координат
+    // variable for processing the coordinate search status
     public static boolean bGPSCoordinatesFound = false;
 
     @Override
@@ -111,9 +108,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // запретим ночную тему
+        // ban the night theme
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         // в случае отсутствия файла mhz_data.csv выполним его загрузку
+        // if there is no mhz_data.csv file, we will download it
         File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
         if (!fileLocalData.exists()) {
             bFileDataDownload = true;
@@ -122,11 +121,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         // запрос разрешение на использовние геопозиции
+        // request permission to use geo location
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 StaticVariables.MY_PERMISSIONS_REQUEST_GPS);
 
         // зададим идентификаторы полям spinner
+        // let's set ids for the spinner fields
         final Spinner spinner = findViewById(R.id.spinner);
 
         // адаптер для spinner1 со списком оборудования
@@ -272,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // вывод на экран toast
+    // вывод на экрон toast
     public void displayToast(String sText) {
         //создаём и отображаем текстовое уведомление
         Toast toast = Toast.makeText(this, sText, Toast.LENGTH_SHORT);
@@ -419,8 +420,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
 
-        displayToast("XXX onDestroy");
-
+        // displayToast("XXX onDestroy");
     }
 
     @Override
@@ -428,8 +428,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         Log.d(TAG, "onStop");
 
-        displayToast("XXX onStop");
-
+        // displayToast("XXX onStop");
     }
 
     @Override
@@ -440,8 +439,7 @@ public class MainActivity extends AppCompatActivity {
         SearchView searchView = findViewById(R.id.searchView);
         searchView.clearFocus();
 
-        displayToast("XXX onStart");
-
+        // displayToast("XXX onStart");
     }
 
     @Override
@@ -449,16 +447,14 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         Log.d(TAG, "onPause");
 
-        displayToast("XXX onPause");
-
+        // displayToast("XXX onPause");
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        displayToast("XXX onResume");
-
+        // displayToast("XXX onResume");
     }
 
 

@@ -36,8 +36,10 @@ import androidx.core.app.ActivityCompat;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -55,11 +57,9 @@ public class MainActivity extends AppCompatActivity {
     private static int timerSeconds = 8;
 
     // id загрузки файла в менеджере
-    // file upload id in the manager
     private static long downloadId;
 
     // массив для дальнейшего заполнения найденными позициями при поиске станций
-    // array for further filling with found positions when searching for stations
     private ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
     private ArrayList<String> stringArrayList = new ArrayList<String>();
 
@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
     private String sTemp;
 
     // номер выбранной позиции в ListView
-    // the number of the selected position in the ListView
     private int number;
 
     // the variable stores the search state
@@ -84,22 +83,18 @@ public class MainActivity extends AppCompatActivity {
     protected static String choiceFrequency = "";
 
     // информация о синхронизации данных
-    // information about data synchronization
     private static boolean bFileDataDownload = false;
     private static boolean bFileTempDownload = false;
     private static boolean bSynchronizationIsCompleted = false;
     private static boolean bProgramProblem = false;
 
     // тип выбранной радиостанции
-    // the type of the selected radio station
     private static String typeOfRadioStation = "notSelected";
 
     // индекс во вспомогательном массиве для отображения параметров настройки радиостанции
-    // index in the auxiliary array for displaying the radio station settings
     private static int index = -1;
 
     // переменная для обработки статуса поиска координат
-    // variable for processing the coordinate search status
     public static boolean bGPSCoordinatesFound = false;
 
     @Override
@@ -108,26 +103,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // запретим ночную тему
-        // ban the night theme
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         // в случае отсутствия файла mhz_data.csv выполним его загрузку
-        // if there is no mhz_data.csv file, we will download it
+        /*
         File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
         if (!fileLocalData.exists()) {
             bFileDataDownload = true;
             downloadFileData(fileLocalData);
         }
-
+         */
 
         // запрос разрешение на использовние геопозиции
-        // request permission to use geo location
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 StaticVariables.MY_PERMISSIONS_REQUEST_GPS);
 
         // зададим идентификаторы полям spinner
-        // let's set ids for the spinner fields
         final Spinner spinner = findViewById(R.id.spinner);
 
         // адаптер для spinner1 со списком оборудования
@@ -273,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // вывод на экрон toast
+    // вывод на экран toast
     public void displayToast(String sText) {
         //создаём и отображаем текстовое уведомление
         Toast toast = Toast.makeText(this, sText, Toast.LENGTH_SHORT);
@@ -672,6 +664,8 @@ public class MainActivity extends AppCompatActivity {
     // основной алгоритм проверки наличия файл данных и его чтения
     private void readFileData() throws IOException {
         // проверим что локальный файл mhz_data.txt существует
+        // !!! Рабочий блок при скачивании файла из Интернета
+        /*
         File fileLocalData = new File(getExternalFilesDir(null), FILE_PATH_LOCAL_DATA);
 
         // определим количество строк в файле
@@ -686,14 +680,50 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        */
+
+
+
+        // !!! блок для открытия файла из внутренних ресурсов
+        // определим количество строк в файле
+        InputStream fileLocalData = getResources().openRawResource(R.raw.mhz_data);
+        countRows = 0;
+        try {
+                // открываем поток для чтения
+                BufferedReader br = new BufferedReader(new InputStreamReader(fileLocalData));
+                String line;
+                // читаем содержимое
+                while ((line = br.readLine()) != null) {
+                    // System.out.println(line);
+                    countRows++;
+                }
+                br.close();
+                fileLocalData.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
 
 
         // зададим размерность массива в соответствии с размером файла
         sData = new String[countRows][12];
         dGeographicCoordinates = new double[countRows][2];
 
+
         // открываем файл
+        // !!! Рабочий блок при скачивании файла из Интернета
+        /*
         BufferedReader reader = new BufferedReader(new FileReader(fileLocalData));
+        */
+
+        // !!! блок для открытия файла из внутренних ресурсов
+        InputStream fileData = getResources().openRawResource(R.raw.mhz_data);
+        BufferedReader br = new BufferedReader(new InputStreamReader(fileData));
+
+        // далее код одинаков для любого открытия, единственное было reader тало br
         // считываем построчно
         String line = null;
         Scanner scanner = null;
@@ -703,7 +733,8 @@ public class MainActivity extends AppCompatActivity {
         // заполняем массив данными из файла mhz_data.csv
         String data;
         String version;
-        while ((line = reader.readLine()) != null) {
+        // while ((line = reader.readLine()) != null) {
+        while ((line = br.readLine()) != null) {
             //Frequency frequency = new Frequency();
             scanner = new Scanner(line);
             scanner.useDelimiter(";");
@@ -753,7 +784,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
         // закрываем reader
-        reader.close();
+        //reader.close();
+
+        br.close();
 
         // заполним массив данными о широте и долготе в десятичном формате
         for (int i = 2; i < countRows; i++) {

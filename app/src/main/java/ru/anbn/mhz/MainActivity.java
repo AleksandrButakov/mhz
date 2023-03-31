@@ -45,6 +45,8 @@ import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
+    // TODO Change public on private modifiers wherever possible
+
     // number of lines in the file mhz_data.txt
     public static int countRows;
     private String[][] sData = null;

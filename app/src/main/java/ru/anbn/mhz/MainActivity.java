@@ -73,11 +73,9 @@ public class MainActivity extends AppCompatActivity {
     // the number of the selected position in the ListView
     private int number;
 
-    // переменная хранит состояние поиска
     // the variable stores the search state
     private boolean bSearch;
 
-    // переменная хранит состояние видимости textView
     // the variable stores the visibility state of the TextView
     private boolean bVisibleTextView = false;
 

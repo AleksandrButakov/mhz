@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // вывод на экрон toast
+    // вывод на экран toast
     public void displayToast(String sText) {
         //создаём и отображаем текстовое уведомление
         Toast toast = Toast.makeText(this, sText, Toast.LENGTH_SHORT);

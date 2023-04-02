@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
                     "   НЕТ ДАННЫХ ПО СТАНЦИИ" + "\n";
         } else {
             // есть данные по станции
-            for (int i = 0; i <= 6; i++) {
+            for (int i = 0; i <= 51; i++) {
                 if (sData[number][3].equals(radioFrequencyChannel[i][0])) {
                     // соответствие каналов найдено
                     index = i;

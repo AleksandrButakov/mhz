@@ -12,6 +12,8 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -98,6 +100,14 @@ public class MainActivity extends AppCompatActivity {
 
     // переменная для обработки статуса поиска координат
     public static boolean bGPSCoordinatesFound = false;
+
+
+    // 00000
+    private LocationManager locationManager;
+    StringBuilder sbGPS = new StringBuilder();
+    StringBuilder sbNet = new StringBuilder();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -264,6 +274,10 @@ public class MainActivity extends AppCompatActivity {
                 displayTheSelectedPositionListView();
             }
         });
+
+
+        // 00000
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
     }
 
@@ -441,6 +455,10 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         Log.d(TAG, "onPause");
 
+        // 00000
+        locationManager.removeUpdates(locationListener);
+
+
         // displayToast("XXX onPause");
     }
 
@@ -448,8 +466,95 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
+
+        // 00000
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                1000 * 10, 10, locationListener);
+        locationManager.requestLocationUpdates(
+                LocationManager.NETWORK_PROVIDER, 1000 * 10, 10,
+                locationListener);
+        checkEnabled();
+
+
         // displayToast("XXX onResume");
     }
+
+
+
+    // 00000
+    private LocationListener locationListener = new LocationListener() {
+        // 00000
+        @Override
+        public void onLocationChanged(Location location) {
+            showLocation(location);
+        }
+        // 00000
+        @Override
+        public void onProviderDisabled(String provider) {
+            checkEnabled();
+        }
+        // 00000
+        @Override
+        public void onProviderEnabled(String provider) {
+            checkEnabled();
+            showLocation(locationManager.getLastKnownLocation(provider));
+        }
+        // 00000
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            if (provider.equals(LocationManager.GPS_PROVIDER)) {
+                tvStatusGPS.setText("Status: " + String.valueOf(status));
+            } else if (provider.equals(LocationManager.NETWORK_PROVIDER)) {
+                tvStatusNet.setText("Status: " + String.valueOf(status));
+            }
+        }
+    };
+
+
+
+    // 00000
+    private void showLocation(Location location) {
+        if (location == null)
+            return;
+        if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
+            tvLocationGPS.setText(formatLocation(location));
+        } else if (location.getProvider().equals(
+                LocationManager.NETWORK_PROVIDER)) {
+            tvLocationNet.setText(formatLocation(location));
+        }
+    }
+    // 00000
+    private String formatLocation(Location location) {
+        if (location == null)
+            return "";
+        return String.format(
+                "Coordinates: lat = %1$.4f, lon = %2$.4f, time = %3$tF %3$tT",
+                location.getLatitude(), location.getLongitude(), new Date(
+                        location.getTime()));
+    }
+    // 00000
+    private void checkEnabled() {
+        tvEnabledGPS.setText("Enabled: "
+                + locationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER));
+        tvEnabledNet.setText("Enabled: "
+                + locationManager
+                .isProviderEnabled(LocationManager.NETWORK_PROVIDER));
+    }
+    // 00000
+    public void onClickLocationSettings(View view) {
+        startActivity(new Intent(
+                android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+    };
+
+
+
+
+
+
+
+
+
 
 
     // нарисуем меню
@@ -523,12 +628,24 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        // TODO Think about this code
         if (bProgramProblem) {
             disableElements("Code 10");
             displayToast("Code 10");
             return;
         }
 
+
+
+
+
+
+
+
+
+
+        // working code
+        /*
         GPSTracker g = new GPSTracker(getApplicationContext()); //создаём трекер
         Location l = g.getLocation(); // получаем координаты
 
@@ -541,8 +658,12 @@ public class MainActivity extends AppCompatActivity {
             /* массив координатами из файла в десятичном виде уже заполнен, координаты
                устройства получены. Необходимо найти ближайшую станцию и отобразить на экране
              */
+
+        // working code
+        /*
             number = FindNearestStation.findNearestStation(lat, lon);
             displayTheSelectedPositionListView();
+
 
         } else {
 //            Toast.makeText(getApplicationContext(), "Координаты не определены, требуется время",
@@ -552,9 +673,12 @@ public class MainActivity extends AppCompatActivity {
                 displayToast("Требуется время для поиска координат...");
             }
         }
+        */
+
     }
 
 
+    // TEMP CODE
     //        // блок получения координат
 //        Button btnGetLoc = findViewById(R.id.btnGetLoc);
 

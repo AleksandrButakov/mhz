@@ -19,7 +19,6 @@ public class GPSTracker implements LocationListener {
     }
 
     public Location getLocation() {
-
         // проверяем что разрешение получено
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -46,7 +45,9 @@ public class GPSTracker implements LocationListener {
             Toast.makeText(context, "Включите GPS...", Toast.LENGTH_SHORT).show();
             MainActivity.bGPSCoordinatesFound = false;
         }
+
         return null;
+
     }
 
     @Override

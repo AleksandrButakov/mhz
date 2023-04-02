@@ -11,7 +11,6 @@ import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -36,7 +35,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -482,55 +480,36 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         Log.d(TAG, "onPause");
 
-        // 00000
+        // 44444
         locationManager.removeUpdates(locationListener);
-
-
-        // displayToast("XXX onPause");
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        // 00000
-        // if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 10, 10, locationListener);
-
-//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 10, 10, locationListener);
-//        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000 * 10, 10, locationListener);
-//        checkEnabled();
-
-        // 00000
-        // if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        // 44444
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000 * 10, 10, locationListener);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000 * 10, 10, locationListener);
         checkEnabled();
 
-        // displayToast("XXX onResume");
     }
 
-
-
-    // 00000
+    // 44444
     private LocationListener locationListener = new LocationListener() {
-        // 00000
         @Override
         public void onLocationChanged(Location location) {
             showLocation(location);
         }
-        // 00000
         @Override
         public void onProviderDisabled(String provider) {
             checkEnabled();
         }
-        // 00000
         @Override
         public void onProviderEnabled(String provider) {
             checkEnabled();
-
             showLocation(locationManager.getLastKnownLocation(provider));
         }
-        // 00000
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
             if (provider.equals(LocationManager.GPS_PROVIDER)) {
@@ -542,8 +521,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
-
-    // 00000
+    // 44444
     private void showLocation(Location location) {
         if (location == null)
             return;
@@ -554,26 +532,26 @@ public class MainActivity extends AppCompatActivity {
             tvLocationNet.setText(formatLocation(location));
         }
     }
-    // 00000
+
+    // 44444
     private String formatLocation(Location location) {
         if (location == null)
             return "";
         return String.format(
                 "Coordinates: lat = %1$.4f, lon = %2$.4f, time = %3$tF %3$tT",
-                location.getLatitude(), location.getLongitude(), new Date(location.getTime()));
+                location.getLatitude(), location.getLongitude(), new Date(
+                        location.getTime()));
     }
-    // 00000
+    // 44444
     private void checkEnabled() {
-        tvEnabledNet.setText("Enabled: "
-                + locationManager
-                .isProviderEnabled(LocationManager.NETWORK_PROVIDER));
         tvEnabledGPS.setText("Enabled: "
                 + locationManager
                 .isProviderEnabled(LocationManager.GPS_PROVIDER));
-
+        tvEnabledNet.setText("Enabled: "
+                + locationManager
+                .isProviderEnabled(LocationManager.NETWORK_PROVIDER));
     }
-
-    // 00000
+    // 44444
     public void onClickLocationSettings(View view) {
         startActivity(new Intent(
                 android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
@@ -660,14 +638,6 @@ public class MainActivity extends AppCompatActivity {
             displayToast("Code 10");
             return;
         }
-
-
-
-
-
-
-
-
 
 
         // working code
@@ -835,7 +805,6 @@ public class MainActivity extends AppCompatActivity {
         */
 
 
-
         // !!! блок для открытия файла из внутренних ресурсов
         // определим количество строк в файле
         InputStream fileLocalData = getResources().openRawResource(R.raw.mhz_data);
@@ -856,8 +825,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
 
 
         // зададим размерность массива в соответствии с размером файла

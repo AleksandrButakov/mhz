@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
@@ -107,12 +108,31 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder sbGPS = new StringBuilder();
     StringBuilder sbNet = new StringBuilder();
 
+    // 00000
+    TextView tvEnabledGPS;
+    TextView tvStatusGPS;
+    TextView tvLocationGPS;
+    TextView tvEnabledNet;
+    TextView tvStatusNet;
+    TextView tvLocationNet;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        // 00000
+        tvEnabledGPS = (TextView) findViewById(R.id.tvEnabledGPS);
+        tvStatusGPS = (TextView) findViewById(R.id.tvStatusGPS);
+        tvLocationGPS = (TextView) findViewById(R.id.tvLocationGPS);
+        tvEnabledNet = (TextView) findViewById(R.id.tvEnabledNet);
+        tvStatusNet = (TextView) findViewById(R.id.tvStatusNet);
+        tvLocationNet = (TextView) findViewById(R.id.tvLocationNet);
+
+
 
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -529,8 +549,7 @@ public class MainActivity extends AppCompatActivity {
             return "";
         return String.format(
                 "Coordinates: lat = %1$.4f, lon = %2$.4f, time = %3$tF %3$tT",
-                location.getLatitude(), location.getLongitude(), new Date(
-                        location.getTime()));
+                location.getLatitude(), location.getLongitude(), new Date(location.getTime()));
     }
     // 00000
     private void checkEnabled() {

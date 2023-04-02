@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         }
          */
 
-        // запрос разрешение на использовние геопозиции
+        // запрос разрешение на использование геопозиции
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 StaticVariables.MY_PERMISSIONS_REQUEST_GPS);
@@ -691,21 +691,21 @@ public class MainActivity extends AppCompatActivity {
         InputStream fileLocalData = getResources().openRawResource(R.raw.mhz_data);
         countRows = 0;
         try {
-                // открываем поток для чтения
-                BufferedReader br = new BufferedReader(new InputStreamReader(fileLocalData));
-                String line;
-                // читаем содержимое
-                while ((line = br.readLine()) != null) {
-                    // System.out.println(line);
-                    countRows++;
-                }
-                br.close();
-                fileLocalData.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+            // открываем поток для чтения
+            BufferedReader br = new BufferedReader(new InputStreamReader(fileLocalData));
+            String line;
+            // читаем содержимое
+            while ((line = br.readLine()) != null) {
+                // System.out.println(line);
+                countRows++;
             }
+            br.close();
+            fileLocalData.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
 

@@ -11,6 +11,7 @@ import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -35,6 +36,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -117,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
     TextView tvLocationNet;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
         tvLocationNet = (TextView) findViewById(R.id.tvLocationNet);
 
 
-
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
@@ -146,10 +146,17 @@ public class MainActivity extends AppCompatActivity {
         }
          */
 
+        // working code
+        // запрос разрешение на использование геопозиции
+//        ActivityCompat.requestPermissions(MainActivity.this,
+//                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                StaticVariables.MY_PERMISSIONS_REQUEST_GPS);
+
+        // working code
         // запрос разрешение на использование геопозиции
         ActivityCompat.requestPermissions(MainActivity.this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                StaticVariables.MY_PERMISSIONS_REQUEST_GPS);
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                StaticVariables.MY_PERMISSIONS_REQUEST_NETWORK_LOCATION);
 
         // зададим идентификаторы полям spinner
         final Spinner spinner = findViewById(R.id.spinner);
@@ -486,15 +493,18 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
+        // 00000
+        // if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 10, 10, locationListener);
+
+//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 10, 10, locationListener);
+//        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000 * 10, 10, locationListener);
+//        checkEnabled();
 
         // 00000
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                1000 * 10, 10, locationListener);
-        locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER, 1000 * 10, 10,
-                locationListener);
+        // if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000 * 10, 10, locationListener);
         checkEnabled();
-
 
         // displayToast("XXX onResume");
     }
@@ -517,6 +527,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onProviderEnabled(String provider) {
             checkEnabled();
+
             showLocation(locationManager.getLastKnownLocation(provider));
         }
         // 00000
@@ -553,24 +564,20 @@ public class MainActivity extends AppCompatActivity {
     }
     // 00000
     private void checkEnabled() {
-        tvEnabledGPS.setText("Enabled: "
-                + locationManager
-                .isProviderEnabled(LocationManager.GPS_PROVIDER));
         tvEnabledNet.setText("Enabled: "
                 + locationManager
                 .isProviderEnabled(LocationManager.NETWORK_PROVIDER));
+        tvEnabledGPS.setText("Enabled: "
+                + locationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER));
+
     }
+
     // 00000
     public void onClickLocationSettings(View view) {
         startActivity(new Intent(
                 android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
     };
-
-
-
-
-
-
 
 
 

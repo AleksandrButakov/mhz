@@ -11,7 +11,10 @@ import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,6 +44,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
@@ -99,6 +103,21 @@ public class MainActivity extends AppCompatActivity {
     // переменная для обработки статуса поиска координат
     public static boolean bGPSCoordinatesFound = false;
 
+
+    // 00000
+    private LocationManager locationManager;
+    StringBuilder sbGPS = new StringBuilder();
+    StringBuilder sbNet = new StringBuilder();
+
+    // 00000
+    TextView tvEnabledGPS;
+    TextView tvStatusGPS;
+    TextView tvLocationGPS;
+    TextView tvEnabledNet;
+    TextView tvStatusNet;
+    TextView tvLocationNet;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,10 +135,20 @@ public class MainActivity extends AppCompatActivity {
         }
          */
 
+
+        // 00000
+        tvEnabledGPS = (TextView) findViewById(R.id.tvEnabledGPS);
+        tvStatusGPS = (TextView) findViewById(R.id.tvStatusGPS);
+        tvLocationGPS = (TextView) findViewById(R.id.tvLocationGPS);
+        tvEnabledNet = (TextView) findViewById(R.id.tvEnabledNet);
+        tvStatusNet = (TextView) findViewById(R.id.tvStatusNet);
+        tvLocationNet = (TextView) findViewById(R.id.tvLocationNet);
+
+
         // запрос разрешение на использование геопозиции
         ActivityCompat.requestPermissions(MainActivity.this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                StaticVariables.MY_PERMISSIONS_REQUEST_GPS);
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                StaticVariables.MY_PERMISSIONS_REQUEST_NETWORK_LOCATION);
 
         // зададим идентификаторы полям spinner
         final Spinner spinner = findViewById(R.id.spinner);
@@ -264,6 +293,9 @@ public class MainActivity extends AppCompatActivity {
                 displayTheSelectedPositionListView();
             }
         });
+
+        // 00000
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
     }
 
@@ -441,6 +473,9 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         Log.d(TAG, "onPause");
 
+        // 44444
+        locationManager.removeUpdates(locationListener);
+
         // displayToast("XXX onPause");
     }
 
@@ -448,8 +483,90 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
+
+        // 44444
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 10, 10, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000 * 10, 10, locationListener);
+        checkEnabled();
+
         // displayToast("XXX onResume");
     }
+
+
+
+    // 44444
+    private LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            showLocation(location);
+        }
+        @Override
+        public void onProviderDisabled(String provider) {
+            checkEnabled();
+        }
+        @Override
+        public void onProviderEnabled(String provider) {
+            checkEnabled();
+            showLocation(locationManager.getLastKnownLocation(provider));
+        }
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            if (provider.equals(LocationManager.GPS_PROVIDER)) {
+                tvStatusGPS.setText("Status: " + String.valueOf(status));
+            } else if (provider.equals(LocationManager.NETWORK_PROVIDER)) {
+                tvStatusNet.setText("Status: " + String.valueOf(status));
+            }
+        }
+    };
+
+
+    // 44444
+    private void showLocation(Location location) {
+        if (location == null)
+            return;
+        if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
+            tvLocationGPS.setText(formatLocation(location));
+        } else if (location.getProvider().equals(
+                LocationManager.NETWORK_PROVIDER)) {
+            tvLocationNet.setText(formatLocation(location));
+        }
+    }
+
+    // 44444
+    private String formatLocation(Location location) {
+        if (location == null)
+            return "";
+        return String.format(
+                "Coordinates: lat = %1$.4f, lon = %2$.4f, time = %3$tF %3$tT",
+                location.getLatitude(), location.getLongitude(), new Date(
+                        location.getTime()));
+    }
+    // 44444
+    private void checkEnabled() {
+        tvEnabledGPS.setText("Enabled: "
+                + locationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER));
+        tvEnabledNet.setText("Enabled: "
+                + locationManager
+                .isProviderEnabled(LocationManager.NETWORK_PROVIDER));
+    }
+    // 44444
+    public void onClickLocationSettings(View view) {
+        startActivity(new Intent(
+                android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+    };
+
+
 
 
     // нарисуем меню
@@ -523,12 +640,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        // TODO Think about this code
         if (bProgramProblem) {
             disableElements("Code 10");
             displayToast("Code 10");
             return;
         }
 
+        /*
         GPSTracker g = new GPSTracker(getApplicationContext()); //создаём трекер
         Location l = g.getLocation(); // получаем координаты
 
@@ -538,9 +657,11 @@ public class MainActivity extends AppCompatActivity {
 //            Toast.makeText(getApplicationContext(), "Широта: " + lat +
 //                    "\nДолгота: " + lon, Toast.LENGTH_LONG).show(); // вывод в тосте
 
-            /* массив координатами из файла в десятичном виде уже заполнен, координаты
-               устройства получены. Необходимо найти ближайшую станцию и отобразить на экране
-             */
+            // массив координатами из файла в десятичном виде уже заполнен, координаты
+              // устройства получены. Необходимо найти ближайшую станцию и отобразить на экране
+
+
+
             number = FindNearestStation.findNearestStation(lat, lon);
             displayTheSelectedPositionListView();
 
@@ -552,6 +673,9 @@ public class MainActivity extends AppCompatActivity {
                 displayToast("Требуется время для поиска координат...");
             }
         }
+        */
+
+
     }
 
 
@@ -835,7 +959,7 @@ public class MainActivity extends AppCompatActivity {
             if (isOnline()) {
                 // загрузка файлов mhz_data.csv /sdcard/Android/data/ru.anbn.mhz/files/temp.csv
                 downloadFile(FILE_PATH_YANDEX_DISK_DATA, FILE_PATH_LOCAL_DATA_TEMP);
-                // если файл существует то выполняем блок
+                // если файл существует, то выполняем блок
                 if (fileLocalDataTemp.exists()) {
                     // удаляем основной рабочий файл
                     fileLocalData.delete();
@@ -846,7 +970,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             displayToast("Code 10");
         }
-        // вспомогательная переменнная говорит нам что синхронизация выполнена
+        // вспомогательная переменная говорит нам что синхронизация выполнена
         bSynchronizationIsCompleted = true;
     }
 

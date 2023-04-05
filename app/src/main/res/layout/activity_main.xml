@@ -18,7 +18,6 @@
         android:background="@drawable/search_shape"
         android:elevation="8dp"
         android:queryHint="Название станции"
-
         android:theme="@style/AppThemeSearchView"
         app:layout_constraintEnd_toStartOf="@+id/btnGetLoc"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,20 +92,19 @@
         app:layout_constraintTop_toBottomOf="@+id/btnNext" />
 
 
-
-
-
     <TextView
         android:id="@+id/tvTitleGPS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="50dp"
         android:text="tvTitleGPS"
         android:textColor="@color/colorWhite"
         android:textSize="16sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listView"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/spinner"></TextView>
+
     <TextView
         android:id="@+id/tvEnabledGPS"
         android:layout_width="wrap_content"
@@ -116,6 +114,7 @@
         android:text="tvEnabledGPS"
         android:textColor="@color/colorWhite"
         android:textSize="16sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitleGPS"></TextView>
 
@@ -128,6 +127,7 @@
         android:text="tvStatusGPS"
         android:textColor="@color/colorWhite"
         android:textSize="16sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvEnabledGPS"></TextView>
 
@@ -140,6 +140,7 @@
         android:text="tvLocationGPS"
         android:textColor="@color/colorWhite"
         android:textSize="16sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvStatusGPS"></TextView>
 
@@ -152,6 +153,7 @@
         android:text="tvTitleNet"
         android:textColor="@color/colorWhite"
         android:textSize="16sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvLocationGPS"></TextView>
 
@@ -164,6 +166,7 @@
         android:text="tvEnabledNet"
         android:textColor="@color/colorWhite"
         android:textSize="16sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitleNet"></TextView>
 
@@ -176,6 +179,7 @@
         android:text="tvStatusNet"
         android:textColor="@color/colorWhite"
         android:textSize="16sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvEnabledNet"></TextView>
 
@@ -190,6 +194,7 @@
         android:text="tvLocationNet"
         android:textColor="@color/colorWhite"
         android:textSize="16sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvStatusNet"></TextView>
 
@@ -205,18 +210,6 @@
         app:layout_constraintStart_toStartOf="parent"></Button>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     <ListView
         android:id="@+id/listView"
         android:layout_width="0dp"
@@ -224,7 +217,7 @@
         android:layout_marginStart="14dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="14dp"
-        android:layout_marginBottom="300dp"
+        android:layout_marginBottom="20dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"

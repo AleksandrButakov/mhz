@@ -13,8 +13,6 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -106,6 +104,12 @@ public class MainActivity extends AppCompatActivity {
     // переменная для обработки статуса поиска координат
     public static boolean bGPSCoordinatesFound = false;
 
+    // переменная для хранения информации о том что координаты найдены
+    private static boolean findStation = false;
+
+    // переменные для хранения координат
+    private static double lat = 0;  // широта
+    private static double lon = 0;  // долгота
 
     // 00000
     private LocationManager locationManager;
@@ -113,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder sbNet = new StringBuilder();
 
     // 00000
+    Button btnGetLoc;
     TextView tvEnabledGPS;
     TextView tvStatusGPS;
     TextView tvLocationGPS;
@@ -139,22 +144,26 @@ public class MainActivity extends AppCompatActivity {
         }
          */
 
+        btnGetLoc = findViewById(R.id.btnGetLoc);
 
         // 00000
-        tvEnabledGPS = (TextView) findViewById(R.id.tvEnabledGPS);
-        tvStatusGPS = (TextView) findViewById(R.id.tvStatusGPS);
-        tvLocationGPS = (TextView) findViewById(R.id.tvLocationGPS);
-        tvEnabledNet = (TextView) findViewById(R.id.tvEnabledNet);
-        tvStatusNet = (TextView) findViewById(R.id.tvStatusNet);
-        tvLocationNet = (TextView) findViewById(R.id.tvLocationNet);
+        tvEnabledGPS = findViewById(R.id.tvEnabledGPS);
+        tvStatusGPS = findViewById(R.id.tvStatusGPS);
+        tvLocationGPS = findViewById(R.id.tvLocationGPS);
+        tvEnabledNet = findViewById(R.id.tvEnabledNet);
+        tvStatusNet = findViewById(R.id.tvStatusNet);
+        tvLocationNet = findViewById(R.id.tvLocationNet);
 
-        btnLocationSettings = (Button) findViewById(R.id.btnLocationSettings);
+        btnLocationSettings = findViewById(R.id.btnLocationSettings);
 
 
         // запрос разрешение на использование геопозиции
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                 StaticVariables.MY_PERMISSIONS_REQUEST_NETWORK_LOCATION);
+
+        // 00000
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         // зададим идентификаторы полям spinner
         final Spinner spinner = findViewById(R.id.spinner);
@@ -300,8 +309,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 00000
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
     }
 
@@ -489,7 +496,6 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-
         // 44444
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -527,6 +533,7 @@ public class MainActivity extends AppCompatActivity {
             checkEnabled();
             showLocation(locationManager.getLastKnownLocation(provider));
         }
+
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
             if (provider.equals(LocationManager.GPS_PROVIDER)) {
@@ -542,13 +549,29 @@ public class MainActivity extends AppCompatActivity {
     private void showLocation(Location location) {
         if (location == null)
             return;
+
+        // координаты найдены
         if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
             tvLocationGPS.setText(formatLocation(location));
-        } else if (location.getProvider().equals(
-                LocationManager.NETWORK_PROVIDER)) {
+            findNearStation(location);
+        } else if (location.getProvider().equals(LocationManager.NETWORK_PROVIDER)) {
             tvLocationNet.setText(formatLocation(location));
+            findNearStation(location);
         }
     }
+
+
+    private void findNearStation(Location location) {
+        lat = location.getLatitude();  // широта
+        lon = location.getLongitude(); // долгота
+        // по найденным координатам находим ближайшую к нам станцию
+        if (findStation == false) {
+            number = FindNearestStation.findNearestStation(lat, lon);
+            displayTheSelectedPositionListView();
+            findStation = true;
+        }
+    }
+
 
     // 44444
     private String formatLocation(Location location) {
@@ -559,37 +582,35 @@ public class MainActivity extends AppCompatActivity {
                 location.getLatitude(), location.getLongitude(), new Date(
                         location.getTime()));
     }
+
     // 44444
     private void checkEnabled() {
         tvEnabledGPS.setText("Enabled: "
                 + locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
 
-        Button btn = (Button) findViewById(R.id.btnLocationSettings);
-
+        // проверяем, если получение координат по GPS отключено, тогда
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
-            // приемник GPS выключен
-            displayToast("Включите прием GPS сигнала");
-
-            btn.getBackground().setColorFilter(Color.parseColor("#F44336"), PorterDuff.Mode.MULTIPLY);
-
+            // приемник GPS выключен, проинформируем пользователя и изменим цвет кнопок
+            btnLocationSettings.setText("ВКЛЮЧИТЕ ДОСТУП К МЕСТОПОЛОЖЕНИЮ");
+            btnLocationSettings.setBackgroundResource(R.color.colorRedButtonBackground);
+            btnGetLoc.setBackgroundResource(R.drawable.button_shape_red);
         } else {
-            // приемник GPS включен
-            displayToast("GPS сигнала");
-            btn.getBackground().setColorFilter(Color.parseColor("#FF03DAC5"), PorterDuff.Mode.MULTIPLY);
+            // приемник GPS включен, проинформируем пользователя и изменим цвет кнопок
+            btnLocationSettings.setText("ДОСТУП К МЕСТОПОЛОЖЕНИЮ ВКЛЮЧЕН");
+            btnLocationSettings.setBackgroundResource(R.color.colorGreenButtonBackground);
+            btnGetLoc.setBackgroundResource(R.drawable.button_shape_green);
         }
-
 
         // результатом будет вывод true
         tvEnabledNet.setText("Enabled: "
                 + locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER));
     }
+
     // 44444
     public void onClickLocationSettings(View view) {
         startActivity(new Intent(
                 android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-    };
-
-
+    }
 
 
     // нарисуем меню
@@ -669,6 +690,35 @@ public class MainActivity extends AppCompatActivity {
             displayToast("Code 10");
             return;
         }
+
+
+        // 44444
+        // проверяем, если получение координат по GPS отключено, тогда
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
+            // приемник GPS выключен, открываем страницу включения координат
+            displayToast("Включите определение координат...");
+            startActivity(new Intent(
+                    android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+
+        } else {
+            // приемник GPS включен, проверим что координаты найдены
+            if (lat != 0 && lon != 0) {
+                // находим ближайшую станцию и выводим информацию на экран
+                number = FindNearestStation.findNearestStation(lat, lon);
+                displayTheSelectedPositionListView();
+            } else {
+                displayToast("Требуется время для поиска координат...");
+            }
+
+
+
+        }
+
+
+
+
+
+
 
         /*
         GPSTracker g = new GPSTracker(getApplicationContext()); //создаём трекер
@@ -832,7 +882,6 @@ public class MainActivity extends AppCompatActivity {
         */
 
 
-
         // !!! блок для открытия файла из внутренних ресурсов
         // определим количество строк в файле
         InputStream fileLocalData = getResources().openRawResource(R.raw.mhz_data);
@@ -853,8 +902,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
 
 
         // зададим размерность массива в соответствии с размером файла

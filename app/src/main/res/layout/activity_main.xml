@@ -46,7 +46,7 @@
         android:layout_height="42dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="14dp"
-        android:background="@drawable/button_shape"
+        android:background="@drawable/button_shape_grey"
         android:onClick="onClickBtnGetLoc"
         android:text="GPS"
         android:textColor="#FFFFFF"
@@ -62,7 +62,7 @@
         android:layout_height="42dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="14dp"
-        android:background="@drawable/button_shape"
+        android:background="@drawable/button_shape_red"
         android:onClick="onClickBtnNext"
         android:text="NEXT"
         android:textColor="#FFFFFF"
@@ -196,14 +196,13 @@
     <Button
         android:id="@+id/btnLocationSettings"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:background="#FF9800"
+        android:layout_height="20dp"
+        android:background="#B8AC9A"
         android:onClick="onClickLocationSettings"
-        android:text="button"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listView"></Button>
+        app:layout_constraintStart_toStartOf="parent"></Button>
 
 
 
@@ -235,25 +234,15 @@
         app:layout_constraintVertical_bias="1.0"></ListView>
 
 
-
-
-
-
-
-
-
-
-
-
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="14dp"
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="10dp"
         android:text="Екатеринбургская дирекция связи 2023"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnLocationSettings"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!--

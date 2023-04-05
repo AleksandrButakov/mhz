@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
                                в дальнейшем по этим индексам будем выводить информацию */
                             integerArrayList.add(i);
                             // sTemp = sData[i][2] + " " + sData[i][1]; // + " " + sData[i][0];
-                            sTemp = r sData[i][2] + "\n" + "РЕГИОН: " + sData[i][1]; // + " " + sData[i][0];
+                            sTemp = textFormatting34(sData[i][2]) + "\n" + "РЕГИОН: " + sData[i][1]; // + " " + sData[i][0];
                             stringArrayList.add(sTemp);
                             bSearch = true;
                         }

@@ -107,6 +107,9 @@ public class MainActivity extends AppCompatActivity {
     // переменная для хранения информации о том что координаты найдены
     private static boolean findStation = false;
 
+    // переменные для хранения координат
+    private static double lat = 0;  // широта
+    private static double lon = 0;  // долгота
 
     // 00000
     private LocationManager locationManager;
@@ -559,8 +562,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void findNearStation(Location location) {
-        double lat = location.getLatitude();  // широта
-        double lon = location.getLongitude(); // долгота
+        lat = location.getLatitude();  // широта
+        lon = location.getLongitude(); // долгота
         // по найденным координатам находим ближайшую к нам станцию
         if (findStation == false) {
             number = FindNearestStation.findNearestStation(lat, lon);
@@ -585,6 +588,7 @@ public class MainActivity extends AppCompatActivity {
         tvEnabledGPS.setText("Enabled: "
                 + locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
 
+        // проверяем, если получение координат по GPS отключено, тогда
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
             // приемник GPS выключен, проинформируем пользователя и изменим цвет кнопок
             btnLocationSettings.setText("ВКЛЮЧИТЕ ДОСТУП К МЕСТОПОЛОЖЕНИЮ");
@@ -687,6 +691,33 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+
+        // 44444
+        // проверяем, если получение координат по GPS отключено, тогда
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
+            // приемник GPS выключен, открываем страницу включения координат
+            displayToast("Включите определение координат...");
+            startActivity(new Intent(
+                    android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+
+        } else {
+            // приемник GPS включен, проверим что координаты найдены
+            if (lat != 0 && lon != 0) {
+                // находим ближайшую станцию и выводим информацию на экран
+                number = FindNearestStation.findNearestStation(lat, lon);
+                displayTheSelectedPositionListView();
+            } else {
+                displayToast("Требуется время для поиска координат...");
+            }
+
+
+
+        }
+
+
+
+        number = FindNearestStation.findNearestStation(lat, lon);
+        displayTheSelectedPositionListView();
 
 
 

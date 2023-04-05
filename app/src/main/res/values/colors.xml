@@ -19,6 +19,7 @@
     <color name="colorOrange">#FF9800</color>
     <color name="colorTextStation">#4F6DFF</color>
 
-    <color name="colorButtonBackground">#F44336</color>
+    <color name="colorRedButtonBackground">#F44336</color>
+    <color name="colorGreenButtonBackground">#4CAF6B</color>
 
 </resources>

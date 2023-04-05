@@ -13,8 +13,6 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -113,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder sbNet = new StringBuilder();
 
     // 00000
+    Button btnGetLoc;
     TextView tvEnabledGPS;
     TextView tvStatusGPS;
     TextView tvLocationGPS;
@@ -120,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tvStatusNet;
     TextView tvLocationNet;
     Button btnLocationSettings;
+
 
 
     @Override
@@ -139,16 +139,17 @@ public class MainActivity extends AppCompatActivity {
         }
          */
 
+        btnGetLoc = findViewById(R.id.btnGetLoc);
 
         // 00000
-        tvEnabledGPS = (TextView) findViewById(R.id.tvEnabledGPS);
-        tvStatusGPS = (TextView) findViewById(R.id.tvStatusGPS);
-        tvLocationGPS = (TextView) findViewById(R.id.tvLocationGPS);
-        tvEnabledNet = (TextView) findViewById(R.id.tvEnabledNet);
-        tvStatusNet = (TextView) findViewById(R.id.tvStatusNet);
-        tvLocationNet = (TextView) findViewById(R.id.tvLocationNet);
+        tvEnabledGPS = findViewById(R.id.tvEnabledGPS);
+        tvStatusGPS = findViewById(R.id.tvStatusGPS);
+        tvLocationGPS = findViewById(R.id.tvLocationGPS);
+        tvEnabledNet = findViewById(R.id.tvEnabledNet);
+        tvStatusNet = findViewById(R.id.tvStatusNet);
+        tvLocationNet = findViewById(R.id.tvLocationNet);
 
-        btnLocationSettings = (Button) findViewById(R.id.btnLocationSettings);
+        btnLocationSettings = findViewById(R.id.btnLocationSettings);
 
 
         // запрос разрешение на использование геопозиции
@@ -566,18 +567,22 @@ public class MainActivity extends AppCompatActivity {
         tvEnabledGPS.setText("Enabled: "
                 + locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
 
-        Button btn = (Button) findViewById(R.id.btnLocationSettings);
+
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
             // приемник GPS выключен
-            displayToast("Включите прием GPS сигнала");
 
-            btn.getBackground().setColorFilter(Color.parseColor("#F44336"), PorterDuff.Mode.MULTIPLY);
+
+            displayToast("Включите доступ к местоположению");
+            btnLocationSettings.setText("ВКЛЮЧИТЕ ДОСТУП К МЕСТОПОЛОЖЕНИЮ");
+            btnLocationSettings.setBackgroundResource(R.color.colorRedButtonBackground);
+
 
         } else {
             // приемник GPS включен
-            displayToast("GPS сигнала");
-            btn.getBackground().setColorFilter(Color.parseColor("#FF03DAC5"), PorterDuff.Mode.MULTIPLY);
+            displayToast("Доступ к местоположению включен");
+            btnLocationSettings.setText("ДОСТУП К МЕСТОПОЛОЖЕНИЮ ВКЛЮЧЕН");
+            btnLocationSettings.setBackgroundResource(R.color.colorGreenButtonBackground);
         }
 
 

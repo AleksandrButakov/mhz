@@ -121,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
     Button btnLocationSettings;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -303,7 +302,6 @@ public class MainActivity extends AppCompatActivity {
                 displayTheSelectedPositionListView();
             }
         });
-
 
 
     }
@@ -530,6 +528,7 @@ public class MainActivity extends AppCompatActivity {
             checkEnabled();
             showLocation(locationManager.getLastKnownLocation(provider));
         }
+
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
             if (provider.equals(LocationManager.GPS_PROVIDER)) {
@@ -562,41 +561,36 @@ public class MainActivity extends AppCompatActivity {
                 location.getLatitude(), location.getLongitude(), new Date(
                         location.getTime()));
     }
+
     // 44444
     private void checkEnabled() {
         tvEnabledGPS.setText("Enabled: "
                 + locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
 
-
-
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
-            // приемник GPS выключен
-
-
-            displayToast("Включите доступ к местоположению");
+            // приемник GPS выключен, проинформируем пользователя и изменим цвет кнопок
             btnLocationSettings.setText("ВКЛЮЧИТЕ ДОСТУП К МЕСТОПОЛОЖЕНИЮ");
             btnLocationSettings.setBackgroundResource(R.color.colorRedButtonBackground);
-
-
+            btnGetLoc.setBackgroundResource(R.drawable.button_shape_red);
         } else {
-            // приемник GPS включен
-            displayToast("Доступ к местоположению включен");
+            // приемник GPS включен, проинформируем пользователя и изменим цвет кнопок
             btnLocationSettings.setText("ДОСТУП К МЕСТОПОЛОЖЕНИЮ ВКЛЮЧЕН");
             btnLocationSettings.setBackgroundResource(R.color.colorGreenButtonBackground);
+            btnGetLoc.setBackgroundResource(R.drawable.button_shape_green);
         }
-
 
         // результатом будет вывод true
         tvEnabledNet.setText("Enabled: "
                 + locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER));
     }
+
     // 44444
     public void onClickLocationSettings(View view) {
         startActivity(new Intent(
                 android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-    };
+    }
 
-
+    ;
 
 
     // нарисуем меню
@@ -843,7 +837,6 @@ public class MainActivity extends AppCompatActivity {
         */
 
 
-
         // !!! блок для открытия файла из внутренних ресурсов
         // определим количество строк в файле
         InputStream fileLocalData = getResources().openRawResource(R.raw.mhz_data);
@@ -864,8 +857,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
 
 
         // зададим размерность массива в соответствии с размером файла

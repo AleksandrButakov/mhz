@@ -104,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
     // переменная для обработки статуса поиска координат
     public static boolean bGPSCoordinatesFound = false;
 
+    // переменная для хранения информации о том что координаты найдены
+    private static boolean findStation = false;
+
 
     // 00000
     private LocationManager locationManager;
@@ -490,7 +493,6 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-
         // 44444
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -544,13 +546,29 @@ public class MainActivity extends AppCompatActivity {
     private void showLocation(Location location) {
         if (location == null)
             return;
+
+        // координаты найдены
         if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
             tvLocationGPS.setText(formatLocation(location));
-        } else if (location.getProvider().equals(
-                LocationManager.NETWORK_PROVIDER)) {
+            findNearStation(location);
+        } else if (location.getProvider().equals(LocationManager.NETWORK_PROVIDER)) {
             tvLocationNet.setText(formatLocation(location));
+            findNearStation(location);
         }
     }
+
+
+    private void findNearStation(Location location) {
+        double lat = location.getLatitude();  // широта
+        double lon = location.getLongitude(); // долгота
+        // по найденным координатам находим ближайшую к нам станцию
+        if (findStation == false) {
+            number = FindNearestStation.findNearestStation(lat, lon);
+            displayTheSelectedPositionListView();
+            findStation = true;
+        }
+    }
+
 
     // 44444
     private String formatLocation(Location location) {
@@ -589,8 +607,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(
                 android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
     }
-
-    ;
 
 
     // нарисуем меню

@@ -716,8 +716,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        number = FindNearestStation.findNearestStation(lat, lon);
-        displayTheSelectedPositionListView();
 
 
 

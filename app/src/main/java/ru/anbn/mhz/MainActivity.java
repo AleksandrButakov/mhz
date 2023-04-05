@@ -156,6 +156,9 @@ public class MainActivity extends AppCompatActivity {
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                 StaticVariables.MY_PERMISSIONS_REQUEST_NETWORK_LOCATION);
 
+        // 00000
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
         // зададим идентификаторы полям spinner
         final Spinner spinner = findViewById(R.id.spinner);
 
@@ -300,8 +303,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 00000
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
 
     }
 
@@ -669,6 +671,10 @@ public class MainActivity extends AppCompatActivity {
             displayToast("Code 10");
             return;
         }
+
+
+
+
 
         /*
         GPSTracker g = new GPSTracker(getApplicationContext()); //создаём трекер

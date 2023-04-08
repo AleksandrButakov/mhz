@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         }
          */
 
+
         btnGetLoc = findViewById(R.id.btnGetLoc);
 
         // 00000
@@ -267,7 +268,8 @@ public class MainActivity extends AppCompatActivity {
                                в дальнейшем по этим индексам будем выводить информацию */
                             integerArrayList.add(i);
                             // sTemp = sData[i][2] + " " + sData[i][1]; // + " " + sData[i][0];
-                            sTemp = textFormatting34(sData[i][2]) + "\n" + "Регион: " + sData[i][1]; // + " " + sData[i][0];
+                            sTemp = textFormatting34(sData[i][2]) + "\n" + "Регион: " +
+                                    sData[i][1]; // + " " + sData[i][0];
                             stringArrayList.add(sTemp);
                             bSearch = true;
                         }
@@ -308,7 +310,12 @@ public class MainActivity extends AppCompatActivity {
                 // отобразим выбранную позицию
                 displayTheSelectedPositionListView();
             }
+
+
+
         });
+
+
 
 
     }
@@ -360,7 +367,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Соответствий в каналах не найдено! " +
                         "Ошибка исходных данных!", Toast.LENGTH_SHORT).show();
             }
-
 
 
             // сформируем данные для отображения
@@ -755,7 +761,6 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 displayToast("Требуется время для поиска координат...");
             }
-
 
 
         }

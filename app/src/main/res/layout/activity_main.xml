@@ -18,6 +18,7 @@
         android:background="@drawable/search_shape"
         android:elevation="8dp"
         android:queryHint="Название станции"
+        android:textColor="@color/colorOrange"
         android:theme="@style/AppThemeSearchView"
         app:layout_constraintEnd_toStartOf="@+id/btnGetLoc"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,12 +72,30 @@
         app:layout_constraintTop_toBottomOf="@+id/btnGetLoc"
         tools:ignore="MissingConstraints" />
 
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="14dp"
+        android:text="   Местоположение определено по GPS:"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+
+
+
+
     <TextView
         android:id="@+id/textView1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="14dp"
         android:background="@drawable/textview_shape"
         android:elevation="8dp"
@@ -215,7 +234,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="14dp"
         android:layout_marginBottom="20dp"
         android:visibility="invisible"

@@ -308,6 +308,14 @@ public class MainActivity extends AppCompatActivity {
 
                 // отобразим выбранную позицию
                 displayTheSelectedPositionListView();
+
+                // TODO убрать textView
+                // пишем что местоположение выбрано в ручную и закрашиваем поле оранжевым
+                TextView textView4 = findViewById(R.id.textView4);
+                textView4.setVisibility(View.VISIBLE);
+                textView4.setText("     Местоположение выбрано в ручную:");
+                textView4.setBackgroundResource(R.drawable.textview_orange_shape);
+
             }
 
 
@@ -619,6 +627,16 @@ public class MainActivity extends AppCompatActivity {
         if (findStation == false) {
             number = FindNearestStation.findNearestStation(lat, lon);
             displayTheSelectedPositionListView();
+
+
+            // пишем что местоположение вычислено по GPS и закрашиваем поле зеленым
+            TextView textView4 = findViewById(R.id.textView4);
+            textView4.setVisibility(View.VISIBLE);
+            textView4.setText("     Местоположение вычислено по GPS:");
+            textView4.setBackgroundResource(R.drawable.textview_green_shape);
+
+
+
             findStation = true;
         }
     }
@@ -757,6 +775,14 @@ public class MainActivity extends AppCompatActivity {
                 // находим ближайшую станцию и выводим информацию на экран
                 number = FindNearestStation.findNearestStation(lat, lon);
                 displayTheSelectedPositionListView();
+
+                // TODO убрать textView
+                // пишем что местоположение вычислено по GPS и закрашиваем поле зеленым
+                TextView textView4 = findViewById(R.id.textView4);
+                textView4.setVisibility(View.VISIBLE);
+                textView4.setText("     Местоположение вычислено по GPS:");
+                textView4.setBackgroundResource(R.drawable.textview_green_shape);
+
             } else {
                 displayToast("Требуется время для поиска координат...");
             }
@@ -1146,7 +1172,7 @@ public class MainActivity extends AppCompatActivity {
         if (file.exists()) {
             file.delete();
 
-            // ожидаем уделение файла
+            // ожидаем удаление файла
             countSleep = timerSeconds;
             while (file.exists() && countSleep > 0) {
                 try {

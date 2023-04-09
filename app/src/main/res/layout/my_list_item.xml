@@ -5,7 +5,7 @@
     android:textAppearance="?android:attr/textAppearanceListItemSmall"
     android:gravity="center_vertical"
     android:textColor="@color/colorWhite"
-    android:background="@drawable/textview_shape"
+    android:background="@drawable/textview_black_shape"
     android:text="TextView"
     android:textSize="16dp"
     android:fontFamily="monospace"

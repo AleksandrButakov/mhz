@@ -144,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
         }
          */
 
-
         btnGetLoc = findViewById(R.id.btnGetLoc);
 
         // 00000

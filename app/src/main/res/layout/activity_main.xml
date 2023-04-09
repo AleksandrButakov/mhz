@@ -78,10 +78,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="14dp"
         android:layout_marginEnd="14dp"
-        android:text="   Местоположение определено по GPS:"
+        android:text="     Местоположение определено по GPS:"
         android:textColor="#FFFFFF"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />

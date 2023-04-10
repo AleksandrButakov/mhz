@@ -12,7 +12,8 @@
         android:id="@+id/textView1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/textview_shape_pdf_reader_activity"
+
+        android:background="@color/colorGreenButtonBackground"
         android:fontFamily="monospace"
         android:textAlignment="viewStart"
         android:textColor="@color/colorWhite"

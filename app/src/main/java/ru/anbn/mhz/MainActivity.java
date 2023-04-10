@@ -51,7 +51,6 @@ import java.util.Scanner;
 public class MainActivity extends AppCompatActivity {
 
     // TODO Change public on private modifiers wherever possible
-
     // number of lines in the file mhz_data.txt
     public static int countRows;
     private String[][] sData = null;
@@ -111,12 +110,11 @@ public class MainActivity extends AppCompatActivity {
     private static double lat = 0;  // широта
     private static double lon = 0;  // долгота
 
-    // 00000
     private LocationManager locationManager;
     StringBuilder sbGPS = new StringBuilder();
     StringBuilder sbNet = new StringBuilder();
 
-    // 00000
+    // вспомогательные поля для отображения вспомогательной информации
     Button btnGetLoc;
     TextView tvEnabledGPS;
     TextView tvStatusGPS;
@@ -125,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
     TextView tvStatusNet;
     TextView tvLocationNet;
     Button btnLocationSettings;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,9 +141,9 @@ public class MainActivity extends AppCompatActivity {
         }
          */
 
+        // вспомогательные поля для отображения вспомогательной информации
         btnGetLoc = findViewById(R.id.btnGetLoc);
 
-        // 00000
         tvEnabledGPS = findViewById(R.id.tvEnabledGPS);
         tvStatusGPS = findViewById(R.id.tvStatusGPS);
         tvLocationGPS = findViewById(R.id.tvLocationGPS);
@@ -156,13 +153,12 @@ public class MainActivity extends AppCompatActivity {
 
         btnLocationSettings = findViewById(R.id.btnLocationSettings);
 
-
         // запрос разрешение на использование геопозиции
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                 StaticVariables.MY_PERMISSIONS_REQUEST_NETWORK_LOCATION);
 
-        // 00000
+        // запуск сервиса определения координат
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         // зададим идентификаторы полям spinner
@@ -173,7 +169,6 @@ public class MainActivity extends AppCompatActivity {
                 R.layout.simple_spinner_item, Variables.SEQUIPMENT);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-
 
         // устанавливаем обработчик нажатия spinner1
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -216,13 +211,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         /* зададим listener для поиска станции по двум и более введенным символам
            в поле searchView */
         SearchView searchView = findViewById(R.id.searchView);
         searchView.clearFocus();
-        // блок необходим чтобы клик воспринимался любой частью поля а не только увеличительным
-        // стеклом
+        /* блок необходим чтобы клик воспринимался любой частью поля, а не только
+           увеличительным стеклом */
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,8 +281,8 @@ public class MainActivity extends AppCompatActivity {
                     searchResultsDisplay();
                 }
 
-                // listener ListView слушает клики. При выборе позиции закрываем listView
-                // и отображаем данные в формате: станция, регион
+                /* Listener ListView слушает клики. При выборе позиции закрываем listView
+                   и отображаем данные в формате: станция, регион */
                 return false;
             }
         });
@@ -315,15 +309,8 @@ public class MainActivity extends AppCompatActivity {
                 textView4.setVisibility(View.VISIBLE);
                 textView4.setText("     Местоположение выбрано в ручную:");
                 textView4.setBackgroundResource(R.drawable.textview_orange_shape);
-
             }
-
-
-
         });
-
-
-
 
     }
 
@@ -334,7 +321,6 @@ public class MainActivity extends AppCompatActivity {
         toast.setGravity(Gravity.TOP, 0, 0);
         toast.show();
     }
-
 
     // делаем textView invisible and clear
     public void textViewInvisible() {
@@ -374,7 +360,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Соответствий в каналах не найдено! " +
                         "Ошибка исходных данных!", Toast.LENGTH_SHORT).show();
             }
-
 
             // сформируем данные для отображения
             sTemp = "\n" +
@@ -421,9 +406,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* Передаем название станции в ListView, в случае если встречается символ @, значит
-       переносим вырезаем его
-       Длина текста 34 символа
-    */
+       переносим, вырезаем его. Длина текста 34 символа */
     private String textFormatting34(String text) {
         String sResult = "";
         char sChar;
@@ -447,7 +430,6 @@ public class MainActivity extends AppCompatActivity {
                         "   Станция:  " + sData[number][2] + "\n";
 
         if (!sData[number][3].equals("Нет данных")) {
-
             if (typeOfRadioStation.equals("notSelected")) {
                 // в документации нет выбранной инструкции
                 choiceFrequency +=
@@ -472,7 +454,6 @@ public class MainActivity extends AppCompatActivity {
                             "   Нет информации о станции...";
         }
     }
-
 
     // обновим информацию в textView1 в соответствии с выбранными параметрами
     public void fillTextView(String sTemp) {
@@ -545,7 +526,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         Log.d(TAG, "onPause");
 
-        // 44444
+        // останавливаем сервис определения координат
         locationManager.removeUpdates(locationListener);
 
         // displayToast("XXX onPause");
@@ -555,7 +536,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        // 44444
+        // проверим что разрешения получения координат получены
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -574,7 +555,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // 44444
+    // Listener сервиса получения координат с различными методами
     private LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
@@ -603,8 +584,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
-    // 44444
+    // координаты найдены
     private void showLocation(Location location) {
         if (location == null)
             return;
@@ -619,7 +599,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private void findNearStation(Location location) {
         lat = location.getLatitude();  // широта
         lon = location.getLongitude(); // долгота
@@ -628,21 +607,18 @@ public class MainActivity extends AppCompatActivity {
             number = FindNearestStation.findNearestStation(lat, lon);
             displayTheSelectedPositionListView();
 
-
+            // TODO вынести этот код в отдельный метод
             // пишем что местоположение вычислено по GPS и закрашиваем поле зеленым
             TextView textView4 = findViewById(R.id.textView4);
             textView4.setVisibility(View.VISIBLE);
             textView4.setText("     Местоположение вычислено по GPS:");
             textView4.setBackgroundResource(R.drawable.textview_green_shape);
 
-
-
             findStation = true;
         }
     }
 
-
-    // 44444
+    // метод форматирования выводимой информации при отладке приложения
     private String formatLocation(Location location) {
         if (location == null)
             return "";

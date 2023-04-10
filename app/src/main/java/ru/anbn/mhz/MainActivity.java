@@ -628,7 +628,8 @@ public class MainActivity extends AppCompatActivity {
                         location.getTime()));
     }
 
-    // 44444
+    /* в методе определим включено ли определение координат и в зависимости от этого
+       установим кнопкам различный цвет */
     private void checkEnabled() {
         tvEnabledGPS.setText("Enabled: "
                 + locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
@@ -651,12 +652,11 @@ public class MainActivity extends AppCompatActivity {
                 + locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER));
     }
 
-    // 44444
+    // откроем страницу настроек с включением координат
     public void onClickLocationSettings(View view) {
         startActivity(new Intent(
                 android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
     }
-
 
     // нарисуем меню
     @Override
@@ -698,11 +698,13 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
+
             /*
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.anbn.pinout"));
             startActivity(intent);
              */
+
         }
 
         // о программе
@@ -716,7 +718,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
 
     // клик по кнопке получения координат
     public void onClickBtnGetLoc(View view) throws IOException {
@@ -736,15 +737,12 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-
-        // 44444
         // проверяем, если получение координат по GPS отключено, тогда
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
             // приемник GPS выключен, открываем страницу включения координат
             displayToast("Включите определение координат...");
             startActivity(new Intent(
                     android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-
         } else {
             // приемник GPS включен, проверим что координаты найдены
             if (lat != 0 && lon != 0) {
@@ -763,14 +761,7 @@ public class MainActivity extends AppCompatActivity {
                 displayToast("Требуется время для поиска координат...");
             }
 
-
         }
-
-
-
-
-
-
 
         /*
         GPSTracker g = new GPSTracker(getApplicationContext()); //создаём трекер
@@ -862,7 +853,6 @@ public class MainActivity extends AppCompatActivity {
             displayToast("Выберите оборудование...");
         }
     }
-
 
     private void downloadFileData(File fileLocalData) {
         // проверим что локальный файл mhz_data.txt существует

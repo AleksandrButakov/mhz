@@ -114,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder sbGPS = new StringBuilder();
     StringBuilder sbNet = new StringBuilder();
 
+    TextView textView1;
+    TextView textView4;
+
     // вспомогательные поля для отображения вспомогательной информации
     Button btnGetLoc;
     TextView tvEnabledGPS;
@@ -140,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
             downloadFileData(fileLocalData);
         }
          */
+
+        textView1 = findViewById(R.id.textView1);
+        textView4 = findViewById(R.id.textView4);
 
         // вспомогательные поля для отображения вспомогательной информации
         btnGetLoc = findViewById(R.id.btnGetLoc);
@@ -321,10 +327,10 @@ public class MainActivity extends AppCompatActivity {
 
     // делаем textView invisible and clear
     public void textViewInvisible() {
-        TextView textView1 = findViewById(R.id.textView1);
+        //TextView textView1 = findViewById(R.id.textView1);
         textView1.setVisibility(View.INVISIBLE);
 
-        TextView textView4 = findViewById(R.id.textView4);
+        //TextView textView4 = findViewById(R.id.textView4);
         textView4.setVisibility(View.INVISIBLE);
 
         bVisibleTextView = false;

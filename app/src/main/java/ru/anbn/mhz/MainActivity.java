@@ -791,7 +791,6 @@ public class MainActivity extends AppCompatActivity {
         }
         */
 
-
     }
 
 
@@ -828,6 +827,7 @@ public class MainActivity extends AppCompatActivity {
            необходимо выбрать станцию;
            если выбрана, отображаем и частоту и инструкцию */
 
+        // TODO delete this block
         if (bProgramProblem) {
             disableElements("Code 10");
             displayToast("Code 10");
@@ -1102,7 +1102,7 @@ public class MainActivity extends AppCompatActivity {
     private void downloadFile(String pathServerFile, String pathLocalFile) {
         File file = new File(getExternalFilesDir(null), pathLocalFile);
 
-        // если такой файл уже существует то перед загрузкой новой версии удалим его
+        // если такой файл уже существует, тогда перед загрузкой новой версии удалим его
         deletingFile(file);
 
         // загрузка файла

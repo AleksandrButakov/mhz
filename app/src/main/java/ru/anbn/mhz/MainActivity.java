@@ -752,10 +752,11 @@ public class MainActivity extends AppCompatActivity {
 
                 // TODO убрать textView
                 // пишем что местоположение вычислено по GPS и закрашиваем поле зеленым
-                TextView textView4 = findViewById(R.id.textView4);
-                textView4.setVisibility(View.VISIBLE);
-                textView4.setText("     Местоположение вычислено по GPS:");
-                textView4.setBackgroundResource(R.drawable.textview_green_shape);
+//                TextView textView4 = findViewById(R.id.textView4);
+//                textView4.setVisibility(View.VISIBLE);
+//                textView4.setText("     Местоположение вычислено по GPS:");
+//                textView4.setBackgroundResource(R.drawable.textview_green_shape);
+                changeTextAndColorTextView("     Местоположение вычислено по GPS:", R.drawable.textview_green_shape);
 
             } else {
                 displayToast("Требуется время для поиска координат...");
@@ -793,6 +794,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // пишем что местоположение вычислено по GPS и закрашиваем поле зеленым
+    private void changeTextAndColorTextView(String text, int resources) {
+        TextView textView4 = findViewById(R.id.textView4);
+        textView4.setVisibility(View.VISIBLE);
+        textView4.setText(text);
+        textView4.setBackgroundResource(resources);
+    }
 
     //        // блок получения координат
 //        Button btnGetLoc = findViewById(R.id.btnGetLoc);
@@ -827,7 +835,6 @@ public class MainActivity extends AppCompatActivity {
            необходимо выбрать станцию;
            если выбрана, отображаем и частоту и инструкцию */
 
-        // TODO delete this block
         if (bProgramProblem) {
             disableElements("Code 10");
             displayToast("Code 10");

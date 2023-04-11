@@ -114,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder sbGPS = new StringBuilder();
     StringBuilder sbNet = new StringBuilder();
 
+    TextView textView1;
+    TextView textView4;
+
     // вспомогательные поля для отображения вспомогательной информации
     Button btnGetLoc;
     TextView tvEnabledGPS;
@@ -140,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
             downloadFileData(fileLocalData);
         }
          */
+
+        textView1 = findViewById(R.id.textView1);
+        textView4 = findViewById(R.id.textView4);
 
         // вспомогательные поля для отображения вспомогательной информации
         btnGetLoc = findViewById(R.id.btnGetLoc);
@@ -303,12 +309,9 @@ public class MainActivity extends AppCompatActivity {
                 // отобразим выбранную позицию
                 displayTheSelectedPositionListView();
 
-                // TODO убрать textView
                 // пишем что местоположение выбрано из списка и закрашиваем поле оранжевым
-                TextView textView4 = findViewById(R.id.textView4);
-                textView4.setVisibility(View.VISIBLE);
-                textView4.setText("     Местоположение выбрано из списка:");
-                textView4.setBackgroundResource(R.drawable.textview_orange_shape);
+                changeTextAndColorTextView("     Местоположение выбрано из списка:",
+                        R.drawable.textview_orange_shape);
             }
         });
 
@@ -324,8 +327,8 @@ public class MainActivity extends AppCompatActivity {
 
     // делаем textView invisible and clear
     public void textViewInvisible() {
-        TextView textView1 = findViewById(R.id.textView1);
         textView1.setVisibility(View.INVISIBLE);
+        textView4.setVisibility(View.INVISIBLE);
         bVisibleTextView = false;
     }
 
@@ -607,12 +610,9 @@ public class MainActivity extends AppCompatActivity {
             number = FindNearestStation.findNearestStation(lat, lon);
             displayTheSelectedPositionListView();
 
-            // TODO вынести этот код в отдельный метод
             // пишем что местоположение вычислено по GPS и закрашиваем поле зеленым
-            TextView textView4 = findViewById(R.id.textView4);
-            textView4.setVisibility(View.VISIBLE);
-            textView4.setText("     Местоположение вычислено по GPS:");
-            textView4.setBackgroundResource(R.drawable.textview_green_shape);
+            changeTextAndColorTextView("     Местоположение вычислено по GPS:",
+                    R.drawable.textview_green_shape);
 
             findStation = true;
         }
@@ -750,13 +750,9 @@ public class MainActivity extends AppCompatActivity {
                 number = FindNearestStation.findNearestStation(lat, lon);
                 displayTheSelectedPositionListView();
 
-                // TODO убрать textView
                 // пишем что местоположение вычислено по GPS и закрашиваем поле зеленым
-                TextView textView4 = findViewById(R.id.textView4);
-                textView4.setVisibility(View.VISIBLE);
-                textView4.setText("     Местоположение вычислено по GPS:");
-                textView4.setBackgroundResource(R.drawable.textview_green_shape);
-
+                changeTextAndColorTextView("     Местоположение вычислено по GPS:",
+                        R.drawable.textview_green_shape);
             } else {
                 displayToast("Требуется время для поиска координат...");
             }
@@ -793,6 +789,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // пишем что местоположение вычислено по GPS и закрашиваем поле зеленым
+    private void changeTextAndColorTextView(String text, int resources) {
+        //TextView textView4 = findViewById(R.id.textView4);
+        textView4.setVisibility(View.VISIBLE);
+        textView4.setText(text);
+        textView4.setBackgroundResource(resources);
+    }
 
     //        // блок получения координат
 //        Button btnGetLoc = findViewById(R.id.btnGetLoc);
@@ -827,7 +830,6 @@ public class MainActivity extends AppCompatActivity {
            необходимо выбрать станцию;
            если выбрана, отображаем и частоту и инструкцию */
 
-        // TODO delete this block
         if (bProgramProblem) {
             disableElements("Code 10");
             displayToast("Code 10");

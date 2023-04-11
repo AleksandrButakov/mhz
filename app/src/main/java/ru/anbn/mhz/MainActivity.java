@@ -303,12 +303,9 @@ public class MainActivity extends AppCompatActivity {
                 // отобразим выбранную позицию
                 displayTheSelectedPositionListView();
 
-                // TODO убрать textView
                 // пишем что местоположение выбрано из списка и закрашиваем поле оранжевым
-                TextView textView4 = findViewById(R.id.textView4);
-                textView4.setVisibility(View.VISIBLE);
-                textView4.setText("     Местоположение выбрано из списка:");
-                textView4.setBackgroundResource(R.drawable.textview_orange_shape);
+                changeTextAndColorTextView("     Местоположение выбрано из списка:",
+                        R.drawable.textview_orange_shape);
             }
         });
 
@@ -326,6 +323,10 @@ public class MainActivity extends AppCompatActivity {
     public void textViewInvisible() {
         TextView textView1 = findViewById(R.id.textView1);
         textView1.setVisibility(View.INVISIBLE);
+
+        TextView textView4 = findViewById(R.id.textView4);
+        textView4.setVisibility(View.INVISIBLE);
+
         bVisibleTextView = false;
     }
 
@@ -607,12 +608,9 @@ public class MainActivity extends AppCompatActivity {
             number = FindNearestStation.findNearestStation(lat, lon);
             displayTheSelectedPositionListView();
 
-            // TODO вынести этот код в отдельный метод
             // пишем что местоположение вычислено по GPS и закрашиваем поле зеленым
-            TextView textView4 = findViewById(R.id.textView4);
-            textView4.setVisibility(View.VISIBLE);
-            textView4.setText("     Местоположение вычислено по GPS:");
-            textView4.setBackgroundResource(R.drawable.textview_green_shape);
+            changeTextAndColorTextView("     Местоположение вычислено по GPS:",
+                    R.drawable.textview_green_shape);
 
             findStation = true;
         }
@@ -756,7 +754,8 @@ public class MainActivity extends AppCompatActivity {
 //                textView4.setVisibility(View.VISIBLE);
 //                textView4.setText("     Местоположение вычислено по GPS:");
 //                textView4.setBackgroundResource(R.drawable.textview_green_shape);
-                changeTextAndColorTextView("     Местоположение вычислено по GPS:", R.drawable.textview_green_shape);
+                changeTextAndColorTextView("     Местоположение вычислено по GPS:",
+                        R.drawable.textview_green_shape);
 
             } else {
                 displayToast("Требуется время для поиска координат...");

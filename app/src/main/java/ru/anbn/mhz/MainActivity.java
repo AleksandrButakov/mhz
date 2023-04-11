@@ -304,10 +304,10 @@ public class MainActivity extends AppCompatActivity {
                 displayTheSelectedPositionListView();
 
                 // TODO убрать textView
-                // пишем что местоположение выбрано в ручную и закрашиваем поле оранжевым
+                // пишем что местоположение выбрано из списка и закрашиваем поле оранжевым
                 TextView textView4 = findViewById(R.id.textView4);
                 textView4.setVisibility(View.VISIBLE);
-                textView4.setText("     Местоположение выбрано в ручную:");
+                textView4.setText("     Местоположение выбрано из списка:");
                 textView4.setBackgroundResource(R.drawable.textview_orange_shape);
             }
         });

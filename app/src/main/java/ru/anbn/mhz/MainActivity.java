@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
                                в дальнейшем по этим индексам будем выводить информацию */
                             integerArrayList.add(i);
                             // sTemp = sData[i][2] + " " + sData[i][1]; // + " " + sData[i][0];
-                            sTemp = textFormatting34(sData[i][2]) + "\n" + "Регион: " +
+                            sTemp = FormatTextToDisplay.textFormatting34(sData[i][2]) + "\n" + "Регион: " +
                                     sData[i][1]; // + " " + sData[i][0];
                             stringArrayList.add(sTemp);
                             bSearch = true;
@@ -369,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
             sTemp = "\n" +
                     "   Дорога:   " + sData[number][0] + "\n" +
                     "   Регион:   " + sData[number][1] + "\n" +
-                    "   Станция:  " + textFormatting23(sData[number][2]) + "\n" +
+                    "   Станция:  " + FormatTextToDisplay.textFormatting23(sData[number][2]) + "\n" +
                     // "   Станция:  " + sData[number][2] + "\n" +
 
                     //"   Радиосвязь: " + radioFrequencyChannel[index][1] + "\n" +
@@ -387,6 +387,8 @@ public class MainActivity extends AppCompatActivity {
         fillTextView(sTemp);
     }
 
+
+    /*
     // TODO Think about how to implement a beautiful transfer programmatically,
     //  because the width of the screen is different for everyone. This algorithm will
     //  work crookedly on smaller screens
@@ -394,6 +396,7 @@ public class MainActivity extends AppCompatActivity {
        и добавляем 13 пробелов для красивого отображения.
        Длина текста 23 символа и 13 пробелов в начале строки
      */
+    /*
     private String textFormatting23(String text) {
         String sResult = "";
         char sChar;
@@ -411,6 +414,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* Передаем название станции в ListView, в случае если встречается символ @, значит
        переносим, вырезаем его. Длина текста 34 символа */
+    /*
     private String textFormatting34(String text) {
         String sResult = "";
         char sChar;
@@ -425,6 +429,8 @@ public class MainActivity extends AppCompatActivity {
         }
         return sResult;
     }
+    */
+
 
     // подготовим информацию для отображения в textView pdf activity
     public void informationForPdfDisplayActivity() {

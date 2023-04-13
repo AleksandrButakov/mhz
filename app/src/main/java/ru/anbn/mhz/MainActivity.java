@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder sbGPS = new StringBuilder();
     StringBuilder sbNet = new StringBuilder();
 
+    // TODO rename this element
     TextView textView1;
     TextView textView4;
 

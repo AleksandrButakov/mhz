@@ -7,9 +7,8 @@ public class FormatTextToDisplay {
     //  work crookedly on smaller screens
     /* Передаем название станции, в случае если встречается символ @, значит переносим строку
        и добавляем 13 пробелов для красивого отображения.
-       Длина текста 23 символа и 13 пробелов в начале строки
-     */
-    private String textFormatting23(String text) {
+       Длина текста 23 символа и 13 пробелов в начале строки */
+    protected static String textFormatting23(String text) {
         String sResult = "";
         char sChar;
 
@@ -25,8 +24,8 @@ public class FormatTextToDisplay {
     }
 
     /* Передаем название станции в ListView, в случае если встречается символ @, значит
-   переносим, вырезаем его. Длина текста 34 символа */
-    private String textFormatting34(String text) {
+       переносим, вырезаем его. Длина текста 34 символа */
+    protected static String textFormatting34(String text) {
         String sResult = "";
         char sChar;
 

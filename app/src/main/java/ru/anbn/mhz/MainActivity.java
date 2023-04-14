@@ -235,66 +235,21 @@ public class MainActivity extends AppCompatActivity {
             // обработчик нажатия кнопки поиска поля searchView1
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // User pressed the search button
+                searchStation(query);
                 return false;
             }
 
             // обработчик ввода символа поля searchView
             @Override
             public boolean onQueryTextChange(String sSearch) {
-
-                if (sData == null) {
-                    try {
-                        readFileData();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                integerArrayList.clear();
-                stringArrayList.clear();
-                sSearchUpper = sSearch.toUpperCase();
-                bSearch = false;
-                choiceFrequency = "";
-
-                // проверим что длина введенной строки более 2х символов, тогда поиск совпадений
-                if (sSearch.length() > 1) {
-
-                    for (int i = 2; i < countRows; i++) {
-                        sArrayUpper = sData[i][2].toUpperCase();
-                        // проверим вхождение искомой строки в название станции в массиве
-                        if (sArrayUpper.indexOf(sSearchUpper) != -1) {
-                            /* сохраним индекс позиции с соответствием текста
-                               в дальнейшем по этим индексам будем выводить информацию */
-                            integerArrayList.add(i);
-                            // sTemp = sData[i][2] + " " + sData[i][1]; // + " " + sData[i][0];
-                            sTemp = FormatTextToDisplay.textFormatting34(sData[i][2]) + "\n" + "Регион: " +
-                                    sData[i][1]; // + " " + sData[i][0];
-                            stringArrayList.add(sTemp);
-                            bSearch = true;
-                        }
-                    }
-                }
-
-                // проверим успешный ли был поиск
-                if (bSearch == false) {
-                    // поиск не дал результата, очистим ListView от информации
-                    // после предыдущего поиска
-                    listViewClear();
-
-                } else {
-                    // поиск успешен, делаем textView invisible и выводим результаты в listView
-                    textViewInvisible();
-                    searchResultsDisplay();
-                }
-
-                /* Listener ListView слушает клики. При выборе позиции закрываем listView
-                   и отображаем данные в формате: станция, регион */
+                searchStation(sSearch);
                 return false;
             }
         });
 
-        // метод прослушивания нажатий на ListView, выбор нужной позиции и отображение результата
+
+        /* Listener ListView слушает клики. При выборе позиции закрываем listView
+           и отображаем данные в формате: станция, регион */
         ListView listView = findViewById(R.id.listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -316,6 +271,57 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    /* метод поиска соответствий названий станции введенным символам в поле SearchView.
+       Передаем сюда текстовую переменную с содержимым введенной в поле SearchView информацией
+       из методов прослушивающих ввод символа в поле и нажатие кнопки поиска */
+    private void searchStation(String sSearch) {
+
+        if (sData == null) {
+            try {
+                readFileData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        integerArrayList.clear();
+        stringArrayList.clear();
+        sSearchUpper = sSearch.toUpperCase();
+        bSearch = false;
+        choiceFrequency = "";
+
+        // проверим что длина введенной строки более 2х символов, тогда поиск совпадений
+        if (sSearch.length() > 1) {
+
+            for (int i = 2; i < countRows; i++) {
+                sArrayUpper = sData[i][2].toUpperCase();
+                // проверим вхождение искомой строки в название станции в массиве
+                if (sArrayUpper.indexOf(sSearchUpper) != -1) {
+                            /* сохраним индекс позиции с соответствием текста
+                               в дальнейшем по этим индексам будем выводить информацию */
+                    integerArrayList.add(i);
+                    // sTemp = sData[i][2] + " " + sData[i][1]; // + " " + sData[i][0];
+                    sTemp = FormatTextToDisplay.textFormatting34(sData[i][2]) + "\n" + "Регион: " +
+                            sData[i][1]; // + " " + sData[i][0];
+                    stringArrayList.add(sTemp);
+                    bSearch = true;
+                }
+            }
+        }
+
+        // проверим успешный ли был поиск
+        if (bSearch == false) {
+            // поиск не дал результата, очистим ListView от информации
+            // после предыдущего поиска
+            listViewClear();
+
+        } else {
+            // поиск успешен, делаем textView invisible и выводим результаты в listView
+            textViewInvisible();
+            searchResultsDisplay();
+        }
     }
 
     // вывод на экран toast

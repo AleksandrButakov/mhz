@@ -52,11 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
     // TODO Change public on private modifiers wherever possible
     // number of lines in the file mhz_data.txt
-    public static int countRows;
+    protected static int countRows;
     private String[][] sData = null;
 
     // array for storing decimal coordinates of latitude and longitude stations, respectively
-    public static double[][] dGeographicCoordinates = null;
+    protected static double[][] dGeographicCoordinates = null;
 
     // counter for the number of transitions
     private static int countSleep;
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     private static int index = -1;
 
     // переменная для обработки статуса поиска координат
-    public static boolean bGPSCoordinatesFound = false;
+    protected static boolean bGPSCoordinatesFound = false;
 
     // переменная для хранения информации о том что координаты найдены
     private static boolean findStation = false;
@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
-                // используем position для получения номера пункта по которому кликнул пользователь
+                // используем position для получения номера пункта, по которому кликнул пользователь
                 number = integerArrayList.get(position);
 
                 // прячем клавиатуру. butCalculate - это кнопка
@@ -502,7 +502,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         // проверим что разрешения получения координат получены
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -512,8 +513,10 @@ public class MainActivity extends AppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 10, 10, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000 * 10, 10, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                1000 * 10, 10, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                1000 * 10, 10, locationListener);
         checkEnabled();
 
         // displayToast("XXX onResume");

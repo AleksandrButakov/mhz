@@ -324,14 +324,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // вывод на экран toast
-    public void displayToast(String sText) {
-        //создаём и отображаем текстовое уведомление
-        Toast toast = Toast.makeText(this, sText, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP, 0, 0);
-        toast.show();
-    }
-
     // делаем textView invisible and clear
     public void textViewInvisible() {
         textView1.setVisibility(View.INVISIBLE);
@@ -1123,6 +1115,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    // вывод на экран toast
+    public void displayToast(String sText) {
+        //создаём и отображаем текстовое уведомление
+        Toast toast = Toast.makeText(this, sText, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP, 0, 0);
+        toast.show();
     }
 
 }

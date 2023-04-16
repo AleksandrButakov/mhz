@@ -483,7 +483,6 @@ public class MainActivity extends AppCompatActivity {
 
         // displayToast("XXX onStart");
     }
-
     @Override
     public void onPause() {
         super.onPause();
@@ -494,7 +493,6 @@ public class MainActivity extends AppCompatActivity {
 
         // displayToast("XXX onPause");
     }
-
     @Override
     public void onResume() {
         super.onResume();

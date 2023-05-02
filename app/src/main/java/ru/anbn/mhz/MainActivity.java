@@ -214,6 +214,13 @@ public class MainActivity extends AppCompatActivity {
                     fileName = "rvs1.pdf";
                     typeOfRadioStation = "РВС-1";
                 }
+
+                // выбрана позиция 1: РВС-1 СРС
+                if (position == 5) {
+                    fileName = "rvs1_srs.pdf";
+                    typeOfRadioStation = "РВС-1 СРС";
+                }
+
             }
 
             @Override
@@ -412,6 +419,9 @@ public class MainActivity extends AppCompatActivity {
                 choiceFrequency += "   РВС-1:    " + radioFrequencyChannel[index][5];
             } else if (typeOfRadioStation.equals("РЛСМ-10")) {
                 choiceFrequency += "   РЛСМ-10:  " + radioFrequencyChannel[index][6];
+            // TODO этот блок добавлен для пробного пятого пункта РВС-1 СРС
+            } else if (typeOfRadioStation.equals("РВС-1 СРС")) {
+                choiceFrequency += "   РВС-1 СРС:" + radioFrequencyChannel[index][5];
             }
         } else {
             choiceFrequency =

@@ -134,8 +134,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
-
         // запретим ночную тему
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
@@ -197,28 +195,34 @@ public class MainActivity extends AppCompatActivity {
                     typeOfRadioStation = "РЛСМ-10";
                 }
 
-                // выбрана позиция 1: РВ-1.1М
+                // выбрана позиция 2: РВ-1.1М
                 if (position == 2) {
                     fileName = "rv1_1m.pdf";
                     typeOfRadioStation = "РВ-1.1М";
                 }
 
-                // выбрана позиция 1: РВ-1М
+                // выбрана позиция 3: РВ-1М
                 if (position == 3) {
                     fileName = "rv1m.pdf";
                     typeOfRadioStation = "РВ-1М";
                 }
 
-                // выбрана позиция 1: РВС-1
+                // выбрана позиция 4: РВС-1
                 if (position == 4) {
                     fileName = "rvs1.pdf";
                     typeOfRadioStation = "РВС-1";
                 }
 
-                // выбрана позиция 1: РВС-1 СРС
+                // выбрана позиция 5: РВС-1 СРС
                 if (position == 5) {
-                    fileName = "rvs1_srs.pdf";
-                    typeOfRadioStation = "РВС-1 СРС";
+                    fileName = "rvs1_srs1.pdf";
+                    typeOfRadioStation = "РВС-1v1";
+                }
+
+                // выбрана позиция 6: РВС-1 СРС
+                if (position == 6) {
+                    fileName = "rvs1_srs2.pdf";
+                    typeOfRadioStation = "РВС-1v2";
                 }
 
             }
@@ -419,9 +423,12 @@ public class MainActivity extends AppCompatActivity {
                 choiceFrequency += "   РВС-1:    " + radioFrequencyChannel[index][5];
             } else if (typeOfRadioStation.equals("РЛСМ-10")) {
                 choiceFrequency += "   РЛСМ-10:  " + radioFrequencyChannel[index][6];
-            // TODO этот блок добавлен для пробного пятого пункта РВС-1 СРС
-            } else if (typeOfRadioStation.equals("РВС-1 СРС")) {
-                choiceFrequency += "   РВС-1 СРС:" + radioFrequencyChannel[index][5];
+                // TODO этот блок добавлен для пробного пятого пункта РВС-1 СРС
+            } else if (typeOfRadioStation.equals("РВС-1v1")) {
+                choiceFrequency += "   РВС-1v1:  " + radioFrequencyChannel[index][5];
+                // TODO этот блок добавлен для пробного пятого пункта РВС-1 СРС
+            } else if (typeOfRadioStation.equals("РВС-1v2")) {
+                choiceFrequency += "   РВС-1v2:  " + radioFrequencyChannel[index][5];
             }
         } else {
             choiceFrequency =
@@ -496,6 +503,7 @@ public class MainActivity extends AppCompatActivity {
 
         // displayToast("XXX onStart");
     }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -506,6 +514,7 @@ public class MainActivity extends AppCompatActivity {
 
         // displayToast("XXX onPause");
     }
+
     @Override
     public void onResume() {
         super.onResume();

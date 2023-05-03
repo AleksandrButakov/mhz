@@ -13,6 +13,8 @@ import com.github.barteksc.pdfviewer.util.FitPolicy;
 // extends AppCompatActivity необходим для загрузки файлов
 public class PdfReaderActivity extends AppCompatActivity {
 
+    // вспомогательная текстовая переменная
+    String sText;
     String path;
 
     // нарисуем экран
@@ -31,7 +33,13 @@ public class PdfReaderActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView1);
         if (!MainActivity.choiceFrequency.equals("")) {
             // станция выбрана
-            textView.setText(MainActivity.choiceFrequency);
+
+            // textView.setText(MainActivity.choiceFrequency);
+            //
+            String sText = MainActivity.choiceFrequency;
+            sText = FormatTextToDisplay.textFormatting23(sText);
+
+            textView.setText(sText);
         }
 
         // найдем путь к файлу

@@ -578,9 +578,29 @@ public class MainActivity extends AppCompatActivity {
         // координаты найдены
         if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
             tvLocationGPS.setText(formatLocation(location));
+
+            // !!!!!!!!!!! этот блок необходим для чтения файла mhz_data.csv на смартфоных Samsung
+            if (dGeographicCoordinates == null) {
+                try {
+                    readFileData();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
             findNearStation(location);
         } else if (location.getProvider().equals(LocationManager.NETWORK_PROVIDER)) {
             tvLocationNet.setText(formatLocation(location));
+
+            // !!!!!!!!!!! этот блок необходим для чтения файла mhz_data.csv на смартфоных Samsung
+            if (dGeographicCoordinates == null) {
+                try {
+                    readFileData();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
             findNearStation(location);
         }
     }

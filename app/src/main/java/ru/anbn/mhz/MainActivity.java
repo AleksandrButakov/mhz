@@ -417,12 +417,8 @@ public class MainActivity extends AppCompatActivity {
                 choiceFrequency += "   РВС-1:    " + radioFrequencyChannel[index][5];
             } else if (typeOfRadioStation.equals("РЛСМ-10")) {
                 choiceFrequency += "   РЛСМ-10:  " + radioFrequencyChannel[index][6];
-                // TODO этот блок добавлен для пробного пятого пункта РВС-1 СРС
-            } else if (typeOfRadioStation.equals("РВС-1v1")) {
-                choiceFrequency += "   РВС-1v1:  " + radioFrequencyChannel[index][5];
-                // TODO этот блок добавлен для пробного пятого пункта РВС-1 СРС
-            } else if (typeOfRadioStation.equals("РВС-1v2")) {
-                choiceFrequency += "   РВС-1v2:  " + radioFrequencyChannel[index][5];
+            } else if (typeOfRadioStation.equals("РВ-1.2МК")) {
+                choiceFrequency += "   РВ-1.2МК: " + radioFrequencyChannel[index][4];
             }
         } else {
             choiceFrequency =

@@ -213,16 +213,10 @@ public class MainActivity extends AppCompatActivity {
                     typeOfRadioStation = "РВС-1";
                 }
 
-                // выбрана позиция 5: РВС-1 СРС
+                // выбрана позиция 5: РВ-1.2МК
                 if (position == 5) {
-                    fileName = "rvs1_srs1.pdf";
-                    typeOfRadioStation = "РВС-1v1";
-                }
-
-                // выбрана позиция 6: РВС-1 СРС
-                if (position == 6) {
-                    fileName = "rvs1_srs2.pdf";
-                    typeOfRadioStation = "РВС-1v2";
+                    fileName = "rv1_2mk.pdf";
+                    typeOfRadioStation = "РВ-1.2МК";
                 }
 
             }
@@ -423,12 +417,8 @@ public class MainActivity extends AppCompatActivity {
                 choiceFrequency += "   РВС-1:    " + radioFrequencyChannel[index][5];
             } else if (typeOfRadioStation.equals("РЛСМ-10")) {
                 choiceFrequency += "   РЛСМ-10:  " + radioFrequencyChannel[index][6];
-                // TODO этот блок добавлен для пробного пятого пункта РВС-1 СРС
-            } else if (typeOfRadioStation.equals("РВС-1v1")) {
-                choiceFrequency += "   РВС-1v1:  " + radioFrequencyChannel[index][5];
-                // TODO этот блок добавлен для пробного пятого пункта РВС-1 СРС
-            } else if (typeOfRadioStation.equals("РВС-1v2")) {
-                choiceFrequency += "   РВС-1v2:  " + radioFrequencyChannel[index][5];
+            } else if (typeOfRadioStation.equals("РВ-1.2МК")) {
+                choiceFrequency += "   РВ-1.2МК: " + radioFrequencyChannel[index][4];
             }
         } else {
             choiceFrequency =
@@ -1133,7 +1123,6 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //            countSleep--;
 //        }
-
 
     }
 
